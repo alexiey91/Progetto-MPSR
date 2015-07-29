@@ -1,3 +1,9 @@
+/**
+ *      Progetto MPSR anno 14/15.
+ *      Authori: S. Martucci, A. Valenti
+ *      Simulatore web - Utility varie
+ */
+
 #include <time.h>
 
 #define MAX_DATETIME 150

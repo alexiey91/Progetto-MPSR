@@ -1,6 +1,7 @@
 /**
- * Progetto MPSR.
- * Authors: S. Martucci, A. Valenti
+ *      Progetto MPSR anno 14/15.
+ *      Authori: S. Martucci, A. Valenti
+ *      Simulatore web - main function
  */
 
 #include <stdio.h>
@@ -9,10 +10,10 @@
 #include <math.h>
 #include <string.h>
 
-#include "ReqQueue.h"
+#include "ReqQueue.c"
 #include "EventList.c"
-#include "ClientOrderList.h"
-#include "ArrivalQueue.h"
+#include "ClientOrderList.c"
+#include "ArrivalQueue.c"
 #include "Utils.c"
 #include "rng.c"
 
@@ -287,8 +288,10 @@ void steady_state_analysis(FILE* fp, FILE* graphicsFile) {
         if(arrivals && current_time >= STOP) arrivals = 0;
     }
 
+    throughput = sessions/current_time;
     // final print
     printf("\nSIMULAZIONE CONCLUSA\n\n");
+    printf("Throughput = sessioni / tempo totale : %f = %ld / %f \n", throughput, sessions, current_time);
 /*
     // results file serialization
     fprintf(fp, "STOP..........................: %6.4f\n", STOP);
@@ -420,15 +423,11 @@ int main(int argc, char* argv[]) {
     fprintf(graphicsFile, "%s\t%lld\n","SEED", SEED);
     fprintf(graphicsFile, "%s\t","STOP");
     print_header(graphicsFile);
-    int a = 1;
 
     for(i=init_f; i<=fin_f; i+=passo_f) {
         STOP = i;
         steady_state_analysis(fp, graphicsFile);
-        printf("%d\n",a);
-        a++;
         if(init_f == fin_f) break;
-        //break;
     }
 
     fclose(fp);

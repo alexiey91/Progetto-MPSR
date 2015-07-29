@@ -1,3 +1,9 @@
+/**
+ *      Progetto MPSR anno 14/15.
+ *      Authori: S. Martucci, A. Valenti
+ *      Simulatore web - Tipologia di Eventi
+ */
+
 #define MIN_TYPE NEW_SESSION
 #define MAX_TYPE CL_COMPL
 

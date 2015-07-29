@@ -1,10 +1,8 @@
-/**---------------------------------------------------------------------------------------------
- *        MPSR Project. ArrivalQueue                                                            *
- * Authors: G. Montenero, L. Paoli, R. Petrillo                                                 *
- * Last Modified: 16/7/2014                                                                     *
- * Developed with: Code::Blocks 13.12                                                           *
- * Compiled with: GNU GCC Compiler 4.8.1                                                        *
-  ----------------------------------------------------------------------------------------------*/
+/**
+ *      Progetto MPSR anno 14/15.
+ *      Authori: S. Martucci, A. Valenti
+ *      Simulatore web - Coda di arrivi
+ */
 
 struct ArrivalNode{
     double time;
