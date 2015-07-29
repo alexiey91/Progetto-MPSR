@@ -6,9 +6,9 @@
 
 #define MIN_REQ 5.0
 #define MAX_REQ 35.0
-#define ARRIVAL_TIME 1.0/35.0   // 1/lambda
-#define THINK_TIME 7.0          // E[Z]
-#define FS_COMPL_TIME 0.00456    // E[D]_front tempo di servizio (quello che spende nella palla)
+#define ARRIVAL_TIME 1.0/35.0     // 1/lambda
+#define THINK_TIME 7.0            // E[Z]
+#define FS_COMPL_TIME 0.00456     // E[D]_front tempo di servizio (quello che spende nella palla)
 #define BES_COMPL_TIME 0.00117    // E[D]_back tempo di servizio (quello che spende nella palla)
 
 double Exponential(double m) {

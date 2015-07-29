@@ -8,16 +8,6 @@ long FS_counter, BES_counter, client_counter;
 int queue_length_FS, queue_length_BES, busy_FS, busy_BES, active_client;
 double average_res_FS, average_res_BES, average_res_client;
 
-extern int arrivals;
-extern double STOP;
-extern Event *ev_list;
-extern Request* req_queue;
-extern ClientReq* client_req_list;
-extern ArrivalNode* arrival_queue_FS;
-extern ArrivalNode* arrival_queue_BES;
-extern long sessions;
-extern long requests;
-
 // NewSession Management
 void NewSession(Event* ev) {
 

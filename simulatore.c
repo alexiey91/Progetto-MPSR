@@ -11,39 +11,11 @@
 #include <string.h>
 
 #include "rng.c"
-#include "simulation_type.h"
+#include "global_variables.h"
 #include "file_manager.c"
-#include "event_list.h"
 #include "generate_random_value.h"
-#include "arrival_queue.h"
-#include "req_queue.h"
-#include "client_req.h"
 #include "event_manager.c"
-
-#define START 0.0           // il tempo di inizio
-double STOP;                // il tempo a cui finire
-
-// Se arrivals = 1 => gli arrivi vengono accettati
-// Altrimenti si rifiutano. (Va implementato anche per il threshold)
-int arrivals;
-long sessions, requests;
-double throughput, current_time, prev_time;
-char visual_flag;
-
-// Liste per la gestione delle code e degli eventi
-Event *ev_list;
-Request* req_queue;           // Request Queue - it stores information regarding Requests amount
-ClientReq* client_req_list;   // Matrix with Client completion time and session requests
-ArrivalNode* arrival_queue_FS;    // Arrival times queue at FS
-ArrivalNode* arrival_queue_BES;   // Arrival times queue at BES
-
-// Definizione del tipo di simulazione
-SIMULATION_TYPES type;
-
-void clear_console() {
-    char str[] = {0x1b, 0x5b, 0x48, 0x1b, 0x5b, 0x4a, '\0'};
-    printf("%s", str);
-}
+#include "utils.h"
 
 void initialize() {
     busy_FS = 0;
@@ -83,9 +55,10 @@ void begin_simulation() {
         if(arrivals && current_time >= STOP)
             arrivals = 0;
         if(visual_flag == 'Y' || visual_flag == 'y') {
-            if(i%25) {
+            if(i%50 == 0) {
                 clear_console();
                 // Stampo cose
+                print_system_state(current->type);
                 i=0;
                 usleep(50000);
             }
@@ -205,7 +178,6 @@ int main (int argc, char *argv[]) {
 
     for(i=init; i<=fin; i+=step) {
         STOP = i;
-        //fare la simulazione
         begin_simulation();
         if(init == fin) break;
     }
