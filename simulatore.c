@@ -3,34 +3,111 @@
  *      Authori: S. Martucci, A. Valenti
  *      Simulatore web - main function
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
 #include <string.h>
 
-#include "Utils.c"
 #include "rng.c"
+#include "simulation_type.h"
+#include "file_manager.c"
+#include "event_list.h"
+#include "generate_random_value.h"
+#include "arrival_queue.h"
+#include "req_queue.h"
+#include "client_req.h"
+#include "event_manager.c"
 
 #define START 0.0           // il tempo di inizio
 double STOP;                // il tempo a cui finire
 
-SIMULATION_TYPES type;      // parametro per definire la dstribuzione del front server
+// Se arrivals = 1 => gli arrivi vengono accettati
+// Altrimenti si rifiutano. (Va implementato anche per il threshold)
+int arrivals;
+long sessions, requests;
+double throughput, current_time, prev_time;
+char visual_flag;
+
+// Liste per la gestione delle code e degli eventi
+Event *ev_list;
+Request* req_queue;           // Request Queue - it stores information regarding Requests amount
+ClientReq* client_req_list;   // Matrix with Client completion time and session requests
+ArrivalNode* arrival_queue_FS;    // Arrival times queue at FS
+ArrivalNode* arrival_queue_BES;   // Arrival times queue at BES
+
+// Definizione del tipo di simulazione
+SIMULATION_TYPES type;
+
+void clear_console() {
+    char str[] = {0x1b, 0x5b, 0x48, 0x1b, 0x5b, 0x4a, '\0'};
+    printf("%s", str);
+}
+
+void initialize() {
+    busy_FS = 0;
+    busy_BES = 0;
+    FS_counter = 0;
+    BES_counter = 0;
+    client_counter = 0;
+    queue_length_FS = 0;
+    queue_length_BES = 0;
+    active_client = 0;
+    average_res_FS = 0.0;
+    average_res_BES = 0.0;
+    average_res_client = 0.0;
+
+    sessions = 0;
+    requests = 0;
+    throughput = 0.0;
+    arrivals = 1;
+    current_time = START;
+    prev_time = START;
+    ev_list = NULL;
+    add_event(&ev_list, GetArrival(START), NEW_SESSION);
+}
+
+void begin_simulation() {
+    int i = 0;
+    initialize();
+    // settare tutte le variabili
+
+    while(ev_list != NULL) {
+        Event *current = pop_event(&ev_list);
+        current_time = current->time;
+        // Aggiorno tutte le variabili
+        // che mi servono (capire quali)
+        manage_event(current);
+        prev_time = current_time;
+        if(arrivals && current_time >= STOP)
+            arrivals = 0;
+        if(visual_flag == 'Y' || visual_flag == 'y') {
+            if(i%25) {
+                clear_console();
+                // Stampo cose
+                i=0;
+                usleep(50000);
+            }
+            i++;
+        }
+    }
+    printf("\nSIMULAZIONE CONCLUSA\n\n");
+}
 
 int main (int argc, char *argv[]) {
 
-    FILE *file, *graphic;
     int choice, i, numero_run;
     long long int SEED = 0;
     double init, fin, step;
-    char file_name[50];
 
     if(argc != 1) {
         fprintf(stderr, "Usage: %s\n", argv[0]);
         return EXIT_FAILURE;
     }
 
-    printf("\e[1;1H\e[2J"); //serve a pulire la console
+//    printf("\e[1;1H\e[2J"); //serve a pulire la console
+    clear_console();
     printf("\nMulti-tier system simulator\n");
     printf("----------------------------------------------------------------------------------------\n");
     printf("This system is composed by\n");
@@ -108,20 +185,33 @@ int main (int argc, char *argv[]) {
     printf("The inserted parameters are: %4.2f %4.2f %d\n", init, fin, numero_run);
     step = (fin-init)/numero_run;
     printf("Step length: %4.2f\n", step);
+    printf("----------------------------------------------------------------------------------------\n\n");
 
-    //Aprire i file per la simulazione e iniziare a scriverci dentro
+    printf("Would you like to see the \"system state\" during the simulation?\n");
+    printf("Choose [Y/N]:");
+    scanf("%c", &visual_flag);
+    getchar();
+    if(visual_flag == 'Y' || visual_flag == 'y')
+        printf("You choose to displat system state\n");
+    else
+        printf("You choose NOT to displat system state\n");
+    printf("----------------------------------------------------------------------------------------\n\n");
 
     printf("Press ANY key to start simulation\n");
     getchar();
 
+    //Aprire i file per la simulazione e iniziare a scriverci dentro
+    open_files();
+
     for(i=init; i<=fin; i+=step) {
         STOP = i;
-        printf("\e[1;1H\e[2J"); //serve a pulire la console
         //fare la simulazione
+        begin_simulation();
         if(init == fin) break;
     }
 
     //chiudere i file
+    close_files();
 
     return EXIT_SUCCESS;
 }
