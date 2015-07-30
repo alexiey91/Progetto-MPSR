@@ -10,9 +10,28 @@
 #define THINK_TIME 7.0            // E[Z]
 #define FS_COMPL_TIME 0.00456     // E[D]_front tempo di servizio (quello che spende nella palla)
 #define BES_COMPL_TIME 0.00117    // E[D]_back tempo di servizio (quello che spende nella palla)
+#define K_ERLANG 10               // Parametro per la distribuzione della 10 Erlang
+#define P_HYP 0.1                 // Parametro per la sitribuzione iperesponenziale
 
 double Exponential(double m) {
     return (-m * log(1.0 - Random()));
+}
+
+double Erlang(long n, double b) {
+    long   i;
+    double x = 0.0;
+    for (i = 0; i < n; i++)
+        x += Exponential(b);
+    return (x);
+}
+
+double Hyperexponential(double p[], double m[], long i) {
+    long j;
+    double result = 0.0;
+    for(j=0; j<i; j++) {
+        result += p[i] * Exponential(m[i]);
+    }
+    return result;
 }
 
 long Equilikely(long a, long b) {
@@ -25,6 +44,19 @@ double GetArrival(double prev_time) {
 
 double GetExponentialServiceFS(double prev_time) {
     return prev_time + Exponential(FS_COMPL_TIME);
+}
+
+double GetErlangServiceFS(double prev_time) {
+    return prev_time + Erlang(K_ERLANG, FS_COMPL_TIME);
+}
+
+double GetHyperexpServiceFS(double prev_time) {
+    long i = 2;
+    double p[i], m[i];
+    p[0] = P_HYP; p[1] = 1-P_HYP;
+    m[0] = FS_COMPL_TIME / (2*p[0]);
+    m[1] = FS_COMPL_TIME / (2*p[1]);
+    return prev_time + Hyperexponential(p, m, i);
 }
 
 double GetServiceBES(double prev_time) {

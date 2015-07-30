@@ -84,3 +84,24 @@ Event* pop_event(Event** head) {
     *head = (*head)->next;
     return temp;
 }
+
+char* event_translator(EVENT_TYPE t){
+	switch(t){
+		case NEW_SESSION:
+            return "New session";
+		break;
+		case FS_COMPL:
+            return "Front server completition";
+		break;
+		case BES_COMPL:
+            return "Back-end server completition";
+		break;
+		case CL_COMPL:
+            return "Client completition";
+		break;
+		default:
+            return "Error event";
+		break;
+	}
+	return "Wrong code!\n";
+}

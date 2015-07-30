@@ -9,11 +9,12 @@ void clear_console() {
     printf("%s", str);
 }
 
-void print_system_state(SIMULATION_TYPES type) {
+void print_system_state(EVENT_TYPE t) {
     printf("STOP.............: %6.4f\n", STOP);
     printf("Time.............: %6.4f\n", current_time);
-    printf("Event type.......: %s\n", translator(type));
+    printf("Event type.......: %s\n", event_translator(t));
 //    printf("FS utilization...: %6.4f\n", curr_utilFS);
+    printf("FS distribution..: %s\n", simulation_traslator(type));
     printf("FS queue length..: %d\n", queue_length_FS);
     printf("FS busy..........: %s\n", (busy_FS) ? "YES" : "NO");
     printf("BES queue length.: %d\n", queue_length_BES);

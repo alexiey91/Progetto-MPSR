@@ -24,7 +24,17 @@ void NewSession(Event* ev) {
     if(busy_FS) queue_length_FS++;     // if server is busy, add 1 to its queue
     else {
         busy_FS = 1;
-        add_event(&ev_list, GetExponentialServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+        switch(type) {
+            case FE_EXP:
+                add_event(&ev_list, GetExponentialServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+            case FE_ERL:
+                add_event(&ev_list, GetErlangServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+            case FE_HYP:
+                add_event(&ev_list, GetHyperexpServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+        }
     }
 }
 
@@ -41,7 +51,17 @@ void FS_Completion(Event* ev) {
     // Exiting from FS
     if(queue_length_FS > 0) {
         queue_length_FS--;
-        add_event(&ev_list, GetExponentialServiceFS(ev->time), FS_COMPL);
+        switch(type) {
+            case FE_EXP:
+                add_event(&ev_list, GetExponentialServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+            case FE_ERL:
+                add_event(&ev_list, GetErlangServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+            case FE_HYP:
+                add_event(&ev_list, GetHyperexpServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+        }
     }
     else busy_FS = 0;
 
@@ -104,7 +124,17 @@ void Client_Completion(Event* ev) {
 
     if(busy_FS == 0) {
         busy_FS = 1;
-        add_event(&ev_list, GetExponentialServiceFS(ev->time), FS_COMPL);
+        switch(type) {
+            case FE_EXP:
+                add_event(&ev_list, GetExponentialServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+            case FE_ERL:
+                add_event(&ev_list, GetErlangServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+            case FE_HYP:
+                add_event(&ev_list, GetHyperexpServiceFS(ev->time), FS_COMPL); // create FS_COMPL event and schedule it
+                break;
+        }
     }
     else queue_length_FS++;
     arrival_add(&arrival_queue_FS, ev->time);

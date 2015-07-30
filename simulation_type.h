@@ -4,11 +4,6 @@
  *      Simulatore web - Struttura dati per la simulazione
  */
 
-#define New_Session      0
-#define Service_FS       1
-#define Service_BES      2
-#define Service_C        3
-
 enum _SIMULATION_TYPES {
     FE_EXP,
     FE_ERL,
@@ -17,19 +12,16 @@ enum _SIMULATION_TYPES {
 
 typedef enum _SIMULATION_TYPES SIMULATION_TYPES;
 
-char* translator(int num){
-	switch(num){
-		case New_Session:
-            return "New session";
+char* simulation_traslator(SIMULATION_TYPES t){
+	switch(t){
+		case FE_EXP:
+            return "Exponential";
 		break;
-		case Service_FS:
-            return "Front server completition";
+		case FE_ERL:
+            return "Erlang";
 		break;
-		case Service_BES:
-            return "Back-end server completition";
-		break;
-		case Service_C:
-            return "Client completition";
+		case FE_HYP:
+            return "Hyperexponential";
 		break;
 		default:
             return "Error event";
