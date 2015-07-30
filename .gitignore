@@ -1,3 +1,6 @@
 prova
 /prova
 ./prova
+*.xls
+/*.xls
+./*.xls

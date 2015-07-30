@@ -9,6 +9,13 @@ void clear_console() {
     printf("%s", str);
 }
 
+void print_initial_settings(FILE *g, long long int seed, double step, int numero_run) {
+    fprintf(g, "%s\t%lld\t\t%s\t%s\n", "SEED", seed, "FS distribution", simulation_traslator(type));
+    fprintf(g, "%s\t%6.8f\t\t%s\t%d\n", "STEP", step, "Num run", numero_run);
+    fprintf(g, "%s\t%s\n", "Threshold", "DA IMPLEMENTARE");
+    fflush(g);
+}
+
 void print_system_state(EVENT_TYPE t) {
     printf(":::::::::::::::::::::::::::::: Timer ::::::::::::::::::::::::::::::\n");
     printf("Stop......................: %6.8f\n", STOP);

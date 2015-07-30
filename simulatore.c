@@ -80,6 +80,7 @@ int main (int argc, char *argv[]) {
     int choice, i, numero_run;
     long long int SEED = 0;
     double init, fin, step;
+    FILE *graphic;
 
     if(argc != 1) {
         fprintf(stderr, "Usage: %s\n", argv[0]);
@@ -181,7 +182,8 @@ int main (int argc, char *argv[]) {
     getchar();
 
     //Aprire i file per la simulazione e iniziare a scriverci dentro
-    open_files();
+    graphic = open_file();
+    print_initial_settings(graphic, SEED, step, numero_run);
 
     for(i=init; i<=fin; i+=step) {
         STOP = i;
@@ -190,7 +192,7 @@ int main (int argc, char *argv[]) {
     }
 
     //chiudere i file
-    close_files();
+    close_file(graphic);
 
     return EXIT_SUCCESS;
 }
