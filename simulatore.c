@@ -59,7 +59,6 @@ void begin_simulation() {
                 clear_console();
                 // Stampo cose
                 print_system_state(current->type);
-                getchar();
                 i=0;
                 usleep(50000);
             }
