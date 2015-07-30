@@ -6,9 +6,9 @@
 
 #define START 0.0           // il tempo di inizio
 double STOP;                // il tempo a cui finire
+double throughput_sessions, throughput_requests, current_time, prev_time,  FS_utilization, FS_average_utilization; 
 int arrivals;
 long sessions, requests;
-double throughput, current_time, prev_time;
 char visual_flag;
 
 #include "simulation_type.h"

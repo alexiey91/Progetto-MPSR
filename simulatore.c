@@ -29,10 +29,12 @@ void initialize() {
     average_res_FS = 0.0;
     average_res_BES = 0.0;
     average_res_client = 0.0;
-
+    FS_utilization = 0.0;
+    FS_average_utilization = 0.0;
     sessions = 0;
     requests = 0;
-    throughput = 0.0;
+    throughput_sessions = 0.0;
+    throughput_requests = 0.0;
     arrivals = 1;
     current_time = START;
     prev_time = START;
@@ -50,6 +52,11 @@ void begin_simulation() {
         current_time = current->time;
         // Aggiorno tutte le variabili
         // che mi servono (capire quali)
+        FS_utilization += (current_time - prev_time) * (busy_FS);
+        FS_average_utilization = FS_utilization / current_time;
+        throughput_requests = ((double) requests)/current_time;
+        throughput_sessions = ((double) sessions)/current_time;
+
         manage_event(current);
         prev_time = current_time;
         if(arrivals && current_time >= STOP)
@@ -155,9 +162,9 @@ int main (int argc, char *argv[]) {
     scanf("%d", &numero_run);
     getchar();
 
-    printf("The inserted parameters are: %4.2f %4.2f %d\n", init, fin, numero_run);
+    printf("The inserted parameters are: %6.4f %6.4f %d\n", init, fin, numero_run);
     step = (fin-init)/numero_run;
-    printf("Step length: %4.2f\n", step);
+    printf("Step length: %6.4f\n", step);
     printf("----------------------------------------------------------------------------------------\n\n");
 
     printf("Would you like to see the \"system state\" during the simulation?\n");

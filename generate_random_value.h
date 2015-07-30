@@ -47,7 +47,7 @@ double GetExponentialServiceFS(double prev_time) {
 }
 
 double GetErlangServiceFS(double prev_time) {
-    return prev_time + Erlang(K_ERLANG, FS_COMPL_TIME);
+    return prev_time + Erlang(K_ERLANG, FS_COMPL_TIME/K_ERLANG);
 }
 
 double GetHyperexpServiceFS(double prev_time) {
