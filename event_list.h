@@ -11,7 +11,8 @@ enum _EVENT_TYPE {
     NEW_SESSION,
     FS_COMPL,
     BES_COMPL,
-    CL_COMPL
+    CL_COMPL,
+    SYSTEM_PRINT
 };
 
 typedef enum _EVENT_TYPE EVENT_TYPE;
@@ -98,6 +99,9 @@ char* event_translator(EVENT_TYPE t){
 		break;
 		case CL_COMPL:
             return "Client completition";
+		break;
+        case SYSTEM_PRINT:
+            return "User forced to print output";
 		break;
 		default:
             return "Error event";
