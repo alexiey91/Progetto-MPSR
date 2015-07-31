@@ -4,3 +4,9 @@ prova
 *.xls
 /*.xls
 ./*.xls
+*.exe
+/*.exe
+./*.exe
+*.o
+/*.o
+./*.o
