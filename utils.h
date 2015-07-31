@@ -4,10 +4,8 @@
  *      Simulatore web - Utility varie per la stampa
  */
 void clear_console() {
-#ifdef WINDOWS
-    #include <conio.h>
-    clrscr();
-    //system("cls");
+#ifdef __WIN32
+    system("cls");
 #else
     // Assume POSIX
     char str[] = {0x1b, 0x5b, 0x48, 0x1b, 0x5b, 0x4a, '\0'};
