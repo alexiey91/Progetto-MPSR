@@ -76,7 +76,7 @@ void begin_simulation() {
             i++;
         }
     }
-    compute_autocorrelation();
+//    compute_autocorrelation();
     printf("\nSIMULAZIONE CONCLUSA\n\n");
 }
 
