@@ -25,13 +25,19 @@ double Erlang(long n, double b) {
     return (x);
 }
 
-double Hyperexponential(double p[], double m[], long i) {
-    long j;
+double Hyperexponential() {
+/*    long j;
     double result = 0.0;
     for(j=0; j<i; j++) {
-        result += p[i] * Exponential(m[i]);
+        result += p[j] * Exponential(m[j]);
     }
-    return result;
+    return result;*/
+    double m;
+    if(Random() > P_HYP)
+        m = FS_COMPL_TIME / (2*(1-P_HYP));
+    else
+        m = FS_COMPL_TIME / (2*P_HYP);
+    return Exponential(m);
 }
 
 long Equilikely(long a, long b) {
@@ -51,12 +57,7 @@ double GetErlangServiceFS(double prev_time) {
 }
 
 double GetHyperexpServiceFS(double prev_time) {
-    long i = 2;
-    double p[i], m[i];
-    p[0] = P_HYP; p[1] = 1-P_HYP;
-    m[0] = FS_COMPL_TIME / (2*p[0]);
-    m[1] = FS_COMPL_TIME / (2*p[1]);
-    return prev_time + Hyperexponential(p, m, i);
+    return prev_time + Hyperexponential();
 }
 
 double GetServiceBES(double prev_time) {

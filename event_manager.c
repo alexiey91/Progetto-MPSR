@@ -45,7 +45,7 @@ void FS_Completion(Event* ev) {
     FS_counter++;
     double res_time_FS = ev->time - arrival_pop(&arrival_queue_FS); // i-th session's residence time
     average_res_FS = average_res_FS + (res_time_FS - average_res_FS)/FS_counter;
-/*    // calcolo auto correlazione
+    // calcolo auto correlazione
     if(autocorr_counter_FS < SIZE_CORR) {
         sum_autocorr += res_time_FS;
         hold[autocorr_counter_FS] += res_time_FS;
@@ -59,7 +59,7 @@ void FS_Completion(Event* ev) {
         hold[p_FS] += res_time_FS;
         p_FS = (p_FS +1) % SIZE_CORR;
         autocorr_counter_FS++;
-    }*/
+    }
     arrival_add(&arrival_queue_BES, ev->time); // save entrance time into BE center
 
     // Exiting from FS
@@ -95,7 +95,7 @@ void BES_Completion(Event* ev) {
     double res_time_BES = ev->time - arrival_pop(&arrival_queue_BES); // i-th session's residence time
     average_res_BES = average_res_BES + (res_time_BES - average_res_BES)/BES_counter;
     // calcolo auto correlazione
-/*    if(autocorr_counter_BES < SIZE_CORR) {
+    if(autocorr_counter_BES < SIZE_CORR) {
         sum_autocorr += res_time_BES;
         hold[autocorr_counter_BES] += res_time_BES;
         autocorr_counter_BES++;
@@ -108,7 +108,7 @@ void BES_Completion(Event* ev) {
         hold[p_BES] += res_time_BES;
         p_BES = (p_BES +1) % SIZE_CORR;
         autocorr_counter_BES++;
-    }*/
+    }
     // Exiting from BES
     if(queue_length_BES > 0) {
         queue_length_BES--;

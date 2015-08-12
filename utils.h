@@ -24,7 +24,7 @@ void print_initial_settings(FILE *g, long long int seed, double step, int numero
 }
 
 void print_system_state_on_file(FILE *g) {
-    fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%ld\t%ld\t", STOP, current_time, FS_average_utilization, sessions, requests);
+    fprintf(g, "%6.8f\t%6.8f\t%6.16f\t%ld\t%ld\t", STOP, current_time, FS_average_utilization, sessions, requests);
     fprintf(g, "%6.8f\t%6.8f\t%6.8f\t", throughput_sessions, throughput_requests, (double) requests/sessions);
     fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t\n", dropped, ((double)dropped/(dropped+sessions))*100.0, aborted, ((double)aborted/sessions)*100.0);
 }
