@@ -9,13 +9,16 @@
 #include <unistd.h>
 #include <math.h>
 #include <string.h>
-
-#include "rng.c"
+#include "rngs.c"
+//#include "rng.c"
+#include "rvms.c"
 #include "global_variables.h"
 #include "file_manager.c"
 #include "generate_random_value.h"
+#include "autocorrelation.h"
 #include "event_manager.c"
 #include "utils.h"
+//#include "user_signal.c"
 
 void initialize() {
     busy_FS = 0;
@@ -39,6 +42,7 @@ void initialize() {
     current_time = START;
     prev_time = START;
     ev_list = NULL;
+    reset_correlation();
     add_event(&ev_list, GetArrival(START), NEW_SESSION);
 }
 
@@ -72,6 +76,7 @@ void begin_simulation() {
             i++;
         }
     }
+    compute_autocorrelation();
     printf("\nSIMULAZIONE CONCLUSA\n\n");
 }
 
@@ -86,8 +91,8 @@ int main (int argc, char *argv[]) {
         fprintf(stderr, "Usage: %s\n", argv[0]);
         return EXIT_FAILURE;
     }
+   // add_signals();
 
-//    printf("\e[1;1H\e[2J"); //serve a pulire la console
     clear_console();
     printf("\nMulti-tier system simulator\n");
     printf("----------------------------------------------------------------------------------------\n");
@@ -188,6 +193,7 @@ int main (int argc, char *argv[]) {
     for(i=init; i<=fin; i+=step) {
         STOP = i;
         begin_simulation();
+        print_system_state_on_file(graphic);
         if(init == fin) break;
     }
 

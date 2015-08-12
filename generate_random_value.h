@@ -13,44 +13,52 @@
 #define K_ERLANG 10               // Parametro per la distribuzione della 10 Erlang
 #define P_HYP 0.1                 // Parametro per la sitribuzione iperesponenziale
 
-double Exponential(double m) {
+double Exponentialm(double m) {
+    SelectStream(50);
     return (-m * log(1.0 - Random()));
 }
 
 double Erlang(long n, double b) {
+    SelectStream(2);
     long   i;
     double x = 0.0;
     for (i = 0; i < n; i++)
-        x += Exponential(b);
+        x += Exponentialm(b);
     return (x);
 }
 
 double Hyperexponential(double p[], double m[], long i) {
+    SelectStream(3);
     long j;
     double result = 0.0;
     for(j=0; j<i; j++) {
-        result += p[i] * Exponential(m[i]);
+        result += p[i] * Exponentialm(m[i]);
     }
     return result;
 }
 
 long Equilikely(long a, long b) {
+    SelectStream(4);
     return (a + (long) (Random() * (b - a + 1)));
 }
 
 double GetArrival(double prev_time) {
-    return prev_time + Exponential(ARRIVAL_TIME);
+
+    return prev_time + Exponentialm(ARRIVAL_TIME);
 }
 
 double GetExponentialServiceFS(double prev_time) {
-    return prev_time + Exponential(FS_COMPL_TIME);
+
+    return prev_time + Exponentialm(FS_COMPL_TIME);
 }
 
 double GetErlangServiceFS(double prev_time) {
+
     return prev_time + Erlang(K_ERLANG, FS_COMPL_TIME/K_ERLANG);
 }
 
 double GetHyperexpServiceFS(double prev_time) {
+
     long i = 2;
     double p[i], m[i];
     p[0] = P_HYP; p[1] = 1-P_HYP;
@@ -60,13 +68,16 @@ double GetHyperexpServiceFS(double prev_time) {
 }
 
 double GetServiceBES(double prev_time) {
-    return prev_time + Exponential(BES_COMPL_TIME);
+
+    return prev_time + Exponentialm(BES_COMPL_TIME);
 }
 
 double GetServiceClient(double prev_time) {
-    return prev_time + Exponential(THINK_TIME);
+
+    return prev_time + Exponentialm(THINK_TIME);
 }
 
 unsigned int GetRequests() {
+
     return (unsigned int)Equilikely(MIN_REQ, MAX_REQ);
 }

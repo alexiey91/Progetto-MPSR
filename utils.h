@@ -4,8 +4,10 @@
  *      Simulatore web - Utility varie per la stampa
  */
 void clear_console() {
-#ifdef __WIN32
-    system("cls");
+#ifdef WINDOWS
+    #include <conio.h>
+    clrscr();
+    //system("cls");
 #else
     // Assume POSIX
     char str[] = {0x1b, 0x5b, 0x48, 0x1b, 0x5b, 0x4a, '\0'};
@@ -17,7 +19,16 @@ void print_initial_settings(FILE *g, long long int seed, double step, int numero
     fprintf(g, "%s\t%lld\t\t%s\t%s\n", "SEED", seed, "FS distribution", simulation_traslator(type));
     fprintf(g, "%s\t%6.8f\t\t%s\t%d\n", "STEP", step, "Num run", numero_run);
     fprintf(g, "%s\t%s\n", "Threshold", "DA IMPLEMENTARE");
+    fprintf(g, "%s\t%s\t%s\t%s\t", "STOP", "Util FS", "Sessions", "Requests");
+    fprintf(g, "%s\t%s\t%s\t", "Throughput (Sessions)", "Throughput (Requests)", "Average Request per Session");
+    fprintf(g, "%s\t%s\t%s\t%s\t\n", "# Dropped", "% Dropped", "# Aborted", "% Aborted");
     fflush(g);
+}
+
+void print_system_state_on_file(FILE *g) {
+    fprintf(g, "%6.8f\t%6.8f\t%ld\t%ld\t", STOP, FS_average_utilization, sessions, requests);
+    fprintf(g, "%6.8f\t%6.8f\t%6.8f\t", throughput_sessions, throughput_requests, (double) requests/sessions);
+    fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t\n", dropped, ((double)dropped/(dropped+sessions))*100.0, aborted, ((double)aborted/sessions)*100.0);
 }
 
 void print_system_state(EVENT_TYPE t) {
