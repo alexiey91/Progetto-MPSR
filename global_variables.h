@@ -4,8 +4,8 @@
  *      Simulatore web - Variabili Globali e include
  */
 
-#define T_MAX       0.85          // Threshold massimo dopo il quale droppo
-#define T_MIN       0.75          // Se scendo qua sotto riprendo
+#define THRESHOLD_MAX       0.85f          // Threshold massimo dopo il quale droppo
+#define THRESHOLD_MIN       0.75f          // Se scendo qua sotto riprendo
 #define START       0.0           // il tempo di inizio
 double STOP;                      // il tempo a cui finire
 double throughput_sessions, throughput_requests, current_time, prev_time,  FS_utilization, FS_average_utilization;

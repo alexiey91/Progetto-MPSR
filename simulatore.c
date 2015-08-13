@@ -36,6 +36,9 @@ void initialize() {
     FS_average_utilization = 0.0;
     sessions = 0;
     requests = 0;
+    dropped = 0;
+    aborted = 0;
+    threshold_exceeded = 0;
     throughput_sessions = 0.0;
     throughput_requests = 0.0;
     arrivals = 1;
@@ -66,12 +69,12 @@ void begin_simulation() {
         if(arrivals && current_time >= STOP)
             arrivals = 0;
         if(visual_flag == 'Y' || visual_flag == 'y') {
-            if(i%50 == 0) {
+            if(i%300 == 0) {
                 clear_console();
                 // Stampo cose
                 print_system_state(current->type);
                 i=0;
-                usleep(50000);
+                usleep(10000);
             }
             i++;
         }

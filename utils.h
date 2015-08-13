@@ -27,6 +27,7 @@ void print_system_state_on_file(FILE *g) {
     fprintf(g, "%6.8f\t%6.8f\t%6.16f\t%ld\t%ld\t", STOP, current_time, FS_average_utilization, sessions, requests);
     fprintf(g, "%6.8f\t%6.8f\t%6.8f\t", throughput_sessions, throughput_requests, (double) requests/sessions);
     fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t\n", dropped, ((double)dropped/(dropped+sessions))*100.0, aborted, ((double)aborted/sessions)*100.0);
+    fflush(g);
 }
 
 void print_system_state(EVENT_TYPE t) {
@@ -39,7 +40,7 @@ void print_system_state(EVENT_TYPE t) {
     printf("Queue length..............: %d\n", queue_length_FS);
     printf("Active....................: %s\n", (busy_FS) ? "YES" : "NO");
     printf("Average response time.....: %6.8f\n", average_res_FS);
-    printf("Utilization...............: %6.8f%%\n", FS_average_utilization*100);
+    printf("Average utilization.......: %6.8f%%\n", FS_average_utilization*100);
     printf("\n");
     printf("::::::::::::::::::::::: Back-end Server Info ::::::::::::::::::::::\n");
     printf("Queue length..............: %d\n", queue_length_BES);
@@ -58,8 +59,8 @@ void print_system_state(EVENT_TYPE t) {
     printf("Sessions throughput.......: %6.8f\n", throughput_sessions);
     printf("Requests throughput.......: %6.8f\n", throughput_requests);
 // Solo nel caso peggiore    if(type == FE_ERL)
-    printf("Connection dropped........: \n");
-    printf("Connection aborted........: \n");
-    printf("Threshold.................: \n");
+    printf("Connection dropped........: %ld\n", dropped);
+    printf("Connection aborted........: %ld\n", aborted);
+    printf("Threshold.................: %s\n", (type == FE_ERL) ? "YES : 85%" : "NONE");
     printf("\n");
 }

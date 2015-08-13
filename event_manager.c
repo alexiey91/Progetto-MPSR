@@ -7,6 +7,7 @@
 long FS_counter, BES_counter, client_counter;
 int queue_length_FS, queue_length_BES, busy_FS, busy_BES, active_client;
 double average_res_FS, average_res_BES, average_res_client;
+int threshold_exceeded;
 
 // NewSession Management
 void NewSession(Event* ev) {
@@ -16,6 +17,23 @@ void NewSession(Event* ev) {
         double new_time = GetArrival(ev->time); // compute new session arrival time
         if(new_time < STOP) {
             add_event(&ev_list, new_time, NEW_SESSION);   // create NewSession event and schedule it
+        }
+    }
+
+    if(type == FE_ERL) {
+        if(threshold_exceeded) {
+            if(FS_average_utilization <= THRESHOLD_MIN)
+                threshold_exceeded = 0;
+            else {
+                dropped++;
+                return;
+            }
+        }
+        // la 10-Erlang è la peggiore implemento quindi il Threshold all' 85%
+        else if(FS_average_utilization >= THRESHOLD_MAX) {
+            threshold_exceeded = 1;
+            dropped++;
+            return;
         }
     }
 
