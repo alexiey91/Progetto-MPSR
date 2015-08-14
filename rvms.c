@@ -1,13 +1,13 @@
 
-/* ------------------------------------------------------------------------- 
- * This is an ANSI C library that can be used to evaluate the probability 
- * density functions (pdf's), cumulative distribution functions (cdf's), and 
- * inverse distribution functions (idf's) for a variety of discrete and 
+/* -------------------------------------------------------------------------
+ * This is an ANSI C library that can be used to evaluate the probability
+ * density functions (pdf's), cumulative distribution functions (cdf's), and
+ * inverse distribution functions (idf's) for a variety of discrete and
  * continuous random variables.
  *
  * The following notational conventions are used
  *                 x : possible value of the random variable
- *                 u : real variable (probability) between 0.0 and 1.0 
+ *                 u : real variable (probability) between 0.0 and 1.0
  *  a, b, n, p, m, s : distribution-specific parameters
  *
  * There are pdf's, cdf's and idf's for 6 discrete random variables
@@ -16,7 +16,7 @@
  *
  *      Bernoulli(p)       0..1       p            p*(1-p)
  *      Binomial(n, p)     0..n       n*p          n*p*(1-p)
- *      Equilikely(a, b)   a..b       (a+b)/2      ((b-a+1)*(b-a+1)-1)/12 
+ *      Equilikely(a, b)   a..b       (a+b)/2      ((b-a+1)*(b-a+1)-1)/12
  *      Geometric(p)       0...       p/(1-p)      p/((1-p)*(1-p))
  *      Pascal(n, p)       0...       n*p/(1-p)    n*p/((1-p)*(1-p))
  *      Poisson(m)         0...       m            m
@@ -40,7 +40,7 @@
  * Author          : Steve Park & Dave Geyer
  * Language        : ANSI C
  * Latest Revision : 11-22-97
- * ------------------------------------------------------------------------- 
+ * -------------------------------------------------------------------------
  */
 
 #include <math.h>
@@ -69,7 +69,7 @@ static double InBeta(double a, double b, double x);
 
    double cdfBernoulli(double p, long x)
 /* =======================================
- * NOTE: use 0.0 < p < 1.0 and 0 <= x <= 1 
+ * NOTE: use 0.0 < p < 1.0 and 0 <= x <= 1
  * =======================================
  */
 {
@@ -78,7 +78,7 @@ static double InBeta(double a, double b, double x);
 
    long idfBernoulli(double p, double u)
 /* =========================================
- * NOTE: use 0.0 < p < 1.0 and 0.0 < u < 1.0 
+ * NOTE: use 0.0 < p < 1.0 and 0.0 < u < 1.0
  * =========================================
  */
 {
@@ -86,17 +86,17 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfEquilikely(long a, long b, long x)
-/* ============================================ 
- * NOTE: use a <= x <= b 
+/* ============================================
+ * NOTE: use a <= x <= b
  * ============================================
  */
-{
+{   if(x){}
    return (1.0 / (b - a + 1.0));
 }
 
    double cdfEquilikely(long a, long b, long x)
 /* ============================================
- * NOTE: use a <= x <= b 
+ * NOTE: use a <= x <= b
  * ============================================
  */
 {
@@ -104,8 +104,8 @@ static double InBeta(double a, double b, double x);
 }
 
    long idfEquilikely(long a, long b, double u)
-/* ============================================ 
- * NOTE: use a <= b and 0.0 < u < 1.0 
+/* ============================================
+ * NOTE: use a <= b and 0.0 < u < 1.0
  * ============================================
  */
 {
@@ -113,8 +113,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfBinomial(long n, double p, long x)
-/* ============================================ 
- * NOTE: use 0 <= x <= n and 0.0 < p < 1.0 
+/* ============================================
+ * NOTE: use 0 <= x <= n and 0.0 < p < 1.0
  * ============================================
  */
 {
@@ -126,8 +126,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double cdfBinomial(long n, double p, long x)
-/* ============================================ 
- * NOTE: use 0 <= x <= n and 0.0 < p < 1.0 
+/* ============================================
+ * NOTE: use 0 <= x <= n and 0.0 < p < 1.0
  * ============================================
  */
 {
@@ -138,8 +138,8 @@ static double InBeta(double a, double b, double x);
 }
 
    long idfBinomial(long n, double p, double u)
-/* ================================================= 
- * NOTE: use 0 <= n, 0.0 < p < 1.0 and 0.0 < u < 1.0 
+/* =================================================
+ * NOTE: use 0 <= n, 0.0 < p < 1.0 and 0.0 < u < 1.0
  * =================================================
  */
 {
@@ -157,8 +157,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfGeometric(double p, long x)
-/* ===================================== 
- * NOTE: use 0.0 < p < 1.0 and x >= 0 
+/* =====================================
+ * NOTE: use 0.0 < p < 1.0 and x >= 0
  * =====================================
  */
 {
@@ -166,8 +166,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double cdfGeometric(double p, long x)
-/* ===================================== 
- * NOTE: use 0.0 < p < 1.0 and x >= 0 
+/* =====================================
+ * NOTE: use 0.0 < p < 1.0 and x >= 0
  * =====================================
  */
 {
@@ -175,8 +175,8 @@ static double InBeta(double a, double b, double x);
 }
 
    long idfGeometric(double p, double u)
-/* ========================================= 
- * NOTE: use 0.0 < p < 1.0 and 0.0 < u < 1.0 
+/* =========================================
+ * NOTE: use 0.0 < p < 1.0 and 0.0 < u < 1.0
  * =========================================
  */
 {
@@ -184,8 +184,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfPascal(long n, double p, long x)
-/* =========================================== 
- * NOTE: use n >= 1, 0.0 < p < 1.0, and x >= 0 
+/* ===========================================
+ * NOTE: use n >= 1, 0.0 < p < 1.0, and x >= 0
  * ===========================================
  */
 {
@@ -197,8 +197,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double cdfPascal(long n, double p, long x)
-/* =========================================== 
- * NOTE: use n >= 1, 0.0 < p < 1.0, and x >= 0 
+/* ===========================================
+ * NOTE: use n >= 1, 0.0 < p < 1.0, and x >= 0
  * ===========================================
  */
 {
@@ -206,8 +206,8 @@ static double InBeta(double a, double b, double x);
 }
 
    long idfPascal(long n, double p, double u)
-/* ================================================== 
- * NOTE: use n >= 1, 0.0 < p < 1.0, and 0.0 < u < 1.0 
+/* ==================================================
+ * NOTE: use n >= 1, 0.0 < p < 1.0, and 0.0 < u < 1.0
  * ==================================================
  */
 {
@@ -226,7 +226,7 @@ static double InBeta(double a, double b, double x);
 
    double pdfPoisson(double m, long x)
 /* ===================================
- * NOTE: use m > 0 and x >= 0 
+ * NOTE: use m > 0 and x >= 0
  * ===================================
  */
 {
@@ -237,8 +237,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double cdfPoisson(double m, long x)
-/* =================================== 
- * NOTE: use m > 0 and x >= 0 
+/* ===================================
+ * NOTE: use m > 0 and x >= 0
  * ===================================
  */
 {
@@ -246,8 +246,8 @@ static double InBeta(double a, double b, double x);
 }
 
    long idfPoisson(double m, double u)
-/* =================================== 
- * NOTE: use m > 0 and 0.0 < u < 1.0 
+/* ===================================
+ * NOTE: use m > 0 and 0.0 < u < 1.0
  * ===================================
  */
 {
@@ -265,17 +265,18 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfUniform(double a, double b, double x)
-/* =============================================== 
- * NOTE: use a < x < b 
+/* ===============================================
+ * NOTE: use a < x < b
  * ===============================================
  */
 {
+    if(x) {}
    return (1.0 / (b - a));
 }
 
    double cdfUniform(double a, double b, double x)
-/* =============================================== 
- * NOTE: use a < x < b 
+/* ===============================================
+ * NOTE: use a < x < b
  * ===============================================
  */
 {
@@ -283,8 +284,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double idfUniform(double a, double b, double u)
-/* =============================================== 
- * NOTE: use a < b and 0.0 < u < 1.0 
+/* ===============================================
+ * NOTE: use a < b and 0.0 < u < 1.0
  * ===============================================
  */
 {
@@ -292,8 +293,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfExponential(double m, double x)
-/* ========================================= 
- * NOTE: use m > 0 and x > 0 
+/* =========================================
+ * NOTE: use m > 0 and x > 0
  * =========================================
  */
 {
@@ -301,8 +302,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double cdfExponential(double m, double x)
-/* ========================================= 
- * NOTE: use m > 0 and x > 0 
+/* =========================================
+ * NOTE: use m > 0 and x > 0
  * =========================================
  */
 {
@@ -310,8 +311,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double idfExponential(double m, double u)
-/* ========================================= 
- * NOTE: use m > 0 and 0.0 < u < 1.0 
+/* =========================================
+ * NOTE: use m > 0 and 0.0 < u < 1.0
  * =========================================
  */
 {
@@ -319,8 +320,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfErlang(long n, double b, double x)
-/* ============================================ 
- * NOTE: use n >= 1, b > 0, and x > 0 
+/* ============================================
+ * NOTE: use n >= 1, b > 0, and x > 0
  * ============================================
  */
 {
@@ -331,8 +332,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double cdfErlang(long n, double b, double x)
-/* ============================================ 
- * NOTE: use n >= 1, b > 0, and x > 0 
+/* ============================================
+ * NOTE: use n >= 1, b > 0, and x > 0
  * ============================================
  */
 {
@@ -340,8 +341,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double idfErlang(long n, double b, double u)
-/* ============================================ 
- * NOTE: use n >= 1, b > 0 and 0.0 < u < 1.0 
+/* ============================================
+ * NOTE: use n >= 1, b > 0 and 0.0 < u < 1.0
  * ============================================
  */
 {
@@ -357,8 +358,8 @@ static double InBeta(double a, double b, double x);
 }
 
    static double pdfStandard(double x)
-/* =================================== 
- * NOTE: x can be any value 
+/* ===================================
+ * NOTE: x can be any value
  * ===================================
  */
 {
@@ -366,11 +367,11 @@ static double InBeta(double a, double b, double x);
 }
 
    static double cdfStandard(double x)
-/* =================================== 
- * NOTE: x can be any value 
+/* ===================================
+ * NOTE: x can be any value
  * ===================================
  */
-{ 
+{
    double t;
 
    t = InGamma(0.5, 0.5 * x * x);
@@ -381,11 +382,11 @@ static double InBeta(double a, double b, double x);
 }
 
    static double idfStandard(double u)
-/* =================================== 
- * NOTE: 0.0 < u < 1.0 
+/* ===================================
+ * NOTE: 0.0 < u < 1.0
  * ===================================
  */
-{ 
+{
    double t, x = 0.0;                    /* initialize to the mean, then  */
 
    do {                                  /* use Newton-Raphson iteration  */
@@ -396,30 +397,30 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfNormal(double m, double s, double x)
-/* ============================================== 
- * NOTE: x and m can be any value, but s > 0.0 
+/* ==============================================
+ * NOTE: x and m can be any value, but s > 0.0
  * ==============================================
  */
-{ 
+{
    double t = (x - m) / s;
 
    return (pdfStandard(t) / s);
 }
 
    double cdfNormal(double m, double s, double x)
-/* ============================================== 
- * NOTE: x and m can be any value, but s > 0.0 
+/* ==============================================
+ * NOTE: x and m can be any value, but s > 0.0
  * ==============================================
  */
-{ 
+{
    double t = (x - m) / s;
 
    return (cdfStandard(t));
 }
 
    double idfNormal(double m, double s, double u)
-/* ======================================================= 
- * NOTE: m can be any value, but s > 0.0 and 0.0 < u < 1.0 
+/* =======================================================
+ * NOTE: m can be any value, but s > 0.0 and 0.0 < u < 1.0
  * =======================================================
  */
 {
@@ -427,33 +428,33 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfLognormal(double a, double b, double x)
-/* =================================================== 
- * NOTE: a can have any value, but b > 0.0 and x > 0.0 
+/* ===================================================
+ * NOTE: a can have any value, but b > 0.0 and x > 0.0
  * ===================================================
  */
-{ 
+{
    double t = (log(x) - a) / b;
 
    return (pdfStandard(t) / (b * x));
 }
 
    double cdfLognormal(double a, double b, double x)
-/* =================================================== 
- * NOTE: a can have any value, but b > 0.0 and x > 0.0 
+/* ===================================================
+ * NOTE: a can have any value, but b > 0.0 and x > 0.0
  * ===================================================
  */
-{ 
+{
    double t = (log(x) - a) / b;
 
    return (cdfStandard(t));
 }
 
    double idfLognormal(double a, double b, double u)
-/* ========================================================= 
- * NOTE: a can have any value, but b > 0.0 and 0.0 < u < 1.0 
+/* =========================================================
+ * NOTE: a can have any value, but b > 0.0 and 0.0 < u < 1.0
  * =========================================================
  */
-{ 
+{
    double t;
 
    t = a + b * idfStandard(u);
@@ -461,11 +462,11 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfChisquare(long n, double x)
-/* ===================================== 
- * NOTE: use n >= 1 and x > 0.0 
+/* =====================================
+ * NOTE: use n >= 1 and x > 0.0
  * =====================================
  */
-{ 
+{
    double t, s = n / 2.0;
 
    t = (s - 1.0) * log(x / 2.0) - (x / 2.0) - log(2.0) - LogGamma(s);
@@ -473,8 +474,8 @@ static double InBeta(double a, double b, double x);
 }
 
    double cdfChisquare(long n, double x)
-/* ===================================== 
- * NOTE: use n >= 1 and x > 0.0 
+/* =====================================
+ * NOTE: use n >= 1 and x > 0.0
  * =====================================
  */
 {
@@ -482,11 +483,11 @@ static double InBeta(double a, double b, double x);
 }
 
    double idfChisquare(long n, double u)
-/* ===================================== 
- * NOTE: use n >= 1 and 0.0 < u < 1.0 
+/* =====================================
+ * NOTE: use n >= 1 and 0.0 < u < 1.0
  * =====================================
  */
-{ 
+{
    double t, x = n;                         /* initialize to the mean, then */
 
    do {                                     /* use Newton-Raphson iteration */
@@ -499,11 +500,11 @@ static double InBeta(double a, double b, double x);
 }
 
    double pdfStudent(long n, double x)
-/* =================================== 
- * NOTE: use n >= 1 and x > 0.0 
+/* ===================================
+ * NOTE: use n >= 1 and x > 0.0
  * ===================================
  */
-{ 
+{
    double s, t;
 
    s = -0.5 * (n + 1) * log(1.0 + ((x * x) / (double) n));
@@ -512,11 +513,11 @@ static double InBeta(double a, double b, double x);
 }
 
    double cdfStudent(long n, double x)
-/* =================================== 
- * NOTE: use n >= 1 and x > 0.0 
+/* ===================================
+ * NOTE: use n >= 1 and x > 0.0
  * ===================================
  */
-{ 
+{
    double s, t;
 
    t = (x * x) / (n + x * x);
@@ -528,11 +529,11 @@ static double InBeta(double a, double b, double x);
 }
 
    double idfStudent(long n, double u)
-/* =================================== 
- * NOTE: use n >= 1 and 0.0 < u < 1.0 
+/* ===================================
+ * NOTE: use n >= 1 and 0.0 < u < 1.0
  * ===================================
  */
-{ 
+{
    double t, x = 0.0;                       /* initialize to the mean, then */
 
    do {                                     /* use Newton-Raphson iteration */
@@ -549,17 +550,17 @@ static double InBeta(double a, double b, double x);
  */
 
    static double LogGamma(double a)
-/* ======================================================================== 
+/* ========================================================================
  * LogGamma returns the natural log of the gamma function.
- * NOTE: use a > 0.0 
+ * NOTE: use a > 0.0
  *
  * The algorithm used to evaluate the natural log of the gamma function is
  * based on an approximation by C. Lanczos, SIAM J. Numerical Analysis, B,
  * vol 1, 1964.  The constants have been selected to yield a relative error
- * which is less than 2.0e-10 for all positive values of the parameter a.    
- * ======================================================================== 
+ * which is less than 2.0e-10 for all positive values of the parameter a.
+ * ========================================================================
  */
-{ 
+{
    double s[6], sum, temp;
    int    i;
 
@@ -570,7 +571,7 @@ static double InBeta(double a, double b, double x);
    s[4] =   0.001208580030 / (a + 4.0);
    s[5] =  -0.000005363820 / (a + 5.0);
    sum  =   1.000000000178;
-   for (i = 0; i < 6; i++) 
+   for (i = 0; i < 6; i++)
      sum += s[i];
    temp = (a - 0.5) * log(a + 4.5) - (a + 4.5) + log(SQRT2PI * sum);
    return (temp);
@@ -594,11 +595,11 @@ static double InBeta(double a, double b, double x);
  * LogBeta returns the natural log of the beta function.
  * NOTE: use a > 0.0 and b > 0.0
  *
- * The algorithm used to evaluate the natural log of the beta function is 
+ * The algorithm used to evaluate the natural log of the beta function is
  * based on a simple equation which relates the gamma and beta functions.
  *
  */
-{ 
+{
    return (LogGamma(a) + LogGamma(b) - LogGamma(a + b));
 }
 
@@ -627,11 +628,11 @@ static double InBeta(double a, double b, double x);
  * The algorithm used to evaluate the incomplete gamma function is based on
  * Algorithm AS 32, J. Applied Statistics, 1970, by G. P. Bhattacharjee.
  * See also equations 6.5.29 and 6.5.31 in the Handbook of Mathematical
- * Functions, Abramowitz and Stegum (editors).  The absolute error is less 
+ * Functions, Abramowitz and Stegum (editors).  The absolute error is less
  * than 1e-10 for all non-negative values of x.
  * ========================================================================
  */
-{ 
+{
    double t, sum, term, factor, f, g, c[2], p[3], q[3];
    long   n;
 
@@ -647,7 +648,7 @@ static double InBeta(double a, double b, double x);
        t++;
        term *= x / t;
        sum  += term;
-     } 
+     }
      return (factor * sum);
    }
    else {                             /* evaluate as a continued fraction - */
@@ -683,7 +684,7 @@ static double InBeta(double a, double b, double x);
 }
 
    static double InBeta(double a, double b, double x)
-/* ======================================================================= 
+/* =======================================================================
  * Evaluates the incomplete beta function.
  * NOTE: use a > 0.0, b > 0.0 and 0.0 <= x <= 1.0
  *
@@ -693,7 +694,7 @@ static double InBeta(double a, double b, double x);
  * between 0 and 1.
  * =======================================================================
  */
-{ 
+{
    double t, factor, f, g, c, p[3], q[3];
    int    swap;
    long   n;
@@ -738,7 +739,7 @@ static double InBeta(double a, double b, double x);
        f    = p[1];
      }
    } while ((fabs(f - g) >= TINY) || (q[1] != 1.0));
-   if (swap) 
+   if (swap)
      return (1.0 - factor * f);
    else
      return (factor * f);

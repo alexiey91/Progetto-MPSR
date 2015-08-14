@@ -97,24 +97,3 @@ static long seed = DEFAULT;    /* seed is the state of the generator        */
 {
   *x = seed;
 }
-
-
-   void TestRandom(void)
-/* -------------------------------------------------------------------
- * Use this (optional) procedure to test for a correct implementation.
- * -------------------------------------------------------------------
- */
-{
-  long   i;
-  long   x;
-  double u = 0.0;
-
-  PutSeed(1);                                /* set initial state to 1 */
-  for(i = 0; i < 10000; i++)
-    u = Random();
-  GetSeed(&x);                               /* get the new state      */
-  if (x == CHECK)
-    printf("\n The implementation of Random is correct\n");
-  else
-    printf("\n\a ERROR - the implementation of Random is not correct\n");
-}

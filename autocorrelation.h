@@ -20,7 +20,7 @@ void reset_correlation() {
         autocorr_value[i] = 0.0;
         hold[i] = 0.0;
     }
-    cosum[i+1] = hold[i+1] = 0.0;
+    cosum[N_AUTOCORR] = hold[N_AUTOCORR] = 0.0;
     p_FS = 0;
     p_BES = 0;
     autocorr_counter_FS = 0;

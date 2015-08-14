@@ -53,8 +53,8 @@ void print_system_state(EVENT_TYPE t) {
     printf("\n");
     printf("::::::::::::::::::::::::::: Generic Info ::::::::::::::::::::::::::\n");
     printf("Event type................: %s\n", event_translator(t));
-    printf("Completed sessions........: %d\n", sessions);
-    printf("Completed requests........: %d\n", requests);
+    printf("Completed sessions........: %ld\n", sessions);
+    printf("Completed requests........: %ld\n", requests);
     printf("Requests per session......: %6.8f\n", (double) requests/sessions);
     printf("Sessions throughput.......: %6.8f\n", throughput_sessions);
     printf("Requests throughput.......: %6.8f\n", throughput_requests);

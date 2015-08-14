@@ -162,9 +162,30 @@ void BES_Completion(Event* ev) {
 // Client Completion Management
 void Client_Completion(Event* ev) {
     active_client--; // decrease number of Clients
-
     // Insert the updated value of remaining requests (from THIS session) into the ReqQueue
     ClientReq* coming_back_session = pop_ClientReq(&client_req_list);
+
+    // Gestire l'abort delle sessioni
+    if(type == FE_ERL) {
+        if(threshold_exceeded) {
+            if(FS_average_utilization <= THRESHOLD_MIN)
+                threshold_exceeded = 0;
+            else {
+                aborted++;
+                sessions++;
+                free(coming_back_session);
+                return;
+            }
+        }
+        else if(FS_average_utilization >= THRESHOLD_MAX) {
+            threshold_exceeded = 1;
+            aborted++;
+            sessions++;
+            free(coming_back_session);
+            return;
+        }
+    }
+
     enqueue_req(&req_queue, coming_back_session->req);
     free(coming_back_session);
 
