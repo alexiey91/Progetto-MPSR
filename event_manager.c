@@ -36,7 +36,7 @@ void NewSession(Event* ev) {
             return;
         }
     }
-
+    opened_sessions++;
     enqueue_req(&req_queue, GetRequests());
     arrival_add(&arrival_queue_FS, ev->time);
     if(busy_FS) queue_length_FS++;     // if server is busy, add 1 to its queue
@@ -138,7 +138,7 @@ void BES_Completion(Event* ev) {
     unsigned int this_requests = dequeue_req(&req_queue);
     if(this_requests <= 0) {
         // session is over. It will move out of the system
-        sessions++;
+        completed_sessions++;
     }
     else {
         // This session still has some requests to be executed. Let's go to the Clients
@@ -172,7 +172,7 @@ void Client_Completion(Event* ev) {
                 threshold_exceeded = 0;
             else {
                 aborted++;
-                sessions++;
+                //sessions++; // FIXME
                 free(coming_back_session);
                 return;
             }
@@ -180,7 +180,7 @@ void Client_Completion(Event* ev) {
         else if(FS_average_utilization >= THRESHOLD_MAX) {
             threshold_exceeded = 1;
             aborted++;
-            sessions++;
+            //sessions++; // FIXME
             free(coming_back_session);
             return;
         }

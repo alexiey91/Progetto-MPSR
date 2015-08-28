@@ -34,7 +34,8 @@ void initialize() {
     average_res_client = 0.0;
     FS_utilization = 0.0;
     FS_average_utilization = 0.0;
-    sessions = 0;
+    completed_sessions = 0;
+    opened_sessions = 0;
     requests = 0;
     dropped = 0;
     aborted = 0;
@@ -62,7 +63,7 @@ void begin_simulation() {
         FS_utilization += (current_time - prev_time) * (busy_FS);
         FS_average_utilization = FS_utilization / current_time;
         throughput_requests = ((double) requests)/current_time;
-        throughput_sessions = ((double) sessions)/current_time;
+        throughput_sessions = ((double) completed_sessions)/current_time;
 
         manage_event(current);
         prev_time = current_time;
@@ -80,14 +81,15 @@ void begin_simulation() {
         }
     }
     compute_autocorrelation();
-    printf("\nSIMULAZIONE CONCLUSA\n\n");
+    clear_console();
+    printf("\nSimulation completed! (Time: %f)\n", STOP);
 }
 
 int main (int argc, char *argv[]) {
 
-    int choice, i, numero_run;
+    int choice, numero_run;
     long long int SEED = 0;
-    double init, fin, step;
+    double init, fin, step, i;
     FILE *graphic;
 
     if(argc != 1) {
@@ -197,6 +199,7 @@ int main (int argc, char *argv[]) {
         STOP = i;
         begin_simulation();
         print_system_state_on_file(graphic);
+        print_autocorrelation_on_file(graphic);
         if(init == fin) break;
     }
 

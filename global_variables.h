@@ -10,7 +10,7 @@
 double STOP;                      // il tempo a cui finire
 double throughput_sessions, throughput_requests, current_time, prev_time,  FS_utilization, FS_average_utilization;
 int arrivals;
-long sessions, requests, dropped, aborted;
+long opened_sessions, completed_sessions, requests, dropped, aborted;
 char visual_flag;
 
 #include "simulation_type.h"

@@ -29,10 +29,6 @@ void reset_correlation() {
 }
 
 void compute_autocorrelation() {
-    if(autocorr_counter_FS != autocorr_counter_BES || p_FS != p_BES) {
-        printf("MESA CHE HAI TOPPATO!\n");
-        return;
-    }
     long n = autocorr_counter_FS;
     int j;
     while (autocorr_counter_FS < n + SIZE_CORR) {         /* empty the circular array */
@@ -47,8 +43,4 @@ void compute_autocorrelation() {
       cosum[j] = (cosum[j] / (n - j)) - (mean * mean);
     for (j = 1; j < SIZE_CORR; j++)
         autocorr_value[j-1] =  cosum[j] / cosum[0];
-        printf("%ld\n", n);
-    for(j = 0; j<N_AUTOCORR; j++) {
-        printf("%6.8f\n", autocorr_value[j]);
-    }
 }
