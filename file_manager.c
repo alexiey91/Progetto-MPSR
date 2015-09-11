@@ -38,6 +38,10 @@ FILE *open_file() {
         default:
             printf("Error. No known simulation type.\n");
     }
+    if(threshold_flag) {
+        strcat(g,"_OM");
+        g+=strlen("_OM");
+    }
     strcat(g, graphic_ext);
     g[strlen(graphic_ext)] = 0;
     free(date);

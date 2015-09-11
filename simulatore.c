@@ -15,7 +15,6 @@
 #include "global_variables.h"
 #include "file_manager.c"
 #include "generate_random_value.h"
-#include "autocorrelation.h"
 #include "event_manager.c"
 #include "utils.h"
 #include "user_signal.c"
@@ -46,20 +45,18 @@ void initialize() {
     current_time = START;
     prev_time = START;
     ev_list = NULL;
-    reset_correlation();
     add_event(&ev_list, GetArrival(START), NEW_SESSION);
 }
 
-void begin_simulation() {
+void begin_simulation(FILE *graphic) {
+
     int i = 0;
     initialize();
     // settare tutte le variabili
-
-    while(ev_list != NULL) {
+    while(ev_list != NULL && arrivals) {
         Event *current = pop_event(&ev_list);
         current_time = current->time;
         // Aggiorno tutte le variabili
-        // che mi servono (capire quali)
         FS_utilization += (current_time - prev_time) * (busy_FS);
         FS_average_utilization = FS_utilization / current_time;
         throughput_requests = ((double) requests)/current_time;
@@ -67,12 +64,20 @@ void begin_simulation() {
 
         manage_event(current);
         prev_time = current_time;
-        if(arrivals && current_time >= STOP)
+        if(arrivals && current_time >= FIN)
             arrivals = 0;
+
+        if(current_time >= STOP) {
+            print_system_state_on_file(graphic);
+            printf("\nSimulation completed! (Time: %f)\n", STOP);
+            if(STOP < FIN)
+                STOP += STEP;
+        }
+
         if(visual_flag == 'Y' || visual_flag == 'y') {
             if(i%300 == 0) {
                 clear_console();
-                // Stampo cose
+                // Stampo
                 print_system_state(current->type);
                 i=0;
                 usleep(10000);
@@ -80,16 +85,14 @@ void begin_simulation() {
             i++;
         }
     }
-    compute_autocorrelation();
     clear_console();
-    printf("\nSimulation completed! (Time: %f)\n", STOP);
 }
 
 int main (int argc, char *argv[]) {
 
     int choice, numero_run;
     long long int SEED = 0;
-    double init, fin, step, i;
+    char t_flag;
     FILE *graphic;
 
     if(argc != 1) {
@@ -128,6 +131,20 @@ int main (int argc, char *argv[]) {
             return EXIT_FAILURE;
     }
 
+    printf("Choose if threshold should be active:\n");
+    printf("Your choice: ");
+    scanf("%s", &t_flag);
+    getchar();
+    if(t_flag == 'Y' || t_flag == 'y') {
+        printf("Threshold enabled\n");
+        threshold_flag = 1;
+    }
+    else {
+        printf("Threshold disabled\n");
+        threshold_flag = 0;
+    }
+    printf("----------------------------------------------------------------------------------------\n\n");
+
     printf("Please select a SEED: \n");
     printf(" 1 - 615425336\n");
     printf(" 2 - 37524306\n");
@@ -164,18 +181,18 @@ int main (int argc, char *argv[]) {
 
     printf("Insert simulation parameters:\n");
     printf("Firts stop (time): ");
-    scanf("%lf", &init);
+    scanf("%lf", &INIT);
     getchar();
     printf("Last stop (time): ");
-    scanf("%lf", &fin);
+    scanf("%lf", &FIN);
     getchar();
     printf("Execution number: ");
     scanf("%d", &numero_run);
     getchar();
 
-    printf("The inserted parameters are: %6.4f %6.4f %d\n", init, fin, numero_run);
-    step = (fin-init)/numero_run;
-    printf("Step length: %6.4f\n", step);
+    printf("The inserted parameters are: %6.4f %6.4f %d\n", INIT, FIN, numero_run);
+    STEP = (FIN-INIT)/numero_run;
+    printf("Step length: %6.4f\n", STEP);
     printf("----------------------------------------------------------------------------------------\n\n");
 
     printf("Would you like to see the \"system state\" during the simulation?\n");
@@ -193,15 +210,10 @@ int main (int argc, char *argv[]) {
 
     //Aprire i file per la simulazione e iniziare a scriverci dentro
     graphic = open_file();
-    print_initial_settings(graphic, SEED, step, numero_run);
+    print_initial_settings(graphic, SEED, STEP, numero_run);
 
-    for(i=init; i<=fin; i+=step) {
-        STOP = i;
-        begin_simulation();
-        print_system_state_on_file(graphic);
-        print_autocorrelation_on_file(graphic);
-        if(init == fin) break;
-    }
+    STOP = INIT;
+    begin_simulation(graphic);
 
     //chiudere i file
     close_file(graphic);

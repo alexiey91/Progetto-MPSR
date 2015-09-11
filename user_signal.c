@@ -8,7 +8,6 @@ void sigprint() {
 void sigauto() {
     clear_console();
     print_system_state(SYSTEM_PRINT);
-    compute_autocorrelation();
     exit(EXIT_SUCCESS);
 }
 

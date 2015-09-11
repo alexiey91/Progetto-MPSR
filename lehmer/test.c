@@ -11,9 +11,10 @@
 #include "rngs.h"
 #include "rvms.h"
 
-#define SEED 48271L
+#define SEED 48271
 #define N 100000L
-#define K 5000L
+//#define K 5000L
+#define K N/20
 #define ALPHA 0.05f
 #define D 7
 
@@ -65,7 +66,7 @@ int main(int argc, char **argv) {
 		long o[K];
 
 		double v = 0.0;
-		double e_x = (double) N / (double) K;
+		double e_x = (double) N / (double) (K);
 
 		//imposta tutti gli intervalli dell'istogramma a 0
 		memset(o, 0, K * sizeof(long));

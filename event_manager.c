@@ -15,12 +15,12 @@ void NewSession(Event* ev) {
     // If current time is not beyond STOP, a NewSession is scheduled
     if(arrivals) {
         double new_time = GetArrival(ev->time); // compute new session arrival time
-        if(new_time < STOP) {
+        if(new_time < FIN) {
             add_event(&ev_list, new_time, NEW_SESSION);   // create NewSession event and schedule it
         }
     }
 
-    if(type == FE_ERL) {
+    if(threshold_flag) {
         if(threshold_exceeded) {
             if(FS_average_utilization <= THRESHOLD_MIN)
                 threshold_exceeded = 0;
@@ -63,21 +63,6 @@ void FS_Completion(Event* ev) {
     FS_counter++;
     double res_time_FS = ev->time - arrival_pop(&arrival_queue_FS); // i-th session's residence time
     average_res_FS = average_res_FS + (res_time_FS - average_res_FS)/FS_counter;
-    // calcolo auto correlazione
-    if(autocorr_counter_FS < SIZE_CORR) {
-        sum_autocorr += res_time_FS;
-        hold[autocorr_counter_FS] += res_time_FS;
-        autocorr_counter_FS++;
-    }
-    else {
-        int j;
-        for (j = 0; j < SIZE_CORR; j++)
-          cosum[j] += hold[p_FS] * hold[(p_FS + j) % SIZE_CORR];
-        sum_autocorr += res_time_FS;
-        hold[p_FS] += res_time_FS;
-        p_FS = (p_FS +1) % SIZE_CORR;
-        autocorr_counter_FS++;
-    }
     arrival_add(&arrival_queue_BES, ev->time); // save entrance time into BE center
 
     // Exiting from FS
@@ -112,21 +97,6 @@ void BES_Completion(Event* ev) {
     BES_counter++;
     double res_time_BES = ev->time - arrival_pop(&arrival_queue_BES); // i-th session's residence time
     average_res_BES = average_res_BES + (res_time_BES - average_res_BES)/BES_counter;
-    // calcolo auto correlazione
-    if(autocorr_counter_BES < SIZE_CORR) {
-        sum_autocorr += res_time_BES;
-        hold[autocorr_counter_BES] += res_time_BES;
-        autocorr_counter_BES++;
-    }
-    else {
-        int j;
-        for (j = 0; j < SIZE_CORR; j++)
-          cosum[j] += hold[p_BES] * hold[(p_BES + j) % SIZE_CORR];
-        sum_autocorr += res_time_BES;
-        hold[p_BES] += res_time_BES;
-        p_BES = (p_BES +1) % SIZE_CORR;
-        autocorr_counter_BES++;
-    }
     // Exiting from BES
     if(queue_length_BES > 0) {
         queue_length_BES--;
@@ -166,7 +136,7 @@ void Client_Completion(Event* ev) {
     ClientReq* coming_back_session = pop_ClientReq(&client_req_list);
 
     // Gestire l'abort delle sessioni
-    if(type == FE_ERL) {
+    if(threshold_flag) {
         if(threshold_exceeded) {
             if(FS_average_utilization <= THRESHOLD_MIN)
                 threshold_exceeded = 0;
