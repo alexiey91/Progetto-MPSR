@@ -18,7 +18,7 @@ char* get_date() {
 }
 
 FILE *open_file() {
-    char graphic_name[50], *g = graphic_name, *graphic_ext = ".xls";
+    char graphic_name[50], *g = graphic_name, *graphic_ext = ".csv";
     char *date = get_date();
     strcpy(graphic_name, date);
     g+=strlen(date);

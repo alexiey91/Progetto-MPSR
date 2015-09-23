@@ -15,9 +15,9 @@ void clear_console() {
 
 void print_initial_settings(FILE *g, long long int seed, double step, int numero_run) {
     fprintf(g, "%s\t%lld\t\t%s\t%s\n", "SEED", seed, "FS distribution", simulation_traslator(type));
-    fprintf(g, "%s\t%6.8f\t\t%s\t%d\n", "STEP", step, "Num run", numero_run);
+    fprintf(g, "%s\t%6.8f\t\t%s\t%d\n", "STEP", step, "Num run", numero_run + 1);
     fprintf(g, "%s\t%s\t\n\n", "Threshold", (threshold_flag) ? "YES : 85%" : "NONE");
-    fprintf(g, "%s\t%s\t%s\t%s\t%s\t", "STOP", "EXECUTION TIME", "Util FS", "Sessions", "Requests");
+    fprintf(g, "%s\t%s\t%s\t%s\t", "STOP", "Util FS", "Sessions", "Requests");
     fprintf(g, "%s\t%s\t%s\t%s\t", "Average Response Time", "Throughput (Sessions)", "Throughput (Requests)", "Average Request per Session");
     fprintf(g, "%s\t%s\t%s\t%s\t%s\t%s\t\n\n", "# Completed", "% Completed", "# Dropped", "% Dropped", "# Aborted", "% Aborted");
     fflush(g);

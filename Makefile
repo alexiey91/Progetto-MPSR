@@ -4,10 +4,10 @@ CFLAGS = --std=gnu99 -W -Wall -Wextra -O3 --fast-math
 ARCH = -march=haswell
 DEBUG = -g
 LDFLAGS = -lm
-PROGS = prova
+PROGS = simulatore
 CFILES = simulatore.c
 
-all: 
+all:
 	$(CC) $(CFLAGS) $(CFILES) -o $(PROGS) $(LDFLAGS)
 
 arch:
@@ -18,4 +18,3 @@ debug:
 
 archdbg:
 	$(CC) $(ARCH) $(DEBUG) $(CFLAGS) $(CFILES) -o $(PROGS) $(LDFLAGS)
-
