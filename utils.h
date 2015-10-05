@@ -13,26 +13,35 @@ void clear_console() {
 #endif
 }
 
-void print_initial_settings(FILE *g, long long int seed, double step, int numero_run) {
+void print_initial_settings(FILE *g, long long int seed, long bs, long bn) {
     fprintf(g, "%s\t%lld\t\t%s\t%s\n", "SEED", seed, "FS distribution", simulation_traslator(type));
-    fprintf(g, "%s\t%6.8f\t\t%s\t%d\n", "STEP", step, "Num run", numero_run + 1);
+    fprintf(g, "%s\t%ld\t\t%s\t%ld\n", "Batch Size", bs, "Total Batch", bn);
     fprintf(g, "%s\t%s\t\n\n", "Threshold", (threshold_flag) ? "YES : 85%" : "NONE");
-    fprintf(g, "%s\t%s\t%s\t%s\t", "STOP", "Util FS", "Sessions", "Requests");
+    fprintf(g, "%s\t%s\t%s\t%s\t", "Current batch", "Util FS", "Sessions", "Requests");
     fprintf(g, "%s\t%s\t%s\t%s\t", "Average Response Time", "Throughput (Sessions)", "Throughput (Requests)", "Average Request per Session");
     fprintf(g, "%s\t%s\t%s\t%s\t%s\t%s\t\n\n", "# Completed", "% Completed", "# Dropped", "% Dropped", "# Aborted", "% Aborted");
     fflush(g);
 }
 
 void print_system_state_on_file(FILE *g) {
-    fprintf(g, "%6.8f\t%6.8f\t%6.16f\t%ld\t%ld\t", STOP, current_time, FS_average_utilization, opened_sessions, requests);
+    fprintf(g, "%ld\t%6.16f\t%ld\t%ld\t", current_batch, FS_average_utilization, opened_sessions, requests);
     fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%6.8f\t", average_res_FS + average_res_BES, throughput_sessions, throughput_requests, (double) requests/opened_sessions);
     fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t%ld\t%6.8f\t\t\n", completed_sessions, ((double) completed_sessions/opened_sessions)*100.0, dropped, ((double)dropped/(dropped+opened_sessions))*100.0, aborted, ((double)aborted/opened_sessions)*100.0);
     fflush(g);
 }
 
+void print_final_state(FILE *g) {
+    fprintf(g, "\n");
+    fprintf(g, "%s\t%6.16f\t%ld\t%ld\t", "Final Statistics", __FS_average_utilization/batch_num, __opened_sessions/batch_num, __requests/batch_num);
+    fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%6.8f\t", average_res_FS + average_res_BES, __throughput_sessions, __throughput_requests, (double)__requests/__opened_sessions);
+    fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t%ld\t%6.8f\t\t\n", __completed_sessions, ((double)__completed_sessions/__opened_sessions)*100.0, __dropped, ((double)__dropped/(__dropped+__opened_sessions))*100.0, __aborted, ((double)__aborted/__opened_sessions)*100.0);
+    fprintf(g, "%s\t%6.8f\n", "ELAPSED TIME:", current_time);
+    fflush(g);
+}
+
 void print_system_state(EVENT_TYPE t) {
     printf(":::::::::::::::::::::::::::::: Timer ::::::::::::::::::::::::::::::\n");
-    printf("Stop......................: %6.8f\n", STOP);
+    printf("Current batch.............: %ld\n", current_batch);
     printf("Current...................: %6.8f\n", current_time);
     printf("\n");
     printf(":::::::::::::::::::::::: Front Server Info ::::::::::::::::::::::::\n");

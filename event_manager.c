@@ -15,9 +15,7 @@ void NewSession(Event* ev) {
     // If current time is not beyond STOP, a NewSession is scheduled
     if(arrivals) {
         double new_time = GetArrival(ev->time); // compute new session arrival time
-        if(new_time < FIN) {
-            add_event(&ev_list, new_time, NEW_SESSION);   // create NewSession event and schedule it
-        }
+        add_event(&ev_list, new_time, NEW_SESSION);   // create NewSession event and schedule it
     }
 
     if(threshold_flag) {

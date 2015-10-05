@@ -6,14 +6,18 @@
 
 #define THRESHOLD_MAX       0.85f          // Threshold massimo dopo il quale droppo
 #define THRESHOLD_MIN       0.75f          // Se scendo qua sotto riprendo
-#define START       0.0           // il tempo di inizio
-double STOP;                      // il tempo a cui finire
+#define START               0.0f           // il tempo di inizio
+
 double throughput_sessions, throughput_requests, current_time, prev_time,  FS_utilization, FS_average_utilization;
+double __throughput_sessions, __throughput_requests, __FS_utilization, __FS_average_utilization, prev_batch_time_completition;
 int arrivals, threshold_flag;
 long opened_sessions, completed_sessions, requests, dropped, aborted;
+long __opened_sessions, __completed_sessions, __requests, __dropped, __aborted;
 char visual_flag;
 
-double INIT, FIN, STEP;
+long batch_size;            // numero di job prima di finire un batch
+long batch_num;             // numero di batch prima di terminare una simulazione
+long current_batch;         // a quale batch sono arrivato
 
 #include "simulation_type.h"
 #include "event_list.h"

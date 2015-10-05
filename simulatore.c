@@ -46,51 +46,87 @@ void initialize() {
     prev_time = START;
     ev_list = NULL;
     add_event(&ev_list, GetArrival(START), NEW_SESSION);
+    prev_batch_time_completition = START;
+    __throughput_sessions = 0.0;
+    __throughput_requests = 0.0;
+    __FS_utilization = 0.0;
+    __FS_average_utilization = 0.0;
+    __opened_sessions = 0;
+    __completed_sessions = 0;
+    __requests = 0;
+    __dropped = 0;
+    __aborted = 0;
+}
+
+void reset() {
+    average_res_FS = 0.0;
+    average_res_BES = 0.0;
+    average_res_client = 0.0;
+    FS_utilization = 0.0;
+    FS_average_utilization = 0.0;
+    completed_sessions = 0;
+    opened_sessions = 0;
+    requests = 0;
+    dropped = 0;
+    aborted = 0;
+    throughput_sessions = 0.0;
+    throughput_requests = 0.0;
+    prev_batch_time_completition = current_time;
+}
+
+void compute_statistics() {
+    __throughput_sessions += throughput_sessions;
+    __throughput_requests += throughput_requests;
+    __FS_utilization += FS_utilization;
+    __FS_average_utilization += FS_average_utilization;
+    __opened_sessions += opened_sessions;
+    __completed_sessions += completed_sessions;
+    __requests += requests;
+    __dropped += dropped;
+    __aborted += aborted;
 }
 
 void begin_simulation(FILE *graphic) {
 
     int i = 0;
     initialize();
-    // settare tutte le variabili
-    while(ev_list != NULL && arrivals) {
-        Event *current = pop_event(&ev_list);
-        current_time = current->time;
-        // Aggiorno tutte le variabili
-        FS_utilization += (current_time - prev_time) * (busy_FS);
-        FS_average_utilization = FS_utilization / current_time;
-        throughput_requests = ((double) requests)/current_time;
-        throughput_sessions = ((double) completed_sessions)/current_time;
+    for(current_batch = 1L; current_batch <= batch_num; current_batch++) {
+        reset();
+        // fare qualcosa
+        while(completed_sessions < batch_size) {
+            // fare tutto
+            Event *current = pop_event(&ev_list);
+            current_time = current->time;
+            FS_utilization += (current_time - prev_time) * (busy_FS);
+            FS_average_utilization = FS_utilization / (current_time-prev_batch_time_completition);
+            throughput_requests = ((double) requests)/ (current_time-prev_batch_time_completition);
+            throughput_sessions = ((double) completed_sessions)/(current_time-prev_batch_time_completition);
 
-        manage_event(current);
-        prev_time = current_time;
-        if(arrivals && current_time >= FIN)
-            arrivals = 0;
+            manage_event(current);
+            prev_time = current_time;
 
-        if(current_time >= STOP) {
-            print_system_state_on_file(graphic);
-            printf("\nSimulation completed! (Time: %f)\n", STOP);
-            if(STOP < FIN)
-                STOP += STEP;
-        }
-
-        if(visual_flag == 'Y' || visual_flag == 'y') {
-            if(i%300 == 0) {
-                clear_console();
-                // Stampo
-                print_system_state(current->type);
-                i=0;
-                usleep(10000);
+            if(visual_flag == 'Y' || visual_flag == 'y') {
+                if(i%300 == 0) {
+                    clear_console();
+                    // Stampo
+                    print_system_state(current->type);
+                    i=0;
+                    usleep(10000);
+                }
+                i++;
             }
-            i++;
         }
+        print_system_state_on_file(graphic);
+        printf("\nSimulation completed! (Batch completed: %ld)\n", current_batch);
+        compute_statistics();
     }
-    clear_console();
+    // stampa stato finale
+    print_final_state(graphic);
 }
 
 int main (int argc, char *argv[]) {
 
-    int choice, numero_run;
+    int choice;
     long long int SEED = 0;
     char t_flag;
     FILE *graphic;
@@ -180,19 +216,14 @@ int main (int argc, char *argv[]) {
     PutSeed(SEED);
 
     printf("Insert simulation parameters:\n");
-    printf("Firts stop (time): ");
-    scanf("%lf", &INIT);
+    printf("Batch size (b): ");
+    scanf("%ld", &batch_size);
     getchar();
-    printf("Last stop (time): ");
-    scanf("%lf", &FIN);
-    getchar();
-    printf("Execution number: ");
-    scanf("%d", &numero_run);
+    printf("Number of batches (k): ");
+    scanf("%ld", &batch_num);
     getchar();
 
-    printf("The inserted parameters are: %6.4f %6.4f %d\n", INIT, FIN, numero_run);
-    STEP = (FIN-INIT)/numero_run;
-    printf("Step length: %6.4f\n", STEP);
+    printf("The inserted parameters are: %ld %ld\n", batch_size, batch_num);
     printf("----------------------------------------------------------------------------------------\n\n");
 
     printf("Would you like to see the \"system state\" during the simulation?\n");
@@ -210,9 +241,8 @@ int main (int argc, char *argv[]) {
 
     //Aprire i file per la simulazione e iniziare a scriverci dentro
     graphic = open_file();
-    print_initial_settings(graphic, SEED, STEP, numero_run);
+    print_initial_settings(graphic, SEED, batch_size, batch_num);
 
-    STOP = INIT;
     begin_simulation(graphic);
 
     //chiudere i file

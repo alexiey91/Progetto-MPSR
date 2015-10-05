@@ -1,0 +1,6 @@
+SEED	615425336		FS distribution	Exponential
+Batch Size	32768		Total Batch	1
+Threshold	NONE	
+
+Current batch	Util FS	Sessions	Requests	Average Response Time	Throughput (Sessions)	Throughput (Requests)	Average Request per Session	# Completed	% Completed	# Dropped	% Dropped	# Aborted	% Aborted	
+

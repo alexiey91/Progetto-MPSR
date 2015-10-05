@@ -26,18 +26,15 @@ double Erlang(long n, double b) {
 }
 
 double Hyperexponential() {
-/*    long j;
-    double result = 0.0;
-    for(j=0; j<i; j++) {
-        result += p[j] * Exponential(m[j]);
-    }
-    return result;*/
+/*
     double m;
     if(Random() > P_HYP)
         m = FS_COMPL_TIME / (2*(1-P_HYP));
     else
         m = FS_COMPL_TIME / (2*P_HYP);
     return Exponential(m);
+*/
+    return Exponential(2*P_HYP*FS_COMPL_TIME) + Exponential(2*(1-P_HYP)*FS_COMPL_TIME);
 }
 
 long Equilikely(long a, long b) {
