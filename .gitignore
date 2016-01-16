@@ -13,9 +13,6 @@ prova
 *.csv
 /*.csv
 ./*.csv
-Relazione/Relazione.tex
-/Relazione/Relazione.tex
-./Relazione/Relazione.tex
 *.aux
 *.log
 *.tex.backup
