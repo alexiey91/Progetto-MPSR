@@ -1,0 +1,32 @@
+
+\chapter{Modello Concettuale}
+ 	\label{cap:modello concettuale}
+
+Il modello sviluppato è composto da un ramo principale (comprensivo di Front Server, Back-End Server e relative code) e da una componente di retroazione che si compone di un centro di client, all'interno del quale gli utenti passano un certo tempo a pensare prima di effettuare la richiesta
+successiva.
+
+All'arrivo di una nuova sessione, questa verrà processata dal Front Server, dopo un’eventuale attesa nella sua coda, e successivamente entrerà nel Back-End Server, nuovamente dopo un possibile ritardo di coda. Al termine del servizio la sessione esce dal sistema nel caso in cui abbia completato tutte le richieste che la componevano, oppure rientra nel sistema attraverso un ramo di feedback.
+
+In tale ramo la sessione permane in un centro di Client in cui l’utente può spendere del tempo per pensare alla sua richiesta successiva. Dopo tale attesa la sessione tenta di rientrare nel sistema per ricevere un ulteriore servizio, andandosi a posizionare alla fine della coda FIFO del Front Server.
+
+Il sistema verrà regolamentato attraverso un meccanismo di \textit{overload management} che permetterà di limitare i tempi di esecuzione della simulazione nel caso della distribuzione peggiore. Questo consiste nel monitorare l'utilizzazione del sistema implementato, ovvero una volta che abbia raggiunto l' 85\%, il sistema rigetterà tutte le richieste (in arrivo e attive), fino a che l'utilizzazione non raggiunga una soglia inferiore al 75\%. Tale tipologia di simulazione garantisce una notevole semplicità di gestione dell'intero sistema attraverso la facilità di avanzamento del tempo ed il controllo delle diverse tipologie di eventi che occorrono durante le varie esecuzioni.
+
+\section{Variabili di Stato}
+Il sistema è descritto completamente dalle seguenti variabili di stato:
+\begin{itemize}
+\item $busy_{fs}^{}$= stato di occupazione del Front Server
+\item $queue\_length_{fs}^{}$= numero di richieste nella coda del Front Server
+\item $busy\_{bes}^{}$= stato di occupazione nella coda del Back-End Server
+\item $queue\_length_{bes}^{}$= numero di richieste nella coda del Back-End Server
+\item $client\_counter$= numero di client attivi in un dato istante di tempo
+
+\end{itemize}
+Al fine di calcolare medie, varianze, intervalli di confidenza e per visualizzare l'avanzare della simulazione sono state utilizzate anche altre variabili (per lo più booleane o di tipo contatore): \textit{arrivals\, sessions\, requests\, dropped\, aborted\,} … .
+\section{Eventi}
+Gli eventi che occorrono durante un run del simulatore sono di vario tipo:
+\begin{itemize}
+\item NewSession: una nuova sessione entra nel sistema. Ovvero verrà inserita nel Front Server o nella sua coda qualora quest'ultimo fosse già occupato;
+\item FS\_Completion: il Front Server evade una richiesta e la invia al Back-End Server;
+\item BES\_Completion: il Back-End Server evade una richiesta. La sessione corrispondente può dunque essere completata del tutto e quindi uscire dal sistema oppure migrare verso il centro Client nel caso in cui il suo numero di richieste sia non nullo.
+\item Client\_Completion: dopo aver passato un certo tempo in fase di “Thinking”, una sessione lascia il centro Client e rientra nel sistema attraverso il ramo di retroazione, quindi è direttamente inserita nella coda del Front Server.
+\end{itemize}

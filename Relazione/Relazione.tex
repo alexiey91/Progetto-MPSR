@@ -1,0 +1,94 @@
+ \documentclass[12pt, a4paper, openany, twoside, titlepage]{book}
+ %opzione "twoside" anziché "oneside" per la stampa fronte-retro, "openrigth" anziché "openany" per far apparire i capitoli sempre a destra
+
+ \usepackage[italian]{babel}
+ \usepackage{fontenc}
+ \usepackage[tc]{titlepic}	%gestisce l'immagine nel frontespizio
+% \usepackage[utf8]{inputenc}
+ \usepackage{indentfirst}	%indenta le prime righe
+ \usepackage{fancyhdr}		%gestisce note a margine, note a piè di pagina, e intestazioni
+ \usepackage[pagebackref]{hyperref}	%gestisce i collegamenti ipertestuali
+ \usepackage[scaled=0.95]{helvet}\selectfont		%utilizza il font selezionato per tutto il documento
+ \usepackage{graphicx}		 %include le figure
+ \usepackage{float}			 %package per il posizionamento delle figure
+ \usepackage{amsmath}		 %include l'ambiente matematico
+ \usepackage{enumitem}		 %include l'ambiente per le enumerazioni
+ \usepackage{varwidth}		 %permette di centrare le enumerazioni
+ \usepackage[nottoc]{tocbibind}	%gestisce il sommario
+ \usepackage{enumitem}
+ %permette di riprendere il conto di una enumerazione dove era stato interrotto
+ %\usepackage{clrscode3e}
+ %permette di scrivere pseudocodice (il file relativo si trova nella stessa cartella di questo sorgente Latex)
+ \usepackage{subfigure}		 %permette di inserire sottofigure
+ \usepackage{amsfonts}		 %gestisce il font matematico
+ \usepackage{amssymb}		 %gestisce i simboli matematici
+ %\usepackage{epigraph}	     %per la scrittura delle epigrafi a inizio capitolo
+ %\usepackage{midpage}		 %per scrivere al centro della pagina
+ %\usepackage{extsizes}		 %per utilizzare il tipo 'extbook'
+ \usepackage{listings}		 %per inserire codice sorgente nel documento
+ \usepackage{color}			 %per la gestione dei colori
+ \usepackage{pifont}			 %introduce alcuni simboli
+ \usepackage{moresize}		 %introduce nuove dimensioni per il testo
+ \usepackage{pdfpages}
+ \usepackage{rotating}
+ \usepackage{comment}
+ \usepackage{textgreek}
+ \pagestyle{fancy}
+ %\fancyhf{\small\thepage}
+ \fancyhead[RO, LE]{}		 %solo i titotli dei capitoli in alto
+ %\fancyhead[RO, LE]{\small\thepage}
+ %\fancyhead[RE]{\small\nouppercase{\leftmark}}
+ %\fancyhead[RO,LE]{\small\thepage}
+
+ \def \openquote{``}		    %alias per aprire le virgolette
+ \def \closequote{''}		%alias per chiudere le virgolette
+
+ \def \abs#1{\lvert #1 \rvert}	 %alias per il simbolo di valore assoluto
+ \def \quote#1{\openquote #1\closequote}		  %alias per il testo "virgolettato"
+
+ \newcommand{\accg}{\`}		%per i caratteri con accento grave
+ \newcommand{\acca}{\'}		%per i caratteri con accento acuto
+
+ \begin{document}
+ 	\begin{titlepage}
+ 		\title{Modelli di Prestazioni di Sistemi  e Reti \\ \vspace{2 mm} {\large \bf{Simulatore di traffico in un sistema ``multi-tier''}}}
+ 		\author{Simone Martucci - \url{simone.martucci.91@gmail.com} \\ Alessandro Valenti - \url{alessandro.valenti1991@gmail.com} }
+ 		\date{}
+ 		\titlepic{\includegraphics[width=5cm]{img/logo_tor_vergata.png}}
+
+ 	\end{titlepage}
+
+ 	\maketitle
+
+ 	\frontmatter
+
+ 	\small
+
+ 	\pagenumbering{Roman}
+
+ 	\phantomsection
+
+ 	\addcontentsline{toc}{chapter}{Indice}
+
+ 	\tableofcontents
+ 	\label{Indice}
+
+ 	\normalsize
+
+ 	\mainmatter
+
+ 	\include{Capitolo-1}   	 % 1. Obiettivi
+ 	\include{Capitolo-2}  	 % 2. Modello Concettuale
+ 	\include{Capitolo-3}	 % 3. Generazione numeri random
+	\include{Capitolo-4}	 % 4. Modello delle Specifiche
+	\include{Capitolo-5}     % 5. Modello Computazionale
+ 	\include{Capitolo-6}     % 6. Verifica
+ 	\include{Capitolo-7}     % 7. Validazione
+ 	\include{Capitolo-8}     % 8. Progettazione Esperimenti
+ 	\include{Capitolo-9}     % 9. Simulazioni
+ 	\include{Capitolo-10}    % 10. Analisi dei Risultati
+
+ 	\appendix
+ 	\include{Appendice-A}      % Codice sorgente
+ 	\include{Appendice-B} 	   % Grafici dei test
+ \end{document} 

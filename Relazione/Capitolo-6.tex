@@ -1,0 +1,16 @@
+ 
+\chapter{Verifica}
+
+La fase di verifica è molto importante poichè consente di dimostrare la consistenza del programma creato con il modello delle specifiche.
+
+\vspace{0.3cm}In primis, è stata utilizzata una funzione di stampa per verificare il corretto flusso delle sessioni all'interno dell'intero sistema. Tale funzione, la \textbf{print\_system\_state()}, stampa le statistiche più importanti del sistema in tempo reale su standard output.
+
+\vspace{0.3cm}In secundis, si è notato e verificato che le liste contenenti le sessioni e le richieste si riempiono e si svuotano in modo corretto. Anche in questi casi sono stati necessarie funzioni di stampa per verificare che l'aggiornamento fosse adeguato.
+
+\vspace{0.3cm}In terzis, i vincoli sullo stato del sistema e sull'entrata in azione dell'overload manager, e sul calcolo delle medie sono tutti soddisfatti.
+
+\vspace{0.3cm}Il simulatore parte con il numero di sessioni nullo e tutte le variabili di stato e di supporto sono inizializzate opportunamente. Il meccanismo di step consente di avere una stampa aggiornata di tutti i parametri rilevanti, come throughput e tempo di risposta del sistema ad esempio, per capire in quale momento ad esempio si entra in uno stato stazionario.
+
+\vspace{0.3cm}Il numero di sessioni rifiutate e abortite cresce in maniera consistente con il meccanismo di controllo delle ammissioni.
+
+\vspace{0.3cm}Infine, come ultima verifica, è stato dimostrato che superato il tempo di \textit{STOP finale}, chiamato \textit{FIN} all'interno del codice, nessuna nuova sessione fosse accettata dal sistema e, successivamente a tale istante la simulazione viene interrotta poichè la coda tende a crescere all'infinito.

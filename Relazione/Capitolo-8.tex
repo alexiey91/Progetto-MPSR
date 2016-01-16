@@ -1,0 +1,32 @@
+\chapter{Progettazione degli esperimenti} 
+
+\noindent Gli esperimenti eseguiti sono stati i seguenti:
+
+\begin{enumerate}
+ \item Simulazione del sistema quando il Front Server ha distribuzione esponenziale;
+ \item Simulazione del sistema quando il Front Server ha distribuzione 10-Erlang;
+ \item Simulazione del sistema quando il Front Server ha distribuzione Iperesponenziale;
+ \item Simulazione del sistema quando il Front Server ha distribuzione 10-Erlang con soglia di utilizzazione pari all'85\%.
+\end{enumerate}
+
+\noindent \vspace{0.5cm} Gli esperimenti sono stati basati sui seguenti parametri:
+\begin{itemize}
+ \item SEED : indica il seed scelto dall'utente nella fase di setup;
+ \item TIME : durata della simulazione, ovvero lo STOP finale;
+ \item STEP : indica ogni quanto tempo vengono calcolate le statistiche;
+ \item THRESHOLD : indica se l'overload manager è attivo.
+\end{itemize}
+
+\begin{table}[H]
+ \centering
+ \begin{tabular}{|c|c|c|c|}
+ \hline
+ SEED & TIME & STEP & THRESHOLD\\ \hline
+ 1 & 5 & 7 & 9 \\ \hline
+ 1 & 5 & 7 & 9 \\ \hline
+ 1 & 5 & 7 & 9 \\ \hline
+ \end{tabular}
+\end{table}
+
+
+Per Ogni simulazione si è scelto di salvare su file i parametri necessari all'elaborazione dei risultati ogni 100 secondi, per valutare quando il sistema entra in uno stato stazionario e per vedere l'evolversi della situazione nel tempo. Al superamento dell'istante di STOP la simulazione viene interrotta, senza attendere che la coda risulti vuota poichè crescendo esponenzialmente i tempi per farla svuotare sarebbero talmente alti da rendere la simulazione non più reale.
