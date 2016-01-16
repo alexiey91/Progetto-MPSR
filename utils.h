@@ -41,8 +41,9 @@ void print_final_state(FILE *g) {
 
 void print_system_state(EVENT_TYPE t) {
     printf(":::::::::::::::::::::::::::::: Timer ::::::::::::::::::::::::::::::\n");
-    printf("Current batch.............: %ld\n", current_batch);
-    printf("Current...................: %6.8f\n", current_time);
+    printf("Current batch.............: %ld of %ld\n", current_batch, batch_num);
+    printf("Current job...............: %ld of %ld\n", completed_sessions, batch_size);
+    printf("Current time..............: %6.8f\n", current_time);
     printf("\n");
     printf(":::::::::::::::::::::::: Front Server Info ::::::::::::::::::::::::\n");
     printf("Choosen distribution......: %s\n", simulation_traslator(type));

@@ -106,6 +106,7 @@ void BES_Completion(Event* ev) {
     unsigned int this_requests = dequeue_req(&req_queue);
     if(this_requests <= 0) {
         // session is over. It will move out of the system
+        set_autocorr_data(__completed_sessions+completed_sessions, average_res_FS+average_res_BES);
         completed_sessions++;
     }
     else {

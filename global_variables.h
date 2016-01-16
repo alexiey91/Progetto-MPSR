@@ -24,6 +24,8 @@ long current_batch;         // a quale batch sono arrivato
 #include "arrival_queue.h"
 #include "req_queue.h"
 #include "client_req.h"
+#include "autocorrelation.h"
+#include "interval_calculator.h"
 
 // Definizione del tipo di simulazione
 SIMULATION_TYPES type;

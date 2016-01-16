@@ -10,3 +10,6 @@ prova
 *.o
 /*.o
 ./*.o
+*.csv
+/*.csv
+./*.csv

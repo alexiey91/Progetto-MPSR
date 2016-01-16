@@ -117,11 +117,16 @@ void begin_simulation(FILE *graphic) {
             }
         }
         print_system_state_on_file(graphic);
+        set_ic_t_data(throughput_sessions);
+        set_ic_res_data(average_res_FS+average_res_BES);
         printf("\nSimulation completed! (Batch completed: %ld)\n", current_batch);
         compute_statistics();
     }
     // stampa stato finale
     print_final_state(graphic);
+    compute_autocorr();
+    print_autocorr_on_file(graphic);
+    print_ic_on_file(graphic);
 }
 
 int main (int argc, char *argv[]) {
