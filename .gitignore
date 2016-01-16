@@ -13,3 +13,6 @@ prova
 *.csv
 /*.csv
 ./*.csv
+Relazione/Relazione.tex
+/Relazione/Relazione.tex
+./Relazione/Relazione.tex
