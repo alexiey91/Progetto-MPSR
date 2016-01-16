@@ -16,3 +16,8 @@ prova
 Relazione/Relazione.tex
 /Relazione/Relazione.tex
 ./Relazione/Relazione.tex
+*.aux
+*.log
+*.tex.backup
+*.out
+*.toc
