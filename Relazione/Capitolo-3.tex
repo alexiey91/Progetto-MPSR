@@ -1,100 +1,32 @@
-\def \ti{\textit}
-\def \bf{\textbf}
 
-\chapter{Generazione numeri pseudo-casuali}
-	\label{cap:generatorerandom}
+\chapter{Modello Concettuale}
+ 	\label{cap:modello concettuale}
 
-Per la generazione di numeri pseudo casuali, il simulatore implementato, utilizza il \textbf{Generatore di Lehmer} con le relative funzioni implementate all'interno delle librerie \textit{rngs} e \textit{rvms}. Nella fase di impostazione del simulatore (ovvero durante il lancio), viene chiesto all'utente di scegliere quale seed adoperare, in modo che il generatore possa elaborare numeri pseudo-casuali partendo da quest'ultimo.
+Il modello sviluppato è composto da un ramo principale (comprensivo di Front Server, Back-End Server e relative code) e da una componente di retroazione che si compone di un centro di client, all'interno del quale gli utenti passano un certo tempo a pensare prima di effettuare la richiesta
+successiva.
 
-\section{Generatore di Lehmer}
-Il generatore di Lehmer è un generatore basato su un algoritmo che da origine ad una sequenza di numeri pseudo-casuali. \'E definito da due parametri:
+All'arrivo di una nuova sessione, questa verrà processata dal Front Server, dopo un’eventuale attesa nella sua coda, e successivamente entrerà nel Back-End Server, nuovamente dopo un possibile ritardo di coda. Al termine del servizio la sessione esce dal sistema nel caso in cui abbia completato tutte le richieste che la componevano, oppure rientra nel sistema attraverso un ramo di feedback.
 
+In tale ramo la sessione permane in un centro di Client in cui l’utente può spendere del tempo per pensare alla sua richiesta successiva. Dopo tale attesa la sessione tenta di rientrare nel sistema per ricevere un ulteriore servizio, andandosi a posizionare alla fine della coda FIFO del Front Server.
+
+Il sistema verrà regolamentato attraverso un meccanismo di \textit{overload management} che permetterà di limitare i tempi di esecuzione della simulazione nel caso della distribuzione peggiore. Questo consiste nel monitorare l'utilizzazione del sistema implementato, ovvero una volta che abbia raggiunto l' 85\%, il sistema rigetterà tutte le richieste (in arrivo e attive), fino a che l'utilizzazione non raggiunga una soglia inferiore al 75\%. Tale tipologia di simulazione garantisce una notevole semplicità di gestione dell'intero sistema attraverso la facilità di avanzamento del tempo ed il controllo delle diverse tipologie di eventi che occorrono durante le varie esecuzioni.
+
+\section{Variabili di Stato}
+Il sistema è descritto completamente dalle seguenti variabili di stato:
 \begin{itemize}
- \item un modulo m, che è un numero primo molto grande (in questo caso si è usato $2^{31} - 1$);
- \item un moltiplicatore a che rappresenta un numero intero compreso tra 1 ed m-1.
+\item $busy_{fs}^{}$= stato di occupazione del Front Server
+\item $queue\_length_{fs}^{}$= numero di richieste nella coda del Front Server
+\item $busy\_{bes}^{}$= stato di occupazione nella coda del Back-End Server
+\item $queue\_length_{bes}^{}$= numero di richieste nella coda del Back-End Server
+\item $client\_counter$= numero di client attivi in un dato istante di tempo
+
 \end{itemize}
-
-La sequenza numerica pseudo-random viene generata tramite la formula :
-
-\begin{center} $x_{i+1} = ax_{i} mod m$ \end{center}
-
-\noindent Questa sequenza parte da un numero $x_{0}$ detto seed, anch'esso scelto tra 1 ed m - 1. Non tutte le combinazioni di a ed m però sono ottimali per realizzare una sequenza di numeri che garantiscano una buona randomicità. Per vedere dunque se un seed e un moltiplicatore garantiscano un buon livello di randomicità esistono dei test empirici.
-
-\section{Test degli estremi}
-Il test scelto per verificare la correttezza dei numeri generati è quello conosciuto come ``\textit{Test degli estremi}''. Questo test si basa sul teorema seguente:
-
-\vspace{0.5cm} \noindent \textbf{Teorema} Se $U_{0}^{}$, $U_{1}^{}$,...,$U_{d-1}^{}$ è una sequenza di variabili \textit{Uniform(0,1)} e se 
-
-\begin{center}R = max{$U_{0}^{}$, $U_{1}^{}$,...,$U_{d-1}^{}$} \end{center} 
-
-\noindent allora la variabile U = $R_{}^{d}$ è una \textit{Uniform(0,1)} \footnote{Attenzione: il teorema afferma che la variabile U è una Uniform(0,1), mentre la variabile R non lo è.}.
-
-In pratica verifica che la variabilità delle altezze dell'istogramma prodotto dai numeri pseudo-casuali generati è sufficientemente piccola da poter concludere che questi numeri appartengano ad una popolazione \textit{Uniform(0,1)}. Questa operazione è fondamentale in quanto tutte le altre distribuzioni di probabilità contenute all'interno della libreria utilizzata vengono generati a partire dalla \textit{Uniform(0,1)}.
-
-\section{Algoritmo}
-Il comportamento del generatore può essere testato raggruppando gli output del generatore \textit{d} termini alla volta, trovando il massimo di ogni batch, elevando il massimo alla \textit{d}-esima potenza, e contando tutti i massimi così generati. Vediamo un esempio di questo algoritmo sotto forma di codice:
-
-\begin{verbatim}
-  for(stream = 0; stream < 256L; stream++) {
-      long o[K];
-      memset(o, 0, K * sizeof(long));
-      for(i = 0; i < N; i++) {
-          double r = Random();
-          for(j = 1; j < D; j++) {
-              u = Random();
-              if(u > r) r = u;
-          }
-          u = exp(D * log(r));
-          x = u * K;
-          o[x] ++;
-      }
-  }
-\end{verbatim}
-
-Per effettuare correttamente questo test è necessario prendere $K >= 1000$, $N >= 10K$, $d >= 2$. Nel nostro caso abbiamo scelto $K = 5000$, $N = 100000$ e $d = 7$. Una volta selezionati i valori si procede all'esecuzione in questo modo:
+Al fine di calcolare medie, varianze, intervalli di confidenza e per visualizzare l'avanzare della simulazione sono state utilizzate anche altre variabili (per lo più booleane o di tipo contatore): \textit{arrivals\, sessions\, requests\, dropped\, aborted\,} … .
+\section{Eventi}
+Gli eventi che occorrono durante un run del simulatore sono di vario tipo:
 \begin{itemize}
- \item Usare l'algoritmo precedentemente descritto per calcolare l'istogramma.
- \item Calcolare la statistica \textit{v} Chi-Quadro.
- \item Scegliere l'intervallo di confidenza che vogliamo verificare, nel nostro caso è al 95\%.
- \item Determinare le soglie critiche $v_{1}^{*}$ e $v_{2}^{*}$.
+\item NewSession: una nuova sessione entra nel sistema. Ovvero verrà inserita nel Front Server o nella sua coda qualora quest'ultimo fosse già occupato;
+\item FS\_Completion: il Front Server evade una richiesta e la invia al Back-End Server;
+\item BES\_Completion: il Back-End Server evade una richiesta. La sessione corrispondente può dunque essere completata del tutto e quindi uscire dal sistema oppure migrare verso il centro Client nel caso in cui il suo numero di richieste sia non nullo.
+\item Client\_Completion: dopo aver passato un certo tempo in fase di “Thinking”, una sessione lascia il centro Client e rientra nel sistema attraverso il ramo di retroazione, quindi è direttamente inserita nella coda del Front Server.
 \end{itemize}
-Se \textit{v $<$ $v_{1}^{*}$} o \textit{v $>$ $v_{2}^{*}$} il test è da considerarsi \textit{fallito}.
-
-\section{Test e conclusioni}
-\noindent Vediamo per prima cosa come si comporta il simulatore nel caso il seed sia 48271.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.55]{img/result_48271.png}
-  \caption[Test degli estremi]{SEED 48271.}
-  \label{fig:result_48271}
-\end{figure}
-
-\noindent Oltre al seed proposto il test è stato eseguito anche sui seguenti:
-\begin{itemize}
-\item 615425336
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.55]{img/result_615425336.png}
-  \caption[Test degli estremi]{SEED 615425336.}
-  \label{fig:result_615425336}
-\end{figure}
-\item 37524306
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{img/result_37524306.png}
-  \caption[Test degli estremi]{SEED 37524306.}
-  \label{fig:result_37524306}
-\end{figure}
-\item 123456789
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{img/result_123456789.png}
-  \caption[Test degli estremi]{SEED 123456789.}
-  \label{fig:result_123456789}
-\end{figure}
-\end{itemize}
-
-\vspace{0.5cm}
-Alla luce dei diagrammi rappresentati si può vedere che su 256 test effettuati (uno per ogni stream del generatore), la maggior parte non è fallita sottolineando la buona randomicità del generatore, in quanto le statistiche rappresentate sono contenute all'interno dell'intervallo rappresentato dal massimo e dal minimo valore critico ($v_{i}^{*}$).
-

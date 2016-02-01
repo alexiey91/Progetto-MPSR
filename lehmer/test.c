@@ -46,6 +46,7 @@ int checkIfTestFailed(double v, double v1, double v2) {
 
 int main(int argc, char **argv) {
 	char *filename = "result.csv";
+	long failed = 0L, passed = 0L;
 	if(argc > 1) {
 		filename = argv[1]; //nome del file
 	}
@@ -112,10 +113,16 @@ int main(int argc, char **argv) {
 
 		if(checkIfTestFailed(v, v1_star, v2_star)) {
 			printf("FAILED\n");
+			failed++;
 		} else {
 			printf("PASSED\n");
+			passed++;
 		}
 	}
+
+	printf("Number of failed: %ld\n", failed);
+	printf("Number of passed: %ld\n", passed);
+	printf("Total number of tests: %ld\n", failed+passed);
 
 	closeFile(dataOut);
 	return 0;
