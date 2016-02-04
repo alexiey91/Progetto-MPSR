@@ -2,14 +2,15 @@
 \chapter{Modello Concettuale}
  	\label{cap:modello concettuale}
 
-Il modello sviluppato è composto da un ramo principale (comprensivo di Front Server, Back-End Server e relative code) e da una componente di retroazione che si compone di un centro di client, all'interno del quale gli utenti passano un certo tempo a pensare prima di effettuare la richiesta
+Il modello sviluppato è composto da un ramo principale (comprensivo di Front Server, Back-End Server e relative code) e da una componente di retroazione che si compone di un centro di Client, all'interno del quale gli utenti passano un certo tempo a pensare prima di effettuare la richiesta
 successiva.
 
-All'arrivo di una nuova sessione, questa verrà processata dal Front Server, dopo un’eventuale attesa nella sua coda, e successivamente entrerà nel Back-End Server, nuovamente dopo un possibile ritardo di coda. Al termine del servizio la sessione esce dal sistema nel caso in cui abbia completato tutte le richieste che la componevano, oppure rientra nel sistema attraverso un ramo di feedback.
+Al sopraggiungere di una nuova sessione, questa verr\'a processata immediatamente dal Front Server, nel caso in cui la sua coda sia vuota, altrimenti verr\'a posta in attesa del proprio turno con un conseguente ritardo. Una volta che il Front Server ha elaborato tale sessione, quest'ultima verr\'a processata all'interno di un Back-End Server, se la coda di quest'ultimo \'e vuota, altrimenti potrebbe subire un certo ritardo dovuto dall'attesa del proprio turno. Al termine di tale servizio la sessione uscir\'a dal sistema, nel caso in cui abbia completato tutte le richieste che la componevano, altrimenti verr\'a reindirizzata nuovamente all'ingresso del sistema attraverso una ramo di feedback.
+%All'arrivo di una nuova sessione, questa verr\'a processata dal Front Server, dopo un'eventuale attesa nella sua coda, e successivamente entrerà nel Back-End Server, nuovamente dopo un possibile ritardo di coda. Al termine del servizio la sessione esce dal sistema nel caso in cui abbia completato tutte le richieste che la componevano, oppure rientra nel sistema attraverso un ramo di feedback.%
 
-In tale ramo la sessione permane in un centro di Client in cui l’utente può spendere del tempo per pensare alla sua richiesta successiva. Dopo tale attesa la sessione tenta di rientrare nel sistema per ricevere un ulteriore servizio, andandosi a posizionare alla fine della coda FIFO del Front Server.
+In tale ramo la sessione permane in un centro di Client in cui l'utente pu\'o spendere del tempo per pensare alla sua richiesta successiva. Dopo tale attesa la sessione tenta di rientrare nel sistema per ricevere un ulteriore servizio, andandosi a posizionare alla fine della coda FIFO del Front Server, inoltre tale servizio \'e senza prelazione ed \'e conservativo.
 
-Il sistema verrà regolamentato attraverso un meccanismo di \textit{overload management} che permetterà di limitare i tempi di esecuzione della simulazione nel caso della distribuzione peggiore. Questo consiste nel monitorare l'utilizzazione del sistema implementato, ovvero una volta che abbia raggiunto l' 85\%, il sistema rigetterà tutte le richieste (in arrivo e attive), fino a che l'utilizzazione non raggiunga una soglia inferiore al 75\%. Tale tipologia di simulazione garantisce una notevole semplicità di gestione dell'intero sistema attraverso la facilità di avanzamento del tempo ed il controllo delle diverse tipologie di eventi che occorrono durante le varie esecuzioni.
+Il sistema verr\'a regolamentato attraverso un meccanismo di \textit{overload management} che permetter\'a di limitare i tempi di esecuzione della simulazione, nel caso della distribuzione peggiore. Questo consiste nel monitorare l'utilizzazione del sistema implementato, ovvero una volta che abbia raggiunto l' 85\%, il sistema rigetter\'a tutte le richieste (in arrivo e attive), fino a che l'utilizzazione non raggiunga una soglia inferiore al 75\%. Tale tipologia di simulazione garantisce una notevole semplicit\'a di gestione dell'intero sistema attraverso la facilit\'a di avanzamento del tempo ed il controllo delle diverse tipologie di eventi che occorrono durante le varie esecuzioni.
 
 \section{Variabili di Stato}
 Il sistema è descritto completamente dalle seguenti variabili di stato:
@@ -21,12 +22,25 @@ Il sistema è descritto completamente dalle seguenti variabili di stato:
 \item $client\_counter$= numero di client attivi in un dato istante di tempo
 
 \end{itemize}
-Al fine di calcolare medie, varianze, intervalli di confidenza e per visualizzare l'avanzare della simulazione sono state utilizzate anche altre variabili (per lo più booleane o di tipo contatore): \textit{arrivals\, sessions\, requests\, dropped\, aborted\,} … .
+Al fine di calcolare medie, varianze, intervalli di confidenza e per visualizzare l'avanzare della simulazione sono state utilizzate anche altre variabili (per lo più booleane o di tipo contatore): \textit{arrivals\, sessions\, requests\, dropped\, aborted\,} $…$ .
+
+\section{Modello delle specifiche}
+Nello sviluppo del modello delle specifiche, l'attenzione è stata rivolta alla definizione dei modelli di input da utilizzare nel modello di simulazione. Tali modelli sono stati definiti in base alle specifiche fornite nel seguente modo:
+
+ \begin{itemize}
+	\item $\lambda_{sessioni} = 35 \frac{richieste}{s}$ (distribuito esponenzialmente)
+ 	\item $Dimensione_{sessioni} \sim Equilikely(5, 35)$
+ 	\item $E[Z] = 7 s$ (distribuito esponenzialmente)
+ 	\item $E[D]_{front-end} = 0.00456 s$ (distribuito esponenzialmente)
+ 	\item $E[D]_{back-end} = 0.00117 s$ (distribuito esponenzialmente)
+ \end{itemize} 
+
 \section{Eventi}
-Gli eventi che occorrono durante un run del simulatore sono di vario tipo:
+Dopo aver prodotto un modello delle specifiche sono stati identificati gli eventi generati dal sistema, durante la simulazione:
+%Gli eventi che occorrono durante un run del simulatore sono di vario tipo:
 \begin{itemize}
-\item NewSession: una nuova sessione entra nel sistema. Ovvero verrà inserita nel Front Server o nella sua coda qualora quest'ultimo fosse già occupato;
+\item NewSession: una nuova sessione entra nel sistema. Ovvero verr\'a inserita nel Front Server o nella sua coda qualora quest'ultimo fosse gi\'a occupato;
 \item FS\_Completion: il Front Server evade una richiesta e la invia al Back-End Server;
-\item BES\_Completion: il Back-End Server evade una richiesta. La sessione corrispondente può dunque essere completata del tutto e quindi uscire dal sistema oppure migrare verso il centro Client nel caso in cui il suo numero di richieste sia non nullo.
-\item Client\_Completion: dopo aver passato un certo tempo in fase di “Thinking”, una sessione lascia il centro Client e rientra nel sistema attraverso il ramo di retroazione, quindi è direttamente inserita nella coda del Front Server.
+\item BES\_Completion: il Back-End Server evade una richiesta. La sessione corrispondente pu\'o dunque essere completata del tutto e quindi uscire dal sistema oppure migrare verso il centro Client nel caso in cui il suo numero di richieste sia non nullo.
+\item Client\_Completion: dopo aver passato un certo tempo in fase di “\textit{Thinking}”, una sessione lascia il centro Client e rientra nel sistema attraverso il ramo di retroazione, quindi \'e direttamente inserita nella coda del Front Server.
 \end{itemize}

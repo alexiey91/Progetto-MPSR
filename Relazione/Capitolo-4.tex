@@ -1,25 +1,25 @@
-\chapter{Modello delle specifiche}
-	\label{cap:modellospecifiche}
+\chapter{Modello Progettuale}
+	\label{cap:modelloprogettuale}
 
 \section{Architettura}
-La struttura associata all'Architettura da implementare può essere rappresentata semplicemente come in figura \ref{fig:architettura}
+La struttura associata all'Architettura da implementare pu\'o essere rappresentata semplicemente come in figura \ref{fig:architettura}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{img/architettura.png}
 	\caption[Architettura del sistema]{Rappresentazione grafica dell'architettura del sistema.}
 	\label{fig:architettura}
 	\end{figure}
-All’inizio della simulazione il primo evento che si verifica è sempre l'arrivo di una nuova sessione (evento NewSession).
+All'inizio della simulazione il primo evento che si verifica \'e sempre l'arrivo di una nuova sessione (evento NewSession).
 
-\vspace{0.5cm}I client del centro nel ramo di retroazione sono paralleli ed infiniti.
+\vspace{0.5cm}I client del centro delle sessioni attive, all'interno del ramo di retroazione sono paralleli ed infiniti, definendo un infinity server.
 
-\vspace{0.5cm}Ovviamente i nuovi eventi in arrivo verso il sistema verranno posti in coda al FrontServer, nel caso in cui non possano essere serviti. Come è possibile notare nella figura precedente, la sessione una volta servita dal Front Server verrà posta in coda verso il Back-End Server finché non verrà servita da quest'ultimo. Infine le sessioni saranno completate oppure poste nella zona di "\textit{Thinking}" finché non verranno reinserite nella coda del Front-End in attesa di essere serviti, passando attraverso un ramo di feedback.
+\vspace{0.5cm}Ovviamente i nuovi eventi in arrivo verso il sistema verranno posti in coda al FrontServer, nel caso in cui non possano essere serviti. Come \'e possibile notare nella figura precedente, la sessione una volta servita dal Front Server verr\'a posta in coda verso il Back-End Server finch\'e non verr\'a servita da quest'ultimo. Infine le sessioni saranno completate oppure poste nella zona di "\textit{Thinking}" finch\'e non verranno reinserite nella coda del Front-End in attesa di essere serviti, passando attraverso un ramo di feedback.
  
 \section{Clock di simulazione e schedulazione di  Eventi}
-Nella fase implementativa si tiene conto dell'avanzamento del tempo per mezzo della variabile \textit{current\_time}. Il meccanismo di avanzamento del tempo scelto è il \textit{Next-Event Time Advance}. Questa scelta garantisce che gli eventi occorrano nella sequenza corretta. Si utilizza, inoltre, il flag di \textit{arrivals} per regolare l'accettazione delle nuove sessioni: se impostata a zero vengono inibiti i nuovi arrivi\footnote{Ovvero viene eseguito il drop della sessione in entrata o l'abort se la sessione è già nel sistema}, viceversa si procede normalmente con la simulazione.
+Nella fase implementativa si tiene conto dell'avanzamento del tempo per mezzo della variabile \textit{current\_time}. Il meccanismo di avanzamento del tempo scelto \'e il \textit{Next-Event Time Advance}. Questa scelta garantisce che gli eventi occorrano nella sequenza corretta,ovvero vengono processati in ordine crescente rispetto al tempo di schedulazione. Si utilizza, inoltre, il flag di \textit{arrivals} per regolare l'accettazione delle nuove sessioni: se impostata a zero vengono inibiti i nuovi arrivi\footnote{Ovvero viene eseguito il drop della sessione in entrata o l'abort se la sessione \'e gi\'a nel sistema}, altrimenti si procede normalmente con la simulazione.
 
 \section{Event List}
-Per la gestione degli eventi si utilizza una lista collegata di strutture \textit{Event}, come quella mostrata in figura, salvate in ordine crescente rispetto al tempo. Ogni nodo contiene il tempo di occorrenza e la sua tipologia. Un gestore di eventi è utilizzato per il demultiplexing di tale lista facendo uso di una funzione pop() per ottenere il \textit{Next-Event} da processare.
+Per la gestione degli eventi si utilizza una lista collegata di strutture \textit{Event}, come quella mostrata in figura, salvate in ordine crescente rispetto al tempo. Ogni nodo contiene il tempo di occorrenza e la sua tipologia. Un gestore di eventi \'e utilizzato per il demultiplexing di tale lista facendo uso di una funzione pop() per ottenere il \textit{Next-Event} da processare.
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.5]{img/EventList.png}
@@ -28,15 +28,15 @@ Per la gestione degli eventi si utilizza una lista collegata di strutture \texti
 \end{figure}
 
 \section{Arrival Queue}
-Al fine di ottenere informazioni riguardo i tempi di residenza che le sessioni sperimentano durante la loro permanenza nel sistema, si utilizzano delle strutture dati atte a registrare tali informazioni e ad usarle negli algoritmi del calcolo delle medie. Tali strutture, denominate \textit{ArrivalQueue}, immagazzinano i tempi di arrivo delle sessioni nelle sottosezioni del sistema (ovvero quando una sessione entra nel \textit{Front Server} o nella sua coda, quando entra nel \textit{Back-End Server}, e così via). Ad ogni completamento sperimentato da una sessione viene utilizzata la coda relativa e si calcola, per differenza, il tempo effettivo che la sessione ha passato in quella parte di sistema. Tutto ciò è possibile grazie all'ipotesi che l'ordine di arrivo, all'interno delle code del sistema, è sempre \texttt{preservato} la prima sessione ad entrare nella coda del Front Server, ad esempio, sarà la prima a lasciarlo.
+Al fine di ottenere informazioni riguardo i tempi di attesa che le sessioni sperimentano durante la loro permanenza nel sistema, si utilizzano delle strutture dati atte a registrare tali informazioni ed utilizzate negli algoritmi del calcolo delle medie. Tali strutture, denominate \textit{ArrivalQueue}, immagazzinano i tempi di arrivo delle sessioni nelle sottosezioni del sistema (ovvero quando una sessione entra nel \textit{Front Server} o nella sua coda, quando entra nel \textit{Back-End Server}, e cos\'i via). Ad ogni completamento sperimentato da una sessione viene utilizzata la coda relativa e si calcola, per differenza, il tempo effettivo che la sessione ha passato in quella parte di sistema. Tutto ciò \'e possibile grazie all'ipotesi che l'ordine di arrivo, all'interno delle code del sistema, \'e sempre \texttt{preservato}. Infatti la prima sessione ad entrare nella coda del Front Server, ad esempio, sar\'a la prima a lasciarlo.
 
 \section{Request Queue}
-Dal momento che è impossibile identificare una singola richiesta utilizzando la Next-Event Simulation, il problema di preservare l'informazione riguardante il numero di richieste attive di cui si compone una sessione viene risolto con la struttura dati \textit{Request Queue}. 
+Dal momento che \'e impossibile identificare una singola richiesta utilizzando la Next-Event Simulation, il problema di preservare l'informazione riguardante il numero di richieste attive di cui si compone una sessione viene risolto con la struttura dati \textit{Request Queue}. 
 
-Ad ogni richiesta completata si decrementa il contatore delle richieste relative a quella sessione in modo da propagare tale informazione a tutte le richieste future. Quando il contatore arriva a zero la sessione viene completata del tutto e lascia il sistema.
+Ad ogni richiesta completata si decrementa il contatore delle richieste relative a quella sessione in modo da propagare tale informazione a tutte le richieste future. Quando il contatore arriva a zero la sessione viene completata del tutto e di conseguenza abbandona il sistema.
 
 \section{Client Order List}
-Per preservare una Next-Event Simulation priva di contaminazioni derivanti da una possibile aggiunta di dati identificati delle sessione o delle richieste all'interno degli eventi di base, la Client Order List permette di conservare le informazioni relative all'ordine di arrivo e di uscita  degli utenti all'interno del centro Client. Attraverso questa informazione è possibile gestire il corretto ordine degli elementi della Request Queue nonostante siano condizionati da una mancanza di determinismo circa l'ordine di completamento degli utenti durante il loro periodo di Think Time.
+Per preservare una Next-Event Simulation priva di contaminazioni derivanti da una possibile aggiunta di dati identificati delle sessione o delle richieste all'interno degli eventi di base, la Client Order List permette di conservare le informazioni relative all'ordine di arrivo e di uscita  degli utenti all'interno del centro Client. Attraverso questa informazione \'e possibile gestire il corretto ordine degli elementi della Request Queue nonostante siano condizionati da una mancanza di determinismo circa l'ordine di completamento degli utenti durante il loro periodo di Think Time.
 
 
 \section{Personalizzazione del modello}
@@ -53,7 +53,7 @@ In base alle scelte effettuate dall'utente nella fase di \textit{setup} è possi
 \item \textit{Iperesponenziale}
 \end{itemize}
 
-\noindent \'E poi possibile impostare i parametri riguardanti lo \textit{STOP iniziale, STOP finale e Numero di Run}. Questi parametri sono utilizzati al fine di calcolare il passo\footnote{Per ``passo'' si intende l'incremento unitario dell'istante conclusivo di simulazione durante un insieme di run, nel calcolo del comportamento \textit{steady-state}} di ogni esecuzione mediante la seguente formula:
+\noindent \'E poi possibile impostare i parametri riguardanti lo \textit{STOP iniziale, STOP finale e Numero di Run}. Questi parametri sono utilizzati al fine di calcolare il passo\footnote{Per ``\textit{passo}'' si intende l'incremento unitario dell'istante conclusivo di simulazione durante un insieme di run, nel calcolo del comportamento \textit{steady-state}} di ogni esecuzione mediante la seguente formula:
 
 \begin{center}
  $Step = \frac{Stop Iniziale - Stop Finale}{Numero di Run}$
@@ -61,7 +61,7 @@ In base alle scelte effettuate dall'utente nella fase di \textit{setup} è possi
 
 Giunta una nuova sessione, le richieste vengono accodate nel \textit{Front Server} in attesa di essere processate; effettuato il servizio, ovvero verificatosi un evento \textit{FS\_COMPLETION}, tale richiesta passa successivamente al servizio del \textit{Back-End Server}, al termine del quale si verifica un'occorrenza del tipo \textit{BES\_COMPLETION}. 
 
-A questo punto il simulatore valuta per la suddetta sessione il numero di richieste rimanenti e effettua una scelta: se il numero di richieste di quella sessione è zero allora l'utente esce dal sistema; se, al contrario, così non fosse quest'ultimo attraverserà il ramo di feedback per esaurire le proprie richieste rimanenti.
+A questo punto il simulatore valuta per la suddetta sessione il numero di richieste rimanenti ed effettua una scelta: se il numero di richieste per quella sessione \'e zero allora l'utente esce dal sistema; se, al contrario, cos\'i non fosse quest'ultimo attraverser\'a il ramo di feedback per esaurire le proprie richieste rimanenti.
 
 %%Diagrammi per spiegazioni
 
@@ -104,18 +104,18 @@ Come unico vincolo per il termine della simulazione sono utilizzate due variabil
 Le richieste progettuali hanno sancito la raccolta di alcuni dati definite da alcune \textit{metriche} quali:
 \begin{itemize}
 \item \textbf{Troughput}:
-è l'indice  che misura il totale di sessioni completate nell'unità di tempo. Tale indice viene calcolato attraverso il rapporto tra le sessioni totali processate dal sistema e l'intervallo di tempo necessario per ultimare questo compito.  Il troughput basato sulle sessioni è un ottimo indice per valutare il numero di utenti serviti dal sistema in un intervallo dato risultando una misura sensibile per l'utente finale. Per tener conto della capacità computazionale del sistema data dal numero di singole richieste completate , si è deciso di calcolare anche il troughput basato sulle richieste  attraverso un semplice rapporto tra il totale delle richieste processate dal sistema e l'intervallo di tempo utilizzato nell'eseguirle.
+\'e l'indice  che misura il totale di sessioni completate nell'unit\'a di tempo. Tale indice viene calcolato attraverso il rapporto tra le sessioni totali processate dal sistema e l'intervallo di tempo necessario per ultimare questo compito.  Il troughput basato sulle sessioni \'e un ottimo indice per valutare il numero di utenti serviti dal sistema in un intervallo dato, risultando una misura sensibile per l'utente finale. Per tener conto della capacit\'a computazionale del sistema data dal numero di singole richieste completate, si \'e deciso di calcolare anche il troughput basato sulle richieste  attraverso un semplice rapporto tra il totale delle richieste processate dal sistema e l'intervallo di tempo utilizzato nell'eseguirle.
 
 \item \textbf{Drop Ratio}:
 misura il rapporto tra il totale delle sessioni rifiutate dal sistema ed il numero di sessioni totali che tentano di entrare nel sistema (accettate + rifiutate).
 
 \item \textbf{Abort Ratio}:
-è il rapporto tra le richieste abortite ed il totale di richieste processate dal sistema.
-Questo è dovuto dal fatto che una richiesta può rientrare nel sistema, tuttavia in condizioni di saturazione, tale richiesta non è in grado di poter rientrare all'interno del Front Server, quindi viene appunto abortita.
+\'e il rapporto tra le richieste abortite ed il totale di richieste processate dal sistema.
+Questo \'e dovuto dal fatto che una richiesta pu\'o rientrare nel sistema, tuttavia in condizioni di saturazione, tale richiesta non \'e in grado di poter rientrare all'interno del Front Server, quindi viene appunto abortita.
 
 \item \textbf{Tempo di Risposta del Sistema}:
 viene inteso come la somma del tempo di risposta (Tempo in coda + Tempo di Servizio) del front-end e del back-end.
-In pratica il tempo di risposta è inteso come il tempo che intercorre tra l'uscita di una richiesta dal centro di Client, ovvero la fine del periodo di "\textit{Thinking}" di un dato utente, ed il ritorno di tale richiesta al centro.
+In pratica il tempo di risposta \'e inteso come il tempo che intercorre tra l'uscita di una richiesta dal centro di Client, ovvero la fine del periodo di "\textit{Thinking}" di un dato utente, ed il ritorno di tale richiesta al centro.
 
 
 
@@ -173,14 +173,14 @@ di tempo. Tale indice viene calcolato attraverso il rapporto tra le sessioni tot
 
 \section{Modello Analitico}
 Al fine di prevedere, in linea di massima, i risultati del simulatore, viene elaborato un modello  analitico semplificato per poter studiare il sistema preso in esame.
-Il sistema implementato presenta numerosi vincoli ed una complessità insita nelle specifiche, a tal proposito viene proposto un modello volontariamente e lievemente differente dal caso reale, fornendo un limite inferiore delle prestazioni e degli indici misurati.
+Il sistema implementato presenta numerosi vincoli ed una complessit\'a insita nelle specifiche, a tal proposito viene proposto un modello volontariamente e lievemente differente dal caso reale, fornendo un limite inferiore delle prestazioni e degli indici misurati.
 
-Il sistema esaminato risulta essere interattivo, in quanto avviene uno scambio di richieste tra Client e Server, con un comportamento a rete aperta ( le nuove sessioni possono entrare nel sistema qualora questo non fosse saturo), a tal proposito si è deciso di presentare due modelli differenti tra loro, uno a rete aperta ed uno a rete chiusa. Questi permettono di descrivere in dettaglio la maggior parte degli elementi che costituiscono il sistema stesso.
+Il sistema esaminato risulta essere interattivo, in quanto avviene uno scambio di richieste tra Client e Server, con un comportamento a rete aperta ( le nuove sessioni possono entrare nel sistema qualora questo non fosse saturo), a tal proposito si \'e deciso di presentare due modelli differenti tra loro, uno a rete aperta ed uno a rete chiusa. Questi permettono di descrivere in dettaglio la maggior parte degli elementi che costituiscono il sistema stesso.
 
 \section{Modello semplificato a rete aperta}
 In questo primo modello si ha una rete aperta di Jackson con un tasso di sessioni in
-arrivo pari a $\gamma$ . Si è deciso così, per questioni di semplificazione del modello, di non
-inserire, come componenti, la Priority Queue e il centro di client, in quanto
+arrivo pari a $\gamma$ . Si \'e deciso cos\'i, per questioni di semplificazione del modello, di non
+inserire, come componenti, la Priority Queue e il centro di Client, in quanto
 risultavano di difficile analisi in un modello di rete aperta come quello di Jackson.
 \begin{center}	
 	\begin{figure}[H]
@@ -210,7 +210,7 @@ $\vspace{2mm}$
 
 $\lambda_{1}\gg\mu_{FS}; \lambda_{2}=\mu_{FS} poichè \mu_{BES}\gg\lambda_{1}$
 $\vspace{2mm}$
-Viene quindi calcolato il throughput, ovvero il numero di sessioni che escono dal sistema al secondo:
+ Viene quindi calcolato il throughput, ovvero il numero di sessioni che escono dal sistema al secondo:
 $\vspace{2mm}$
 
 $\lambda_{2} =\frac{\lambda_{2}}{(1-p)}=\frac{\mu_{FS}}{20}\approx\frac{219}{20} richieste/s =X_{sessioni}$
@@ -233,11 +233,11 @@ $dropped=\frac{\#sessioni accettate}{\#totale arrivi}$ $\rightarrow$ $\frac{35-X
 	\end{figure}
 \end{center}
 
-$D_{FS}=0.00456; D_{BES}=0.00117; E[Z]=7s ; N=250$ (in realt\'a il numero aumenta costantemente!)
+$D_{FS}=0.00456; D_{BES}=0.00117; E[Z]=7s ; N=250$ (in realt\'a il numero aumenta costantemente!).
 $\vspace{2cm}\hspace{2mm}$
-$\vspace{2mm}\hspace{2mm}$Anche qui si può calcolare il throughput del sistema, come:
+$\vspace{2mm}\hspace{2mm}$ Anche qui si pu\'o calcolare il throughput del sistema, come:
 $\vspace{2mm}$
-$X = min\{\frac{1}{D_{max}},\frac{N}{D+Z}\}= min\{\frac{1}{D_{FS}},\frac{250}{D_{FS}+D_{BES}+Z}\}=35.685 richieste/s$
+$X = min\{\frac{1}{D_{max}},\frac{N}{D+Z}\}= min\{\frac{1}{D_{FS}},\frac{250}{D_{FS}+D_{BES}+Z}\}=35.685 richieste/s$.
 $\vspace{2mm}$
 Da cui si pu\'o ricavare il lower bound per il tempo medio di risposta.
 $\vspace{2mm}$

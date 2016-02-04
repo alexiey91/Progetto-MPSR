@@ -3,11 +3,11 @@
 In questa fase viene testata la corrispondenza del simulatore con il modello reale. Sono stati effettuati i seguenti controlli:
 
 \begin{itemize}
- \item Saturazione del Front Server: ci sono due concause che portano alla saturazione del Front Server, in primo luogo c'è una enorme differenza tra il tasso di servizio di quest'ultimo e quello del Back-End Server che è circa 3 volte maggiore; inoltre il numero di utenti che stazionano nel centro Client tende a crescere enormemente e tale comportamento influenza l'andamento di richieste in entrata al Front Server che ne determina la congestione.
+ \item Saturazione del Front Server: ci sono due concause che portano alla saturazione del Front Server, in primo luogo c'\'e una enorme differenza tra il tasso di servizio di quest'ultimo e quello del Back-End Server che \'e circa 3 volte maggiore; inoltre il numero di utenti che stazionano nel centro Client tende a crescere enormemente e tale comportamento influenza l'andamento di richieste in entrata al Front Server che ne determina la congestione.
  
- \item La coda del Back-End Server risulta essere quasi sempre vuota poichè è il Front Server che elabora in maniera lenta mentre il tasso di servizio in questo caso è di oltre 800 richieste / secondo; questo non permette la creazione di coda e di conseguenza l'utilizzazione è molto bassa.
+ \item La coda del Back-End Server risulta essere quasi sempre vuota poich\'e \'e il Front Server che elabora in maniera lenta mentre il tasso di servizio in questo caso \'e di oltre 800 richieste / secondo; questo non permette la creazione di coda e di conseguenza l'utilizzazione \'e molto bassa.
  
- \item Il numero di client è notevolmente elevato: questo è dovuto all'elevato Think Time sperimentato dagli utenti, circa 7 secondi a client. Considerando il throughput del sistema ed i tassi di servizio dei due serventi è immediato notare come il numero dei client attivi contemporaneamente tenda a crescere nel tempo. Tale componente è modellato come un Infinite Server.
+ \item Il numero di client \'e notevolmente elevato: questo \'e dovuto all'elevato Think Time sperimentato dagli utenti, circa 7 secondi a client. Considerando il throughput del sistema ed i tassi di servizio dei due serventi \'e immediato notare come il numero dei client attivi contemporaneamente tenda a crescere nel tempo. Tale componente è modellato come un Infinite Server.
  
- \item Nel caso di overload management la percentuale delle connesioni rifiutate e abortite è molto alta arrivando a toccare anche l'87\% nel secondo caso, mentre nel primo è più contenuta, con un massimo che si attesta circa attorno al 30\% per poi oscillare in quell'intorno. Questo perchè il Front Server rappresenta il collo di bottiglia dell'intero sistema.
+ \item Nel caso di overload management la percentuale delle connessioni rifiutate e abortite \'e molto alta arrivando a toccare anche l'87\% nel secondo caso, mentre nel primo \'e pi\'u contenuta, con un massimo che si attesta circa attorno al 30\% per poi oscillare in quell'intorno. Questo perch\'e il Front Server rappresenta il collo di bottiglia dell'intero sistema.
 \end{itemize}
