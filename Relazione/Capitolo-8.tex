@@ -24,15 +24,26 @@ Iperesponenziale;
 parametri:
 \begin{itemize}
  \item \textbf{\textit{Seed}} : indica il seed scelto dall'utente nella fase di setup;
+\begin{comment}
+\item \textbf{\textit{START}} : indica l'inizio della simulazione, ovvero il primo stop.
+\item \textbf{\textit{STOP}}  : indica il termine ultimo della simulazione.
+\end{comment} 
  \item \textbf{\textit{Batch size}} : indica quante sessioni compongono un batch;
- \item \textbf{\textit{Batch number}} : indica quati batch devono essere eseguiti in totale;
+ \item \textbf{\textit{Batch number}} : indica quanti batch devono essere eseguiti in totale;
  \item \textbf{\textit{Threshold}} : indica se l'overload management \'e attivo.
+ \begin{comment}
+ \subitem \textbf{\textit{Batch size}} : indica quante sessioni compongono un batch;
+ \subitem \textbf{\textit{Batch number}} : indica quanti batch devono essere eseguiti in totale;
+ \end{comment}
 \end{itemize}
 
-Per ogni simulazione si \'e scelto di impostare la grandezza del \textit{batch} 
+Per ogni simulazione,che sfrutta l'overload management si \'e scelto di impostare la grandezza del \textit{batch} 
 ed il suo numero di esecuzioni con lo stesso valore in modo da poter effettuare
 un miglior confronto tra i diversi casi. Al termine di ogni \textit{batch} i dati 
 ottenuti dalle metriche considerate vengono salvati su un file ``\textit{csv}''.
 Al termine di tutti i \textit{bach} vengono computati e salvate su file ulteriori 
-informazoni relative all'esecuzione generale, come ad esempio l'autocorrelazione o
+informazioni relative all'esecuzione generale, come ad esempio l'autocorrelazione o
 gli intervalli di confidenza.
+\begin{comment}
+Per quanto riguarda le altre simulazioni non filtrate si è deciso di inserire lo stesso valore per lo \textit{START}, tra tutte le distribuzioni, ed analogamente per lo \textit{STOP}.
+\end{comment}
