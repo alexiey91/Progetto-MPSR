@@ -1,1 +1,40 @@
 \chapter{Analisi dei Risultati} 
+
+I dati relativi agli indici di prestazione di interesse (tempi di risposta e throughput) misurati 
+nelle precedenti fasi di test sono stati in seguito aggregati e visualizzati in forma di grafici. 
+Infatti, in base al tipo di test effettuato, tali grafici si suddividono in due categorie: i grafici di 
+throughput e tempi di risposta del sistema in stato di instabilit\`a (front server sovraccarico) e 
+quelli relativi al sistema in condizione di stazionariet\`a (front server non sovraccarico), ovvero quelli gesiti
+attraverso il meccanismo di overload management.
+
+\section{Sistema senza Overload Management}
+
+\subsection{Response Time}
+
+In questo scenario l’utilizzazione del front-end server \'e praticamente uguale a 1, perci\`o 
+non riesce a completare tutte le richieste entranti, con la inevitabile 
+situazione di veder aumentare indefinitamente la lunghezza della sua coda. Di 
+conseguenza il tempo di risposta del sistema tende a divergere all’aumentare del tempo di 
+simulazione. Il grafico illustrato di seguito mostra tale scenario:
+
+\begin{figure}[H]
+ \centering
+% \includegraphics[scale=0.7]{img/}
+ \caption[Tempi di risposta del sistema instabile]{Tempi di risposta del sistema instabile}
+ \label{fig:Tempi di risposta del sistema instabile}
+\end{figure}
+
+
+\subsection{Autocorrelazione}
+
+\subsection{Useful Throughtput}
+
+\section{Sistema con Overload Management}
+
+\subsection{Response Time}
+
+\subsection{Autocorrelazione}
+
+\subsection{Useful Throughtput}
+
+\subsection{Drop e Aborted Ratio}

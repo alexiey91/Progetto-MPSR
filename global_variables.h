@@ -9,7 +9,7 @@
 #define START               0.0f           // il tempo di inizio
 
 double throughput_sessions, throughput_requests, current_time, prev_time,  FS_utilization, FS_average_utilization;
-double __throughput_sessions, __throughput_requests, __FS_utilization, __FS_average_utilization, prev_batch_time_completition;
+double __throughput_sessions, __throughput_requests, __FS_utilization, __FS_average_utilization, prev_batch_time_completition, __average_res_FS, __average_res_BES;
 int arrivals, threshold_flag;
 long opened_sessions, completed_sessions, requests, dropped, aborted;
 long __opened_sessions, __completed_sessions, __requests, __dropped, __aborted;

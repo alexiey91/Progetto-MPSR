@@ -56,6 +56,8 @@ void initialize() {
     __requests = 0;
     __dropped = 0;
     __aborted = 0;
+    __average_res_FS = 0.0;
+    __average_res_BES = 0.0;
 }
 
 void reset() {
@@ -75,6 +77,8 @@ void reset() {
 }
 
 void compute_statistics() {
+    __average_res_FS += average_res_FS;
+    __average_res_BES += average_res_BES;
     __throughput_sessions += throughput_sessions;
     __throughput_requests += throughput_requests;
     __FS_utilization += FS_utilization;

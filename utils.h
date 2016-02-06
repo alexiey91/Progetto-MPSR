@@ -25,7 +25,7 @@ void print_initial_settings(FILE *g, long long int seed, long bs, long bn) {
 
 void print_system_state_on_file(FILE *g) {
     fprintf(g, "%ld\t%6.16f\t%ld\t%ld\t", current_batch, FS_average_utilization, opened_sessions, requests);
-    fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%6.8f\t", average_res_FS + average_res_BES, throughput_sessions, throughput_requests, (double) requests/opened_sessions);
+    fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%6.8f\t", __average_res_FS + __average_res_BES, throughput_sessions, throughput_requests, (double) requests/opened_sessions);
     fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t%ld\t%6.8f\t\t\n", completed_sessions, ((double) completed_sessions/opened_sessions)*100.0, dropped, ((double)dropped/(dropped+opened_sessions))*100.0, aborted, ((double)aborted/opened_sessions)*100.0);
     fflush(g);
 }
