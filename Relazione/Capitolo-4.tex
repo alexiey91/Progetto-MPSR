@@ -18,7 +18,7 @@ di una nuova sessione (evento NewSession).
 retroazione sono paralleli ed infiniti, definendo un infinity server.
 
 \vspace{0.5cm}I nuovi eventi in arrivo verso il sistema verranno 
-posti in coda al FrontServer, nel caso in cui non possano essere serviti. Come 
+posti in coda al Front Server, nel caso in cui non possano essere serviti. Come 
 \'e visibile dalla figura precedente, la sessione una volta servita dal 
 Front Server verr\`a posta in coda verso il Back-End Server finch\'e non verr\`a 
 servita da quest'ultimo. Infine le sessioni saranno completate oppure poste 
@@ -102,10 +102,28 @@ possibile decidere di avviare la simulazione:
 \item \textit{Iperesponenziale}
 \end{itemize}
 
-\noindent Infinie si devono impostare i parametri riguardanti il \textit{numero di batch}
+\noindent  Infine si devono impostare i parametri riguardanti il \textit{numero di batch}
 e la \textit{grandezza del batch} stesso.
+\begin{comment}
+Nel caso venga scelta l'utilizzo di un approccio senza Overload Management, l'utente sar\'a vincolato nell'inserimento di altri due parametri quali: \textit{\STOP_iniziale}, \textit{\STOP_finale} ed il \textit{Numero di Run}.
+Questi parametri sono utilizzati al fine di calcolare il passo\footnote{Per ``passo'' si intende l'incremento unitario dell'istante conclusivo di simulazione durante un insieme di run, nel calcolo del comportamento \textit{steady-state}} di ogni esecuzione mediante la seguente formula:
 
-%%Diagrammi per spiegazioni
+\begin{center}
+ $Step = \frac{Stop Iniziale - Stop Finale}{Numero di Run}$
+\end{center}
+
+Giunta una nuova sessione, le richieste vengono accodate nel \textit{Front Server} in attesa di essere processate; effettuato il servizio, ovvero verificatosi un evento \textit{FS\_COMPLETION}, tale richiesta passa successivamente al servizio del \textit{Back-End Server}, al termine del quale si verifica un'occorrenza del tipo \textit{BES\_COMPLETION}. 
+
+A questo punto il simulatore valuta per la suddetta sessione il numero di richieste rimanenti e effettua una scelta: se il numero di richieste di quella sessione è zero allora l'utente esce dal sistema; se, al contrario, così non fosse quest'ultimo attraverserà il ramo di feedback per esaurire le proprie richieste rimanenti.
+
+Nel caso in cui l'utente scelga un approccio con Overload Management l'utente dovr\'a impostare manualmente il \textit{numero di batch} e la \textit{grandezza del batch} stesso.
+
+\section{Avvio e fine simulazione}
+Come unico vincolo per il termine della simulazione sono utilizzate due variabili, \textit{START} e \textit{STOP}, che regolano gli orari di apertura e chiusura del sistema.
+
+\noindent Quest'ultimo inizia a schedulare eventi di tipo \textit{NewSession} solo dopo il tempo di \textsc{START} e inibisce tali eventi all'occorrenza del tempo di \textsc{STOP finale}.
+\end{comment}
+
 \section{Algoritmi di Gestioni eventi}
 \subsection{NewSession}
 \begin{figure}[H]

@@ -23,8 +23,14 @@ rilevanti, come throughput e tempo medio di risposta.
 
 \vspace{0.3cm}Il numero di sessioni rifiutate e abortite cresce in maniera 
 consistente con il meccanismo di controllo delle ammissioni.
-
+\begin{comment}
+Nel caso in cui l'utente non utilizzi l'overload management, \'e stato dimostrato che superato il tempo di
+STOP finale, chiamato FIN all'interno del codice, nessuna nuova sessione
+sarebbe stata accettata dal sistema e, successivamente la simulazione
+sarebbe stata interrotta perch\'e la coda tenderebbe a crescere all'infinito.
+\end{comment}
 \vspace{0.3cm}Infine, come ultima verifica, \'e stato dimostrato che superato il 
 numero massimo di sessioni per batch, che l'utente ha inserito manualmente, il sistema passa a simulare il batch
 successivo, e una volta raggiunto il numero massimo di batch, impostati sempre dall'utente, il programma termina
 correttamente la propria esecuzione.
+
