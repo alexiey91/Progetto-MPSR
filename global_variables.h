@@ -9,7 +9,7 @@
 #define START               0.0f           // il tempo di inizio
 
 double throughput_sessions, throughput_requests, current_time, prev_time,  FS_utilization, FS_average_utilization;
-double __throughput_sessions, __throughput_requests, __FS_utilization, __FS_average_utilization, prev_batch_time_completition, __average_res_FS, __average_res_BES;
+double __throughput_sessions, __throughput_requests, __FS_utilization, __FS_average_utilization, prev_batch_time_completition;
 int arrivals, threshold_flag;
 long opened_sessions, completed_sessions, requests, dropped, aborted;
 long __opened_sessions, __completed_sessions, __requests, __dropped, __aborted;
@@ -18,6 +18,12 @@ char visual_flag;
 long batch_size;            // numero di job prima di finire un batch
 long batch_num;             // numero di batch prima di terminare una simulazione
 long current_batch;         // a quale batch sono arrivato
+
+long STOP;                  // a che tempo devo fermare la simulazione
+long STEP;                  // ogni quanto prendere i tempi
+long CURRENT_STOP;
+
+int SIM_TYPE;               // il tipo di simulazione
 
 #include "simulation_type.h"
 #include "event_list.h"

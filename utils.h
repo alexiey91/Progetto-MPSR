@@ -15,17 +15,21 @@ void clear_console() {
 
 void print_initial_settings(FILE *g, long long int seed, long bs, long bn) {
     fprintf(g, "%s\t%lld\t\t%s\t%s\n", "SEED", seed, "FS distribution", simulation_traslator(type));
-    fprintf(g, "%s\t%ld\t\t%s\t%ld\n", "Batch Size", bs, "Total Batch", bn);
+    if(SIM_TYPE == 2) {
+        fprintf(g, "%s\t%ld\t\t%s\t%ld\n", "Batch Size", bs, "Total Batch", bn);
+    } else {
+        fprintf(g, "%s\t%ld\t\t%s\t%ld\n", "Stop time", bs, "Step", bn);
+    }
     fprintf(g, "%s\t%s\t\n\n", "Threshold", (threshold_flag) ? "YES : 85%" : "NONE");
-    fprintf(g, "%s\t%s\t%s\t%s\t", "Current batch", "Util FS", "Sessions", "Requests");
+    fprintf(g, "%s\t%s\t%s\t%s\t", (SIM_TYPE) ? "Current batch" : "Current Stop", "Util FS", "Sessions", "Requests");
     fprintf(g, "%s\t%s\t%s\t%s\t", "Average Response Time", "Throughput (Sessions)", "Throughput (Requests)", "Average Request per Session");
     fprintf(g, "%s\t%s\t%s\t%s\t%s\t%s\t\n\n", "# Completed", "% Completed", "# Dropped", "% Dropped", "# Aborted", "% Aborted");
     fflush(g);
 }
 
 void print_system_state_on_file(FILE *g) {
-    fprintf(g, "%ld\t%6.16f\t%ld\t%ld\t", current_batch, FS_average_utilization, opened_sessions, requests);
-    fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%6.8f\t", __average_res_FS + __average_res_BES, throughput_sessions, throughput_requests, (double) requests/opened_sessions);
+    fprintf(g, "%ld\t%6.16f\t%ld\t%ld\t", (SIM_TYPE) ? current_batch : CURRENT_STOP, FS_average_utilization, opened_sessions, requests);
+    fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%6.8f\t", average_res_FS + average_res_BES, throughput_sessions, throughput_requests, (double) requests/opened_sessions);
     fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t%ld\t%6.8f\t\t\n", completed_sessions, ((double) completed_sessions/opened_sessions)*100.0, dropped, ((double)dropped/(dropped+opened_sessions))*100.0, aborted, ((double)aborted/opened_sessions)*100.0);
     fflush(g);
 }
@@ -41,7 +45,10 @@ void print_final_state(FILE *g) {
 
 void print_system_state(EVENT_TYPE t) {
     printf(":::::::::::::::::::::::::::::: Timer ::::::::::::::::::::::::::::::\n");
-    printf("Current batch.............: %ld of %ld\n", current_batch, batch_num);
+    if(SIM_TYPE)
+        printf("Current batch.............: %ld of %ld\n", current_batch, batch_num);
+    else
+        printf("Current stop..............: %ld of %ld\n", CURRENT_STOP, STOP);
     printf("Current job...............: %ld of %ld\n", completed_sessions, batch_size);
     printf("Current time..............: %6.8f\n", current_time);
     printf("\n");

@@ -56,8 +56,6 @@ void initialize() {
     __requests = 0;
     __dropped = 0;
     __aborted = 0;
-    __average_res_FS = 0.0;
-    __average_res_BES = 0.0;
 }
 
 void reset() {
@@ -77,8 +75,6 @@ void reset() {
 }
 
 void compute_statistics() {
-    __average_res_FS += average_res_FS;
-    __average_res_BES += average_res_BES;
     __throughput_sessions += throughput_sessions;
     __throughput_requests += throughput_requests;
     __FS_utilization += FS_utilization;
@@ -90,13 +86,12 @@ void compute_statistics() {
     __aborted += aborted;
 }
 
-void begin_simulation(FILE *graphic) {
+void begin_simulation_batch(FILE *graphic) {
 
     int i = 0;
     initialize();
     for(current_batch = 1L; current_batch <= batch_num; current_batch++) {
         reset();
-        // fare qualcosa
         while(completed_sessions < batch_size) {
             // fare tutto
             Event *current = pop_event(&ev_list);
@@ -132,6 +127,54 @@ void begin_simulation(FILE *graphic) {
     print_autocorr_on_file(graphic);
     print_ic_on_file(graphic);
 }
+
+void begin_simulation_run(FILE *graphic) {
+    int i = 0;
+    initialize();
+    CURRENT_STOP += STEP;
+    // settare tutte le variabili
+    while(ev_list != NULL) {
+        Event *current = pop_event(&ev_list);
+        current_time = current->time;
+        // Aggiorno tutte le variabili
+        FS_utilization += (current_time - prev_time) * (busy_FS);
+        FS_average_utilization = FS_utilization / current_time;
+        throughput_requests = ((double) requests)/current_time;
+        throughput_sessions = ((double) completed_sessions)/current_time;
+
+        manage_event(current);
+        prev_time = current_time;
+
+        if(current_time >= CURRENT_STOP) {
+            print_system_state_on_file(graphic);
+            set_ic_t_data(throughput_sessions);
+            set_ic_res_data(average_res_FS+average_res_BES);
+            printf("\nSimulation completed! (STEP: %ld)\n", CURRENT_STOP);
+            compute_statistics();
+            if(CURRENT_STOP < STOP)
+                CURRENT_STOP += STEP;
+            if(CURRENT_STOP == STOP)
+                break;
+        }
+
+        if(visual_flag == 'Y' || visual_flag == 'y') {
+            if(i%300 == 0) {
+                clear_console();
+                // Stampo
+                print_system_state(current->type);
+                i=0;
+                usleep(10000);
+            }
+            i++;
+        }
+    }
+    // stampa stato finale
+    print_final_state(graphic);
+    compute_autocorr();
+    print_autocorr_on_file(graphic);
+    print_ic_on_file(graphic);
+}
+
 
 int main (int argc, char *argv[]) {
 
@@ -215,7 +258,7 @@ int main (int argc, char *argv[]) {
             getchar();
             break;
         default:
-            printf("Errore. Nessuna distribuzione per il frontend selezionata.\n");
+            printf("Error. No distribution selected.\n");
             return EXIT_FAILURE;
     }
 
@@ -224,38 +267,92 @@ int main (int argc, char *argv[]) {
 
     PutSeed(SEED);
 
-    printf("Insert simulation parameters:\n");
-    printf("Batch size (b): ");
-    scanf("%ld", &batch_size);
-    getchar();
-    printf("Number of batches (k): ");
-    scanf("%ld", &batch_num);
+    printf("Choose simulation type:\n");
+    printf("1 - Long run simulation\n");
+    printf("2 - Batch simulation ");
+    scanf("%d", &choice);
     getchar();
 
-    printf("The inserted parameters are: %ld %ld\n", batch_size, batch_num);
-    printf("----------------------------------------------------------------------------------------\n\n");
+    switch (choice) {
+        case 1:
+            SIM_TYPE = 0;
+            break;
+        case 2:
+            SIM_TYPE = 1;
+            break;
+        default:
+            printf("Error. No simulation type selected.\n");
+            return EXIT_FAILURE;
+    }
 
-    printf("Would you like to see the \"system state\" during the simulation?\n");
-    printf("Choose [Y/N]:");
-    scanf("%c", &visual_flag);
-    getchar();
-    if(visual_flag == 'Y' || visual_flag == 'y')
-        printf("You choose to displat system state\n");
-    else
-        printf("You choose NOT to displat system state\n");
-    printf("----------------------------------------------------------------------------------------\n\n");
+    if (SIM_TYPE) {
+        printf("Insert simulation parameters:\n");
+        printf("Batch size (b): ");
+        scanf("%ld", &batch_size);
+        getchar();
+        printf("Number of batches (k): ");
+        scanf("%ld", &batch_num);
+        getchar();
 
-    printf("Press ANY key to start simulation\n");
-    getchar();
+        printf("The inserted parameters are: %ld %ld\n", batch_size, batch_num);
+        printf("----------------------------------------------------------------------------------------\n\n");
 
-    //Aprire i file per la simulazione e iniziare a scriverci dentro
-    graphic = open_file();
-    print_initial_settings(graphic, SEED, batch_size, batch_num);
+        printf("Would you like to see the \"system state\" during the simulation?\n");
+        printf("Choose [Y/N]:");
+        scanf("%c", &visual_flag);
+        getchar();
+        if(visual_flag == 'Y' || visual_flag == 'y')
+            printf("You choose to displat system state\n");
+        else
+            printf("You choose NOT to displat system state\n");
+        printf("----------------------------------------------------------------------------------------\n\n");
 
-    begin_simulation(graphic);
+        printf("Press ANY key to start simulation\n");
+        getchar();
 
-    //chiudere i file
-    close_file(graphic);
+        //Aprire i file per la simulazione e iniziare a scriverci dentro
+        graphic = open_file();
+        print_initial_settings(graphic, SEED, batch_size, batch_num);
+
+        begin_simulation_batch(graphic);
+
+        //chiudere i file
+        close_file(graphic);
+    }
+    else {
+        printf("Insert simulation parameters:\n");
+        printf("Stop time: ");
+        scanf("%ld", &STOP);
+        getchar();
+        printf("Step length: ");
+        scanf("%ld", &STEP);
+        getchar();
+
+        printf("The inserted parameters are: %ld %ld\n", STOP, STEP);
+        printf("----------------------------------------------------------------------------------------\n\n");
+
+        printf("Would you like to see the \"system state\" during the simulation?\n");
+        printf("Choose [Y/N]:");
+        scanf("%c", &visual_flag);
+        getchar();
+        if(visual_flag == 'Y' || visual_flag == 'y')
+            printf("You choose to displat system state\n");
+        else
+            printf("You choose NOT to displat system state\n");
+        printf("----------------------------------------------------------------------------------------\n\n");
+
+        printf("Press ANY key to start simulation\n");
+        getchar();
+
+        //Aprire i file per la simulazione e iniziare a scriverci dentro
+        graphic = open_file();
+        print_initial_settings(graphic, SEED, STOP, STEP);
+
+        begin_simulation_run(graphic);
+
+        //chiudere i file
+        close_file(graphic);
+    }
 
     return EXIT_SUCCESS;
 }
