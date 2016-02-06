@@ -1,32 +1,38 @@
-\chapter{Progettazione degli esperimenti} 
+\chapter{Progettazione Esperimenti e Simulazioni} 
+
+Tutte le simulazione sono state effettuate su diversi computer, sia Pc desktop 
+che notebook, sfruttando la portabilit\`a del software in modo tale da generare 
+i dati sia su sistemi operativi \textit{Windows} che \textit{Linux}. La 
+simulazione viene testata con parametri inseriti dall'utente manualmente, 
+permettendo una facile impostazione del programma.
+Sono state sfruttate macchine aventi processori multi-core al fine di eseguire 
+pi\`u esecuzioni in parallelo.
 
 \noindent Gli esperimenti eseguiti sono stati i seguenti:
 
 \begin{enumerate}
- \item Simulazione del sistema quando il Front Server ha distribuzione esponenziale;
- \item Simulazione del sistema quando il Front Server ha distribuzione 10-Erlang;
- \item Simulazione del sistema quando il Front Server ha distribuzione Iperesponenziale;
- \item Simulazione del sistema quando il Front Server ha distribuzione 10-Erlang con soglia di utilizzazione pari all'85\%.
+ \item Simulazione del sistema quando il Front Server ha distribuzione 
+esponenziale;
+ \item Simulazione del sistema quando il Front Server ha distribuzione 
+10-Erlang;
+ \item Simulazione del sistema quando il Front Server ha distribuzione 
+Iperesponenziale;
+ \item Simulazione del sistema nel caso peggiore tra i precedenti con overload management attivo.
 \end{enumerate}
 
-\noindent \vspace{0.5cm} Gli esperimenti sono stati basati sui seguenti parametri:
+\noindent \vspace{0.5cm} Gli esperimenti sono stati basati sui seguenti 
+parametri:
 \begin{itemize}
- \item SEED : indica il seed scelto dall'utente nella fase di setup;
- \item TIME : durata della simulazione, ovvero lo STOP finale;
- \item STEP : indica ogni quanto tempo vengono calcolate le statistiche;
- \item THRESHOLD : indica se l'overload manager \'e attivo.
+ \item \textbf{\textit{Seed}} : indica il seed scelto dall'utente nella fase di setup;
+ \item \textbf{\textit{Batch size}} : indica quante sessioni compongono un batch;
+ \item \textbf{\textit{Batch number}} : indica quati batch devono essere eseguiti in totale;
+ \item \textbf{\textit{Threshold}} : indica se l'overload management \'e attivo.
 \end{itemize}
 
-\begin{table}[H]
- \centering
- \begin{tabular}{|c|c|c|c|}
- \hline
- SEED & TIME & STEP & THRESHOLD\\ \hline
- 1 & 5 & 7 & 9 \\ \hline
- 1 & 5 & 7 & 9 \\ \hline
- 1 & 5 & 7 & 9 \\ \hline
- \end{tabular}
-\end{table}
-
-
-Per Ogni simulazione si \'e scelto di salvare su file i parametri necessari all'elaborazione dei risultati ogni 100 secondi, per valutare quando il sistema entra in uno stato stazionario e per vedere l'evolversi della situazione nel tempo. Al superamento dell'istante di STOP la simulazione viene interrotta, senza attendere che la coda risulti vuota poich\'e crescendo esponenzialmente i tempi per farla svuotare sarebbero talmente alti da rendere la simulazione non pi\'u reale.
+Per ogni simulazione si \'e scelto di impostare la grandezza del \textit{batch} 
+ed il suo numero di esecuzioni con lo stesso valore in modo da poter effettuare
+un miglior confronto tra i diversi casi. Al termine di ogni \textit{batch} i dati 
+ottenuti dalle metriche considerate vengono salvati su un file ``\textit{csv}''.
+Al termine di tutti i \textit{bach} vengono computati e salvate su file ulteriori 
+informazoni relative all'esecuzione generale, come ad esempio l'autocorrelazione o
+gli intervalli di confidenza.
