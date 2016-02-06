@@ -60,7 +60,7 @@ immagazzinano i tempi di arrivo delle sessioni nelle sottosezioni del sistema
 quando entra nel \textit{Back-End Server}, e cos\`i via). Ad ogni completamento 
 sperimentato da una sessione viene utilizzata la coda relativa e si calcola, per 
 differenza, il tempo effettivo che la sessione ha passato in quella parte di 
-sistema. Tutto ci\o \'e possibile grazie all'ipotesi che l'ordine di arrivo, 
+sistema. Tutto ci\`o \'e possibile grazie all'ipotesi che l'ordine di arrivo, 
 all'interno delle code del sistema, \'e sempre \texttt{preservato}. Infatti la 
 prima sessione ad entrare nella coda del Front Server, ad esempio, sar\`a la 
 prima a lasciarlo.
@@ -77,11 +77,11 @@ future. Quando il contatore arriva a zero la sessione viene completata del tutto
 e di conseguenza abbandona il sistema.
 
 \section{Client Order List}
-Per preservare una Next-Event Simulation priva di contaminazioni derivanti da 
-una possibile aggiunta di dati identificati delle sessione o delle richieste 
-all'interno degli eventi di base, la Client Order List permette di conservare le 
-informazioni relative all'ordine di arrivo e di uscita  degli utenti all'interno 
-del centro Client. Attraverso questa informazione \`e possibile gestire il 
+Per preservare una Next-Event Simulation priva di contaminazioni derivanti dall'
+aggiunta di dati identificanti le sessione o le richieste all'interno degli eventi di base, 
+la Client Order List permette di conservare le 
+informazioni relative all'ordine di arrivo e di uscita degli utenti all'interno 
+del centro Client. Attraverso questa informazione \'e possibile gestire il 
 corretto ordine degli elementi della Request Queue nonostante siano condizionati 
 da una mancanza di determinismo circa l'ordine di completamento degli utenti 
 durante il loro periodo di Think Time.
@@ -95,15 +95,15 @@ possibile decidere di avviare la simulazione:
 \item con \textbf{Overload Management}
 \end{itemize}
  
-\noindent È possibile scegliere quale distribuzione utilizzare tra:
+\noindent \'E inoltre possibile scegliere quale distribuzione utilizzare tra:
 \begin{itemize}
 \item \textit{Esponenziale}
 \item \textit{10-Erlang}
 \item \textit{Iperesponenziale}
 \end{itemize}
 
-\noindent \'E poi possibile impostare i parametri riguardanti il \textit{numero di batch}
-e la \textit{grandezza del batch}.
+\noindent Infinie si devono impostare i parametri riguardanti il \textit{numero di batch}
+e la \textit{grandezza del batch} stesso.
 
 %%Diagrammi per spiegazioni
 \section{Algoritmi di Gestioni eventi}
@@ -139,20 +139,24 @@ e la \textit{grandezza del batch}.
 \end{figure}
 
 \section{Indici di prestazioni}
-Le richieste progettuali hanno sancito la raccolta di alcuni dati definite da 
-alcune \textit{metriche} quali:
+Il simulatore qui utilizzato genera un insieme di statistiche che permettono di ricavare 
+informazioni utili per comprendere il comportamento del sistema.
+\vspace{0.5cm}
+\noindent Gli indici di prestazione calcolati sono:
 \begin{itemize}
-\item \textbf{Troughput}:
-\'e l'indice  che misura il totale di sessioni completate nell'unit\`a di tempo. 
+\item \textbf{Useful Troughput}:
+indica il totale delle sessioni completate nell'unit\`a di tempo. 
 Tale indice viene calcolato attraverso il rapporto tra le sessioni totali 
 processate dal sistema e l'intervallo di tempo necessario per ultimare questo 
 compito. Il troughput basato sulle sessioni \'e un ottimo indice per valutare 
 il numero di utenti serviti dal sistema in un intervallo dato, risultando una 
-misura sensibile per l'utente finale. Per tener conto della capacit\`a 
-computazionale del sistema data dal numero di singole richieste completate, si 
-\'e deciso di calcolare anche il troughput basato sulle richieste attraverso un 
-semplice rapporto tra il totale delle richieste processate dal sistema e 
-l'intervallo di tempo utilizzato nell'eseguirle.
+misura sensibile per l'utente finale.
+
+\item \textbf{Tempo di Risposta del Sistema}:
+viene inteso come la somma del tempo di risposta: Tempo in coda + Tempo di 
+Servizio.
+In pratica il tempo di risposta \'e inteso come il tempo che intercorre tra l'istante in cui una
+richiesta entra nel Front Server e l'uscita della stessa dal Back-End Server.
 
 \item \textbf{Drop Ratio}:
 misura il rapporto tra il totale delle sessioni rifiutate dal sistema ed il 
@@ -162,15 +166,8 @@ rifiutate).
 \item \textbf{Abort Ratio}:
 \'e il rapporto tra le richieste abortite ed il totale di richieste processate 
 dal sistema.
-Questo \'e dovuto dal fatto che una richiesta pu\`o rientrare nel sistema, 
+Questo \'e dovuto al fatto che una richiesta pu\`o rientrare nel sistema, 
 tuttavia in condizioni di saturazione, tale richiesta non \`e in grado di poter 
 rientrare all'interno del Front Server, quindi viene appunto abortita.
 
-\item \textbf{Tempo di Risposta del Sistema}:
-viene inteso come la somma del tempo di risposta (Tempo in coda + Tempo di 
-Servizio) del front-end e del back-end.
-In pratica il tempo di risposta \'e inteso come il tempo che intercorre tra 
-l'uscita di una richiesta dal centro di Client, ovvero la fine del periodo di 
-"\textit{Thinking}" di un dato utente, ed il ritorno di tale richiesta al 
-centro.
 \end{itemize}

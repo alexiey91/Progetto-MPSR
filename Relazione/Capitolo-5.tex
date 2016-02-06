@@ -8,7 +8,8 @@ Il software sviluppato \'e codificato con il linguaggio \textit{C}.
 \section{Simulatore.c}
 
 Questo applicativo \'e il cuore del simulatore implementato. Tale programma 
-sfrutta un'interfaccia testuale per interrogare l'utente circa la configurazione 
+sfrutta un'interfaccia testuale per interrogare l'utente circa la 
+configurazione 
 da adottare per la simulazione da eseguire. 
 \'E possibile selezionare diverse opzioni:
 \begin{itemize}
@@ -25,74 +26,76 @@ dei dati ottenuti.
 
 \section{Event List}
 La lista di eventi \'e costituita da strutture di tipo \textit{Event}, formate 
-da un campo di tipo \textit{double}, che indica il time che rappresenta il tempo 
-di occorrenza, un \textit{\_EVENT\_TYPE} type rappresentante il tipo di evento 
+da un campo di tipo \textit{double}, che rappresenta il tempo 
+di occorrenza dell'evento, un \textit{\_EVENT\_TYPE} che identifica il tipo di 
+evento 
 ed un puntatore \textit{next} alla struttura seguente.
 Per merito della funzione \textbf{add\_event()} \'e possibile aggiungere eventi 
 alla lista. Verranno inseriti seguendo un ordinamento crescente rispetto alla 
 variabile time. Durante l'inserimento dei dati viene effettuato un controllo 
-sulla consistenza degli stessi, cioè si controlla, con una funzione 
+sulla consistenza degli stessi, cio\'e si controlla, con una funzione 
 \textbf{event\_check()}, che il tempo sia un valore positivo e che il tipo di 
-evento sia compreso tra 0 e 3.
+evento appartenga all'insieme degli eventi noti (es: \texttt{nuova sessione}, 
+\texttt{fs completition}, ...).     
 Gli eventi vengono estratti dalla struttura attraverso la funzione 
-\textbf{pop\_event()}, che preleva l'elemento in testa alla lista, restituendolo 
+\textbf{pop\_event()}, che preleva l'elemento in testa alla lista, 
+restituendolo 
 alla funzione chiamante.
 
-\section{Arrival queue}
-La coda di arrivi contiene la struttura di dati di riferimento, che permette la 
-gestione degli arrivi nei vari centri quali: \textit{Front Server}, 
-\textit{Back-End Server} e \textit{Centro Client}. La coda viene rappresentata 
-con una semplice struttura dati formata da un tempo di arrivo e un puntatore 
-all'elemento successivo. Le funzioni messe a disposizione per questa struttura 
-di dati sono: \textit{arrival\_add()}, \textit{arrival\_pop()} e 
-l'\textit{arrival\_print()}.
-\begin{itemize}
-\item \textbf{arrival\_add()}: genera un nuovo elemento contenente il tempo di 
-arrivo in un determinato centro, scorre tutto il contenuto della lista generata, 
-posizionando il nuovo nodo in fondo alla coda.
-\item \textbf{arrival\_pop()}: permette l'estrazione dell'elemento meno recente 
-della coda.
-\item \textbf{arrival\_print()}: stampa lo stato della coda.
-\end{itemize}
+\section{Arrival Queue}
+Definisce una struttura dati, utilizzata per modellare le code sia del Front Server
+che del Back-End Server. Ogni coda associata ad un centro si compone di un tempo di arrivo e un puntatore all'elemento successivo. 
+Le funzioni messe a disposizione per questa struttura dati sono: 
+l'\textit{arrival\_add()} che aggiunge un nuovo elemento posizionandolo in fondo alla coda, l'\textit{arrival\_pop()} 
+che permette l'estrazione dell'elemento in testa e l'\textbf{arrival\_print()} che stampa lo stato della coda.
 
-\section{Request queue}
-Questa coda si basa sul concetto di richiesta: ogni sessione, una 
-volta ammessa all'interno del sistema, definisce un numero di richieste compreso 
-tra 5 e 35. Questa informazione viene inserita all'interno della coda delle 
-richieste in modo da poter sfruttare i dati generati, per modellare gli utenti 
-attivi durante la simulazione.
-Sfruttando la funzione \textbf{enqueue\_req()} \'e possibile inserire tutte le 
-richieste generate dalla nuova sessione vigente. Per poter rimuovere tale dato 
-\'e possibile  utilizzare la \textbf{dequeue\_req()}.
-Per verificare l'andamento di tale struttura dati \'e stata implementata la 
-funzione \textbf{print\_req()}.
+\section{Request Queue}
+Il sistema all'arrivo di una nuova sessione genera in maniera random,
+con distribuzione esponenziale, un numero di richieste comprese tra 5 e 35.
+Per evitare di memorizzare tale informazione all'interno della sessione stessa
+\'e stata creata, questa struttura dati adibita a raccogliere tali parametri.
+Non appena la sessione arriva nel primo centro, ossia il Front Server, il dato 
+contenente il numero di richieste associate, viene inserito in questa coda tramite la funzione 
+\textbf{enqueue\_req()}. Quando invece la sessione esce dal Back-End Server è necessario
+l'utilizzo della funzione di \textbf{dequeue\_req()} poichè questa informazione non verrà pi\`u
+memorizzata in questa lista, ma verrà salvata in una diversa struttura, nel caso la sessione non sia completata.
+Per verificarne la consisenza \'e stata implementata la funzione \textbf{print\_req()}.
 
 \section{Client request}
-Qui \'e implementa una struttura dati in grado di propagare 
-l'informazione circa il numero di richieste relative ad una sessione. Viene 
-impiegata all'ingresso e all'uscita dal centro di client in quanto 
-l'ordine di entrata \'e differente da quello di uscita.
+Questa struttura dati ci viene in aiuto nel momento in cui la sessione 
+esce dal Back-End Server per entrare nel centro di client. In questo caso 
+infatti non vengono pi\`u utilizzate le strutture precedentemente descritte,
+quali \textit{Request Queue} e \textit{Arrival Queue}, per modellare il comportamento 
+del sistema, poichè durante la fase di ``thinking'' l'ordine di entrata delle sessioni 
+non corrisponde a quello di uscita. Di conseguenza \'è stata creata questa struttura,
+che al suo interno contiene sia il tempo di arrivo della sessione nel centro, sia il numero
+di richieste rimanenti al suo completamento, per garantire una corretta corrispondenza tra la sessione ed il suo numero di richieste.
 Le funzioni di cui dispone questa struttura, sono: 
 \textbf{add\_client\_req()}, \textbf{pop\_ClientReq()} e 
-\textbf{print\_client\_req()}, esattamente identiche a quelle delle strutture precedenti
+\textbf{print\_client\_req()}, esattamente identiche a quelle delle strutture 
+precedenti.
 
 \section{File Manager}
 La parte relativa al file manager gestisce tutto il flusso di dati da 
 trascrivere  su un file di output. Composto da tre funzioni:
 \begin{itemize}
-\item \textbf{get\_date()}: permette di ottenere l'orario e la data correnti, da 
+\item \textbf{get\_date()}: permette di ottenere l'orario e la data correnti, 
+da 
 salvare sul file desiderato.
 \item \textbf{open\_file()}: utilizzata per la creazione e l'apertura 
 del file da salvare. Il nome del file viene creato utilizzato la funzione 
-\textbf{get\_date()}, quindi contiene la data corrente della creazione più il tipo di 
+\textbf{get\_date()}, quindi contiene la data corrente della creazione più il 
+tipo di 
 distribuzione scelta durante la fase di setting.
 \item \textbf{close\_file()}: adottata per chiudere il file una volta 
 terminata la scrittura su di esso.
 \end{itemize}
 
 \section{Utils}
-Il file \textbf{utils.h} contiene delle funzioni utilizzate per la pulizia della console 
-e alcune funzioni per la manipolazione dei dati ottenuti al termine della simulazione.
+Il file \textbf{utils.h} contiene delle funzioni utilizzate per la pulizia della 
+console 
+e alcune funzioni per la manipolazione dei dati ottenuti al termine della 
+simulazione.
 
 \begin{comment}
 \section{Autocorrelazione}
@@ -105,7 +108,8 @@ autocorrelazioni. Per il calcolo di queste si \'e usata la formula:
 \begin{center} $r_{j} = \frac{c_{j}}{c_{0}} con j = 1,2,...20$\end{center}
 
 \section{Intervalli di confidenza}
-\'E stato sviluppato un programma scritto in linguaggio \textbf{C} allo scopo di 
+\'E stato sviluppato un programma scritto in linguaggio \textbf{C} allo scopo 
+di 
 calcolare gli intervalli di confidenza di livello 1 - \textalpha, dove 
 \textalpha è pari al 5\%. Tale programma prende in input un file in cui sono 
 scritti tutti i valori su cui si vuole fare il calcolo e computa le seguenti 
