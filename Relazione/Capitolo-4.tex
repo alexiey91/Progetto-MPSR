@@ -102,27 +102,12 @@ possibile decidere di avviare la simulazione:
 \item \textit{Iperesponenziale}
 \end{itemize}
 
-\noindent  Infine si devono impostare i parametri riguardanti il \textit{numero di batch}
-e la \textit{grandezza del batch} stesso.
-\begin{comment}
-Nel caso venga scelta l'utilizzo di un approccio senza Overload Management, l'utente sar\'a vincolato nell'inserimento di altri due parametri quali: \textit{\STOP_iniziale}, \textit{\STOP_finale} ed il \textit{Numero di Run}.
-Questi parametri sono utilizzati al fine di calcolare il passo\footnote{Per ``passo'' si intende l'incremento unitario dell'istante conclusivo di simulazione durante un insieme di run, nel calcolo del comportamento \textit{steady-state}} di ogni esecuzione mediante la seguente formula:
-
-\begin{center}
- $Step = \frac{Stop Iniziale - Stop Finale}{Numero di Run}$
-\end{center}
-
-Giunta una nuova sessione, le richieste vengono accodate nel \textit{Front Server} in attesa di essere processate; effettuato il servizio, ovvero verificatosi un evento \textit{FS\_COMPLETION}, tale richiesta passa successivamente al servizio del \textit{Back-End Server}, al termine del quale si verifica un'occorrenza del tipo \textit{BES\_COMPLETION}. 
-
-A questo punto il simulatore valuta per la suddetta sessione il numero di richieste rimanenti e effettua una scelta: se il numero di richieste di quella sessione è zero allora l'utente esce dal sistema; se, al contrario, così non fosse quest'ultimo attraverserà il ramo di feedback per esaurire le proprie richieste rimanenti.
-
-Nel caso in cui l'utente scelga un approccio con Overload Management l'utente dovr\'a impostare manualmente il \textit{numero di batch} e la \textit{grandezza del batch} stesso.
-
-\section{Avvio e fine simulazione}
-Come unico vincolo per il termine della simulazione sono utilizzate due variabili, \textit{START} e \textit{STOP}, che regolano gli orari di apertura e chiusura del sistema.
-
-\noindent Quest'ultimo inizia a schedulare eventi di tipo \textit{NewSession} solo dopo il tempo di \textsc{START} e inibisce tali eventi all'occorrenza del tempo di \textsc{STOP finale}.
-\end{comment}
+\noindent Successivamente l'utente pu\`o scegliere se effettuare un test con
+il metodo dei batch means oppure un'unica lunga simulazione. Se viene scelto
+il primo metodo verr\`a chiesto di inserire i parametri riguardanti il \textit{numero di batch}
+e la \textit{grandezza del batch} stesso; altrimenti sar\`a necessario inserire altri dati, quali,
+l'istante finale della simulazione, ossia lo \textit{STOP}, e ogni quanto tempo campionare i dati
+durante il ``run'', ovvero lo \textit{STEP}.
 
 \section{Algoritmi di Gestioni eventi}
 \subsection{NewSession}

@@ -34,9 +34,18 @@ void print_system_state_on_file(FILE *g) {
     fflush(g);
 }
 
-void print_final_state(FILE *g) {
+void print_final_state_batch(FILE *g) {
     fprintf(g, "\n");
     fprintf(g, "%s\t%6.16f\t%ld\t%ld\t", "Final Statistics", __FS_average_utilization/batch_num, __opened_sessions/batch_num, __requests/batch_num);
+    fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%6.8f\t", average_res_FS + average_res_BES, __throughput_sessions, __throughput_requests, (double)__requests/__opened_sessions);
+    fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t%ld\t%6.8f\t\t\n", __completed_sessions, ((double)__completed_sessions/__opened_sessions)*100.0, __dropped, ((double)__dropped/(__dropped+__opened_sessions))*100.0, __aborted, ((double)__aborted/__opened_sessions)*100.0);
+    fprintf(g, "%s\t%6.8f\n", "ELAPSED TIME:", current_time);
+    fflush(g);
+}
+
+void print_final_state_run(FILE *g) {
+    fprintf(g, "\n");
+    fprintf(g, "%s\t%6.16f\t%ld\t%ld\t", "Final Statistics", __FS_average_utilization/STOP, __opened_sessions/STOP, __requests/STOP);
     fprintf(g, "%6.8f\t%6.8f\t%6.8f\t%6.8f\t", average_res_FS + average_res_BES, __throughput_sessions, __throughput_requests, (double)__requests/__opened_sessions);
     fprintf(g, "%ld\t%6.8f\t%ld\t%6.8f\t%ld\t%6.8f\t\t\n", __completed_sessions, ((double)__completed_sessions/__opened_sessions)*100.0, __dropped, ((double)__dropped/(__dropped+__opened_sessions))*100.0, __aborted, ((double)__aborted/__opened_sessions)*100.0);
     fprintf(g, "%s\t%6.8f\n", "ELAPSED TIME:", current_time);

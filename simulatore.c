@@ -122,7 +122,7 @@ void begin_simulation_batch(FILE *graphic) {
         compute_statistics();
     }
     // stampa stato finale
-    print_final_state(graphic);
+    print_final_state_batch(graphic);
     compute_autocorr();
     print_autocorr_on_file(graphic);
     print_ic_on_file(graphic);
@@ -151,10 +151,10 @@ void begin_simulation_run(FILE *graphic) {
             set_ic_res_data(average_res_FS+average_res_BES);
             printf("\nSimulation completed! (STEP: %ld)\n", CURRENT_STOP);
             compute_statistics();
-            if(CURRENT_STOP < STOP)
-                CURRENT_STOP += STEP;
             if(CURRENT_STOP == STOP)
                 break;
+            if(CURRENT_STOP < STOP)
+                CURRENT_STOP += STEP;
         }
 
         if(visual_flag == 'Y' || visual_flag == 'y') {
@@ -169,7 +169,7 @@ void begin_simulation_run(FILE *graphic) {
         }
     }
     // stampa stato finale
-    print_final_state(graphic);
+    print_final_state_run(graphic);
     compute_autocorr();
     print_autocorr_on_file(graphic);
     print_ic_on_file(graphic);
@@ -269,7 +269,7 @@ int main (int argc, char *argv[]) {
 
     printf("Choose simulation type:\n");
     printf("1 - Long run simulation\n");
-    printf("2 - Batch simulation ");
+    printf("2 - Batch simulation \n");
     scanf("%d", &choice);
     getchar();
 
@@ -330,7 +330,8 @@ int main (int argc, char *argv[]) {
 
         printf("The inserted parameters are: %ld %ld\n", STOP, STEP);
         printf("----------------------------------------------------------------------------------------\n\n");
-
+        if(STOP < STEP)
+            STOP = STEP;
         printf("Would you like to see the \"system state\" during the simulation?\n");
         printf("Choose [Y/N]:");
         scanf("%c", &visual_flag);
