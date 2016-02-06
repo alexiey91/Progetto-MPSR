@@ -2,8 +2,8 @@
 	\label{cap:modelloprogettuale}
 
 \section{Architettura}
-La struttura associata all'Architettura da implementare pu\`o essere 
-rappresentata semplicemente come in figura \ref{fig:architettura}
+Il diagramma del sistema da implementare pu\`o essere 
+rappresentato semplicemente come in figura \ref{fig:architettura}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{img/architettura.png}
@@ -17,7 +17,7 @@ di una nuova sessione (evento NewSession).
 \vspace{0.5cm}I client del centro delle sessioni attive, all'interno del ramo di 
 retroazione sono paralleli ed infiniti, definendo un infinity server.
 
-\vspace{0.5cm}Ovviamente i nuovi eventi in arrivo verso il sistema verranno 
+\vspace{0.5cm}I nuovi eventi in arrivo verso il sistema verranno 
 posti in coda al FrontServer, nel caso in cui non possano essere serviti. Come 
 \'e visibile dalla figura precedente, la sessione una volta servita dal 
 Front Server verr\`a posta in coda verso il Back-End Server finch\'e non verr\`a 
@@ -60,7 +60,7 @@ immagazzinano i tempi di arrivo delle sessioni nelle sottosezioni del sistema
 quando entra nel \textit{Back-End Server}, e cos\`i via). Ad ogni completamento 
 sperimentato da una sessione viene utilizzata la coda relativa e si calcola, per 
 differenza, il tempo effettivo che la sessione ha passato in quella parte di 
-sistema. Tutto ciò \'e possibile grazie all'ipotesi che l'ordine di arrivo, 
+sistema. Tutto ci\o \'e possibile grazie all'ipotesi che l'ordine di arrivo, 
 all'interno delle code del sistema, \'e sempre \texttt{preservato}. Infatti la 
 prima sessione ad entrare nella coda del Front Server, ad esempio, sar\`a la 
 prima a lasciarlo.

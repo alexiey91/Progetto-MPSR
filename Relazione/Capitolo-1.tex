@@ -5,11 +5,10 @@ Il progetto si pone di testare il noto generatore pseudo-casuale di numeri
 random di Lehmer utilizzando, a tale scopo, uno dei test di casualit\'a 
 illustrati nel libro \textit{Discrete-Event Simulation: A first course}.
 All'interno del progetto si \'e scelto di utilizzare la versione del generatore
-fornita come libreria C dallo stesso libro, \'e stato quindi creato un programma C
-che si interfaccia con tali librerie, tramite chiamate alle API della libreria 
+fornita come libreria C dallo stesso libro, \'e stato quindi creato un programma che si interfaccia con tali librerie, tramite chiamate alle API della libreria 
 stessa,
-che serva a testare la effettiva correttezza di tale implementazione.
-Al fine di comprendere al meglio i risultati ottenuti verranno anche
+che serva a testare l'effettiva correttezza di tale implementazione.
+Al fine di comprendere al meglio i risultati ottenuti, verranno anche
 presentati dei grafici riassuntivi del test effettuato.
 
 \section{Funzionamento}
@@ -27,12 +26,12 @@ compreso tra 1 ed $m-1$.
 
 \begin{center} $x_{i+1} = ax_{i} mod m$ \end{center}
 
-\noindent Questa sequenza parte da un numero $x_{0}$ detto seed, anch'esso 
+\noindent Questa sequenza parte da un numero $x_{0}$ detto \textbf{seed}, anch'esso 
 scelto tra 1 ed $m-1$. Non tutte le combinazioni di a ed m per\'o sono ottimali 
 per realizzare una sequenza di numeri che garantiscano una buona randomicit\`a. 
 Per verificare dunque se un seed e un moltiplicatore garantiscono un buon 
 livello di 
-randomicit\`a esistono dei test empirici, nel capitolo successivo tale generatore 
+randomicit\`a esistono dei test empirici. Nel paragrafo successivo tale generatore 
 verr\`a sottoposto ad uno di questi.
 
 \section{Test degli estremi}
@@ -106,13 +105,13 @@ funzione:
       v /= e_x;
 \end{verbatim}
 
-I valori critici $v_1^{*}$ e $v_2^{*}$ vengono calcolate utilizzando la funzione inversa 
+I valori critici $v_1^{*}$ e $v_2^{*}$ vengono calcolati utilizzando la funzione inversa 
 \textit{idfChisquare(long n, double u)}  fornita dalla libreria rvms.c del libro di 
 testo. Bisogna precisare che per il calcolo 
 di tali variabili statistiche \'e stato scelto un livello di confidenza con 
 parametro $\alpha$ = 0.05, mentre i parametri N e K sono rispettivamente N = 100000 
 e K = N/20 = 5000.
-Successivamente si confronta la statistica chi-quadro v, determinata al passo 
+Successivamente si confronta la statistica chi-quadro \textit{v}, determinata al passo 
 precedente, con i valori critici  $v_1^{*}$ e $v_2^{*}$ , per ogni stream (in totale sono 256 
 variabili chi-quadro $v$ ).
 Se $v < v_1^{*}$ o $v > v_2^{*}$ il test fallisce (per quello stream) con probabilit\'a $1 - 
@@ -130,9 +129,12 @@ Se $v < v_1^{*}$ o $v > v_2^{*}$ il test fallisce (per quello stream) con probab
 
 \vspace{0.5cm}
 I valori critici sono visualizzati come linee orizzontali: quella inferiore rappresenta
-$v_1^{*}$ = 4804.92 mentre quella superiore è $v_2^{*}$ = 5196.86
+$v_1^{*}$ = 4804.92 mentre quella superiore è $v_2^{*}$ = 5196.86.
 
-Dalla simulazione effettuata si \'e notato che il numero di test statistici $v > v_2^{*}$ sono stati esattamente 7, come il numero di test $v < v_1^{*}$. Di seguito \'e riportato l'output del programma:
+Dalla simulazione effettuata si \'e notato che il numero di test statistici $v > v_2^{*}$ sono stati esattamente 7, come il numero di test $v < v_1^{*}$.
+
+\vspace{0.5cm}
+Di seguito \'e riportato l'output del programma:
 
 \begin{figure}[H]
   \begin{center}
@@ -144,5 +146,5 @@ Dalla simulazione effettuata si \'e notato che il numero di test statistici $v >
 
 Considerando il numero totale di test falliti (\textit{upper} e \textit{lower bound}) pari a 14, si nota che non
 ci si discosta molto rispetto al valore atteso approssimato; infatti in 256 test con un livello di
-confidenza del 95\% il valore aspettato è circa 256 * 0.05 = 13 fallimenti. Questo valore pu\`o 
+confidenza del 95\% il valore atteso è circa 256 * 0.05 = 13 fallimenti. Questo valore pu\`o 
 essere una indicazione della bont\`a del generatore di Lehmer implementato.

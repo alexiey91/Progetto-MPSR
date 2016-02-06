@@ -39,18 +39,13 @@ esecuzioni.
 \section{Variabili di Stato}
 Il sistema \'e descritto completamente dalle seguenti variabili di stato:
 \begin{itemize}
-\item $busy_{fs}^{}$= stato di occupazione del Front Server
+
 \item $queue\_length_{fs}^{}$= numero di richieste nella coda del Front Server
-\item $busy\_{bes}^{}$= stato di occupazione nella coda del Back-End Server
+
 \item $queue\_length_{bes}^{}$= numero di richieste nella coda del Back-End 
 Server
 \item $client\_counter$= numero di client attivi in un dato istante di tempo
-
 \end{itemize}
-Al fine di calcolare medie, varianze, intervalli di confidenza e per 
-visualizzare l'avanzare della simulazione sono state utilizzate anche altre 
-variabili (per lo più booleane o di tipo contatore): \textit{arrivals\, 
-sessions\, requests\, dropped\, aborted\,} $…$ .
 
 \section{Modello delle specifiche}
 Nello sviluppo del modello delle specifiche, l'attenzione \'e stata rivolta alla 
