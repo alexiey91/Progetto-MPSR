@@ -96,15 +96,78 @@ indice con comportamento steady-state:
  \label{fig:Istogramma del throughtput}
 \end{figure}
 
-
-
-
 \section{Sistema con Overload Management}
+
+Dai risultati illustrati nel caso di sistema senza il meccanismo di \textit{overload 
+management} la distribuzione con i tempi di servizio ``peggiore'', ossia con i tempi
+di risposta maggiori, \'e risultata quella iperesponenziale. 
+Per questa distribuzione, dunque, sono stati effettuati test con la gestione del sovraccarico.
+Neanche quando viene applicato l’overload management nel front-end server, gli indici di prestazione
+di interesse assumono un comportamento stazionario per run simulativi abbastanza lunghi.
+Ci\`o avviene perch\'e anche se in questa situazione il front server ha un'utilizzazione media pi\`u bassa
+di 1, e quindi non arriva mai a saturazione, nel momento in cui supera l' 85\% del carico viene impedito l'accesso
+a tutte le sessioni, anche quelle gi\`a presenti nel sistema, e di conseguenza la sua coda si svuota, ma
+nel momento in cui vengono riabilitati gli arrivi la coda si riempie di nuovo, con l'effetto che tutte le
+metriche analizzate avranno oscillazioni non indifferenti rispetto al tempo.
 
 \subsection{Response Time}
 
-\subsection{Autocorrelazione}
+Di seguito viene riportato il grafico sul tempo di risposta del sistema con distribuzione dei 
+tempi di servizio iperesponenziale del front-end server:
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.45]{img/responseOM.png}
+ \caption[Tempo di risposta del sistema con distribuzione iperesponenziale e overload management attivo]{Tempo di risposta del sistema con distribuzione iperesponenziale e overload management attivo}
+ \label{fig:Tempo di risposta del sistema con distribuzione iperesponenziale e overload management attivo}
+\end{figure}
+
+Dal grafico riportato sopra si nota ci\`o che era stato detto in precedenza, ovvero il response time
+non si stabilizza ma tende a decrescere nei momenti in cui il sistema blocca gli accessi e cresce di 
+nuovo quando vengono consentiti nuovamente.
 
 \subsection{Useful Throughtput}
+Il grafico successivo illustra l’andamento dello useful throughput del sistema con i 
+parametri sopra citati:
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.45]{img/throughputOM.png}
+ \caption[Throughput del sistema con distribuzione iperesponenziale e overload management attivo]{Throughput del sistema con distribuzione iperesponenziale e overload management attivo}
+ \label{fig:Throughput del sistema con distribuzione iperesponenziale e overload management attivo}
+\end{figure}
+Stessa cosa gi\`a vista per i tempi di risposta avviene nel throughput, anche se in questo caso piano
+piano le oscillazioni si vanno ad appiattire.
 
 \subsection{Drop e Aborted Ratio}
+Infine vengono riportati gli andamenti degli indici drop ratio e aborted ratio:
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.4]{img/dropRatio.png}
+ \caption[Drop Ratio]{Drop Ratio}
+ \label{fig:Drop Ratio}
+\end{figure}
+\begin{figure}[H]
+ \centering
+ \includegraphics[scale=0.4]{img/abortRatio.png}
+ \caption[Aborted Ratio]{Aborted Ratio}
+ \label{fig:Aborted Ratio}
+\end{figure}
+Anche in questi due grafici notiamo come la percentuale di sessioni rifiutate e abortite
+oscilli in maniera molto ampia.
+\section{Batch means e intervalli di confidenza}
+
+\section{Conclusioni}
+
+In questo progetto \'e stata effettuata l’analisi delle prestazioni di un 
+sistema che emula uno scenario di traffico web reale.
+Infatti oltre a simulare un comportamento stocastico riguardo sia i tempi di interarrivo delle 
+richieste effettuate dai client che ai loro tempi di processamento nei server e di thinking, 
+fissati i parametri del sistema dalle specifiche riportate e applicando il meccanismo di 
+overload management, il sistema presenta un comportamento simile ai server web reali. 
+
+Si \'e analizzato quindi le prestazioni di tale sistema al variare delle distribuzioni dei tempi di 
+servizio, dell applicazione del meccanismo di overload management valutando l’andamento 
+degli indici di prestazione di interesse quali lo useful throughput e i tempi di risposta del 
+sistema, oltre a valutare il drop ratio e l’abort ratio. A tale scopo è stato utilizzato un 
+simulatore next-event il quale integra un meccanismo di avanzamento del tempo simulato 
+basato sull’occorrenza degli eventi schedulati in apposite strutture dati.
