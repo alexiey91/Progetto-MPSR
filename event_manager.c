@@ -27,7 +27,7 @@ void NewSession(Event* ev) {
                 return;
             }
         }
-        // la 10-Erlang è la peggiore implemento quindi il Threshold all' 85%
+        // la iperesponenziale è la peggiore implemento quindi il Threshold all' 85%
         else if(FS_average_utilization >= THRESHOLD_MAX) {
             threshold_exceeded = 1;
             dropped++;

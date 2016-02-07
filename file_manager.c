@@ -18,7 +18,7 @@ char* get_date() {
 }
 
 FILE *open_file() {
-    char graphic_name[50], *g = graphic_name, *graphic_ext = ".csv";
+    char graphic_name[60], *g = graphic_name, *graphic_ext = ".csv";
     char *date = get_date();
     strcpy(graphic_name, date);
     g+=strlen(date);
@@ -41,6 +41,13 @@ FILE *open_file() {
     if(threshold_flag) {
         strcat(g,"_OM");
         g+=strlen("_OM");
+    }
+    if(SIM_TYPE) {
+        strcat(g,"_batch");
+        g+=strlen("_batch");
+    } else {
+        strcat(g,"_longrun");
+        g+=strlen("_longrun");
     }
     strcat(g, graphic_ext);
     g[strlen(graphic_ext)] = 0;
