@@ -7,12 +7,12 @@ illustrati nel libro \textit{Discrete-Event Simulation: A first course}.
 All'interno del progetto si \'e scelto di utilizzare la versione del generatore
 fornita come libreria C dallo stesso libro, \'e stato quindi creato un programma che si interfaccia con tali librerie, tramite chiamate alle API della libreria 
 stessa,
-che serva a testare l'effettiva correttezza di tale implementazione.
+che serve a testare l'effettiva correttezza di tale implementazione.
 Al fine di comprendere al meglio i risultati ottenuti, verranno anche
 presentati dei grafici riassuntivi del test effettuato.
 
 \section{Funzionamento}
-Il \textit{generatore di Lehmer} \'e un generatore basato su un algoritmo che da 
+Il \textit{generatore di Lehmer} \'e un generatore basato su un algoritmo che d\`a 
 origine ad una sequenza di numeri pseudo-casuali. \'E definito da due parametri:
 
 \begin{itemize}
@@ -75,10 +75,10 @@ utilizzata vengono generate a partire dalla \textit{Uniform(0,1)}.
 \section{Algoritmo}
 L'algoritmo del test degli estremi effettua un raggruppamento (\textit{batching}) dei 
 valori estratti dal generatore in gruppi di uguale lunghezza (determinato dal 
-parametro d), trovando il 
+parametro \textit{d}), trovando il 
 massimo di ogni batch, elevando tale massimo all d-esima potenza e conteggiando 
 tutti i massimi generati in un array. Tale funzione viene applicata per ogni 
-stream del generatore Lehmer.
+stream del generatore di Lehmer.
 Tutto ci\`o \'e illustrato di seguito:
 \begin{verbatim}
   for(stream = 0; stream < 256L; stream++) {

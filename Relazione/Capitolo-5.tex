@@ -46,7 +46,7 @@ alla funzione chiamante.
 Definisce una struttura dati, utilizzata per modellare le code sia del Front Server
 che del Back-End Server. Ogni coda associata ad un centro si compone di un tempo di arrivo e un puntatore all'elemento successivo. 
 Le funzioni messe a disposizione per questa struttura dati sono: 
-l'\textit{arrival\_add()} che aggiunge un nuovo elemento posizionandolo in fondo alla coda, l'\textit{arrival\_pop()} 
+l'\textbf{arrival\_add()} che aggiunge un nuovo elemento posizionandolo in fondo alla coda, l'\textbf{arrival\_pop()} 
 che permette l'estrazione dell'elemento in testa e l'\textbf{arrival\_print()} che stampa lo stato della coda.
 
 \section{Request Queue}
@@ -56,17 +56,17 @@ Per evitare di memorizzare tale informazione all'interno della sessione stessa
 \'e stata creata, questa struttura dati adibita a raccogliere tali parametri.
 Non appena la sessione arriva nel primo centro, ossia il Front Server, il dato 
 contenente il numero di richieste associate, viene inserito in questa coda tramite la funzione 
-\textbf{enqueue\_req()}. Quando invece la sessione esce dal Back-End Server è necessario
-l'utilizzo della funzione di \textbf{dequeue\_req()} poichè questa informazione non verrà pi\`u
-memorizzata in questa lista, ma verrà salvata in una diversa struttura, nel caso la sessione non sia completata.
-Per verificarne la consisenza \'e stata implementata la funzione \textbf{print\_req()}.
+\textbf{enqueue\_req()}. Quando invece la sessione esce dal Back-End Server \'e necessario
+l'utilizzo della funzione di \textbf{dequeue\_req()} poich\`e questa informazione non verrà pi\`u
+memorizzata in questa lista, ma verr\`a salvata in una diversa struttura, nel caso la sessione non sia completata.
+Per verificarne la consistenza \'e stata implementata la funzione \textbf{print\_req()}.
 
 \section{Client request}
 Questa struttura dati ci viene in aiuto nel momento in cui la sessione 
 esce dal Back-End Server per entrare nel centro di client. In questo caso 
 infatti non vengono pi\`u utilizzate le strutture precedentemente descritte,
 quali \textit{Request Queue} e \textit{Arrival Queue}, per modellare il comportamento 
-del sistema, poichè durante la fase di ``thinking'' l'ordine di entrata delle sessioni 
+del sistema, poich\`e durante la fase di ``thinking'' l'ordine di entrata delle sessioni 
 non corrisponde a quello di uscita. Di conseguenza \'è stata creata questa struttura,
 che al suo interno contiene sia il tempo di arrivo della sessione nel centro, sia il numero
 di richieste rimanenti al suo completamento, per garantire una corretta corrispondenza tra la sessione ed il suo numero di richieste.
@@ -83,8 +83,8 @@ trascrivere  su un file di output. Composto da tre funzioni:
 da 
 salvare sul file desiderato.
 \item \textbf{open\_file()}: utilizzata per la creazione e l'apertura 
-del file da salvare. Il nome del file viene creato utilizzato la funzione 
-\textbf{get\_date()}, quindi contiene la data corrente della creazione più il 
+del file da salvare. Il nome del file viene creato sfruttando la funzione 
+\textbf{get\_date()}. Quindi il file contiene la data corrente della creazione pi\`u il 
 tipo di 
 distribuzione scelta durante la fase di setting.
 \item \textbf{close\_file()}: adottata per chiudere il file una volta 

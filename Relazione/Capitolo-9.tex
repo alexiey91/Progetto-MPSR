@@ -18,7 +18,7 @@ attraverso il meccanismo di overload management.
 
 In questo scenario l'utilizzazione del front-end server \'e praticamente uguale 
 a 1, perci\`o 
-non riesce a completare tutte le richieste entranti, con la inevitabile 
+non riesce a completare tutte le richieste entranti, con l'inevitabile 
 situazione di veder aumentare indefinitamente la lunghezza della sua coda. Di 
 conseguenza il tempo di risposta del sistema tende a divergere all'aumentare del 
 tempo di 
@@ -213,16 +213,16 @@ abortite oscilli in maniera molto ampia ed evidente.
 
 \section{Batch means e intervalli di confidenza}
 
-Pur non avendo raggiunto la stazionariet\`a neanche con il meccanismo di overload
-management attivo si \'è scelto di eseguire gli stessi test con il metodo dei batch
-means. Questo metodo prevede effettuare un unico lungo run e partizionare i dati raccolti relative 
+Non avendo raggiunto la stazionariet\`a neanche attraverso il meccanismo di overload
+management attivo, si \'e scelto di eseguire gli stessi test sfruttando il metodo dei batch
+means. Questo metodo consiste nell'effettuare un unico lungo run e partizionare i dati raccolti, relative 
 alle statistiche di interesse in partizioni (batch) di uguale lunghezza, calcolare le medie di 
 ciascun batch, e successivamente calcolare la media delle medie dei batch, ricavando 
 anche la deviazione standard relativa per poter costruire gli intervalli di confidenza per la 
-media. Particolare attenzione è stata prestata nella scelta dei parametri (b,k) necessari per 
-determinare l’ampiezza e il numero dei batch. Seguendo le linee guida del libro si \'e scelto 
-di impostare un k=64 fisso mentre b è stato determinato dal rapporto b=n/k.
-Il valore calcolato di b è risultato ottimale anche controllando l’andamento della funzione di 
+media. Particolare attenzione \'e stata prestata nella scelta dei parametri (b,k) necessari per 
+determinare l'ampiezza e il numero dei batch. Seguendo le linee guida del libro si \'e scelto 
+di impostare un k=64 fisso, mentre b è stato determinato dal rapporto b=n/k.
+Il valore calcolato di b è risultato ottimale anche controllando l'andamento della funzione di 
 autocorrelazione (tendente a zero):
 
 \begin{figure}[H]
@@ -232,7 +232,7 @@ autocorrelazione (tendente a zero):
  \label{fig:Autocorrelazione batch means}
 \end{figure}
 
-Nell'analisi effettuata in questo caso si può osservare, dal grafico successivo, come il tempo
+Nell'analisi effettuata in questo caso si pu\`o osservare, dal grafico successivo, come il tempo
 di risposta del sistema si stabilizzi e di conseguenza \'e risultato possibile calcolare un intervallo
 di confidenza al 95\%. 
 
@@ -250,11 +250,11 @@ di confidenza al 95\%.
  \label{fig:Throughput nel caso dei batch means}
 \end{figure}
 
-Nei primi batch possiamo vedere che il sistema ha tempi di risposta molto alti, che vanno a
-diminuire nei batch successivi fino ad andarsi ad assestare, questo comportamento è dovuto al
+Nei primi batch possiamo notare che il sistema ha tempi di risposta molto alti, che vanno a
+diminuire nei batch successivi fino ad andarsi ad assestare, questo comportamento \'e dovuto al
 fatto che il sistema all'inizio \'e in una fase transitoria, e quindi ancora deve stabilizzarsi.
 
-La stessa analisi è stata effettuata anche per il throughtput, che per\`o risulta oscillare 
+La stessa analisi \'e stata effettuata anche per il throughtput, che per\`o risulta oscillare 
 in maniera pi\`u o meno evidente; probabilmente tale comportamento \'e dovuto al meccanismo di
 overload management che nel momento di attivazione permette al sistema di ``scaricarsi''.
 

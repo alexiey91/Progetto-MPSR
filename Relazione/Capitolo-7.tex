@@ -26,7 +26,7 @@ la maggior parte degli elementi che costituiscono il sistema stesso.
 In questo primo modello si ha una rete aperta di Jackson con un tasso di 
 sessioni in arrivo pari a $\lambda$ . Si \'e deciso cos\`i, per questioni di 
 semplificazione del modello, di non inserire il centro di Client, in quanto
-risultavano di difficile analisi in un modello di rete aperta come quello di 
+risultavano di difficile analisi in un modello a rete aperta come quello di 
 Jackson.
 \begin{center}
 $\lambda = 35 sessioni/s$
@@ -38,7 +38,7 @@ $\begin{cases}
 y_{1}(1-p) = \lambda \\ y_{2} = y_{1} \\
 \end{cases}$ $\rightarrow$
 $\begin{cases} 
-y_{1} =\frac{ \lambda}{(1- p)} \\ y_{2} =\frac{y_{2}}{(1-p)} \\
+y_{1} =\frac{ \lambda}{(1- p)} \\ y_{2} =\frac{\lambda}{(1-p)} \\
 \end{cases}$
 \\ \vspace{0.5cm}
 $y_{1} = y_{2} = \frac{\lambda}{(1-p)} ; p=\frac{19}{20} \rightarrow 
@@ -48,7 +48,7 @@ $y_{1}\gg\mu_{FS}$; $y_{2}=\mu_{FS}$ poich\`e $\mu_{BES}\gg y_{1}$
 \end{center}Viene quindi calcolato il throughput, ovvero il numero di sessioni che escono 
 dal sistema al secondo:
 \begin{center}
-$y_{2} =\frac{y_{2}}{(1-p)}=\frac{\mu_{FS}}{20}\approx\frac{219}{20}$ richieste/s = $X_{sessioni}$
+$y_{2} =\frac{\lambda}{(1-p)} \rightarrow \lambda=y_{2}(1-p)=\frac{\mu_{FS}}{20}\approx\frac{219}{20}$ richieste/s = $X_{sessioni}$
 \end{center}
 Per quanto concerne l'indice riguardante la percentuale di sessioni rifiutate 
 dal sistema, si trova:
